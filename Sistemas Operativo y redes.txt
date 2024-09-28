@@ -1,6 +1,6 @@
 TEMAS DEL SEGUNDO TRIMESTRE
 UT 6  Transmisión de la información
-Medios guiados y no guiados. Tipos y técnicas de transmisión, dispositivos multiplexores, equipos de conectividad.
+Medios guiados y no guiados. Tipos y técnicas de transmisión, equipos de conectividad.
 UT 7  Arquitectura de comunicación
 Sistemas abiertos  Modelo  (OSI). Modelo TCP/IP, Clases de IPS, 
 protocolos. 
