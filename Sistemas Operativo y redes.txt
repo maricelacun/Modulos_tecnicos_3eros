@@ -1,5 +1,17 @@
+TEMAS DEL SEGUNDO TRIMESTRE
+UT 6  Transmisión de la información
+Medios guiados y no guiados. Tipos y técnicas de transmisión, dispositivos multiplexores, equipos de conectividad.
+UT 7  Arquitectura de comunicación
+Sistemas abiertos  Modelo  (OSI). Modelo TCP/IP, Clases de IPS, 
+protocolos. 
+seguridad en redes, 
+ingeniería social. 
+Subneting.
+
+
 https://view.genially.com/669e5de83b2a4207a506ddef/presentation-topologias-de-red      Topologias de red
 https://view.genially.com/66a014d39a5e12e0e9144555/presentation-dispositivos-de-red     dispositivos de conectividad
 https://gamma.app/docs/vd23150t1v00vbs                         Modelo OSI
 https://gamma.app/docs/Protocolos-de-Red-7zpdc2cbnmbf4pt       Protocolo de red
 https://gamma.app/docs/hvfkin0v5k2fce7                          direcciones IP
+https://gamma.app/docs/Introduccion-a-la-Seguridad-en-Redes-nahu7xy7wwmi3uc     SEGURIDAD DE RED
