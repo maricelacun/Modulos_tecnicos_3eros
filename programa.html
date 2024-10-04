@@ -20,16 +20,19 @@
             font-family: 'monospace', sans-serif; /* Tipo de letra diferente */
             color: red; /* Color del texto */
             background-color: yellow; /* Color de fondo */
-         .container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* Crea 3 columnas de igual tamaño */
-            gap: 10px; /* Espacio entre las columnas */
-        }
+         }
 
         .column {
+            flex: 1;
             padding: 10px;
-            background-color: lightblue;
+            background-color: lightgray;
+            margin: 5px;
+            text-align: center; /* Alinea el texto en el centro */
         }
+
+        a {
+            text-decoration: none; /* Elimina el subrayado de los enlaces */
+            color: blue; /* Color del texto del enlace */
         }
     </style>
 </head>
@@ -52,9 +55,15 @@
     <h2><p>AQUI ESTAN LOS ENLACES DE LOS CONTENIDOS</p></h2>
 
  <div class="container">
-        <div class= a href="https://modelado-de-datos-safrrt6.gamma.site/">Columna 1</div>
-        <div class="a href="https://introduccion-al-diagrama-x3ak59j.gamma.site/column">Columna 2</div>
-        <div class="column">Columna 3</div>
+        <div class="column">
+            <a href="https://modelado-de-datos-safrrt6.gamma.site">Enlace 1</a>
+        </div>
+        <div class="column">
+            <a href="https://introduccion-al-diagrama-x3ak59j.gamma.site/">Enlace 2</a>
+        </div>
+        <div class="column">
+            <a href="https://www.ejemplo3.com">Enlace 3</a>
+        </div>
     </div>
 
      
