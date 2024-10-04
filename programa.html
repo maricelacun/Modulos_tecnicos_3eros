@@ -21,11 +21,29 @@
             color: red; /* Color del texto */
             background-color: yellow; /* Color de fondo */
          }
-          #columna{
-            column-count:4;
-            column-gap:20px
-            column-rule:4px dotted gray;
-         }
+         .container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .column {
+            width: 45%; /* Ancho de cada columna */
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 5px;
+        }
+        h2 {
+            font-size: 20px;
+            color: #333;
+        }
+        a {
+            display: block; /* Cada enlace en una nueva línea */
+            margin: 5px 0;
+            text-decoration: none;
+            color: #007BFF;
+        }
+        a:hover {
+            text-decoration: underline; /* Subrayado en hover */
+        }
         
     </style>
 </head>
@@ -44,12 +62,18 @@
 </h4>
     <span style="center; font-family:  courier new, sans-serif; color: green;"> 
     <h2><p>AQUI ESTAN LOS ENLACES DE LOS CONTENIDOS</p></h2>
-   <div id="columna">
-        <h4><li><a href="https://modelado-de-datos-safrrt6.gamma.site">MODELADO DE DATOS</a></li></h4>
-        <h4><li> <a href="https://introduccion-al-diagrama-x3ak59j.gamma.site/">MODELADO DE DATOS Y DER </a></li></h4>
-        <h4><li> <a href="https://introduccion-al-diagrama-asnzukb.gamma.site/">DIAGRAMA ENTIDAD RELACIÓN</a></li></h4>
-        <h4><li> <a href="https://view.genially.com/66fd759435325264599aa1d2/presentation-bases-de-datos-relacional/">BASES DE DATOS RELACIONAL</a></li></h4>
-     </div>
+   <div class="container">
+        <div class="column">
+            <h2>Columna 1</h2>
+            <a href="https://www.ejemplo1.com" target="_blank">Enlace 1</a>
+            <a href="https://www.ejemplo2.com" target="_blank">Enlace 2</a>
+        </div>
+        <div class="column">
+            <h2>Columna 2</h2>
+            <a href="https://www.ejemplo3.com" target="_blank">Enlace 3</a>
+            <a href="https://www.ejemplo4.com" target="_blank">Enlace 4</a>
+        </div>
+    </div>
 
      
   
