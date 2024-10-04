@@ -21,25 +21,38 @@
             color: red; /* Color del texto */
             background-color: yellow; /* Color de fondo */
          }
-        .container {
-            display: flex; /* Activar Flexbox */
+         .container {
+            display: flex; /* Usar Flexbox */
+            flex-wrap: wrap; /* Permite que las columnas se ajusten si la pantalla es pequeña */
         }
 
         .column {
             flex: 1; /* Ambas columnas tendrán el mismo tamaño */
             padding: 10px;
-            background-color: lightgray;
-            margin: 5px; /* Espacio entre las columnas */
+            margin: 5px;
+            text-align: center; /* Alinea el contenido al centro */
         }
 
         .column1 {
-            background-color: lightblue; /* Color para la primera columna */
+            background-color: lightblue;
+        }
+
+        .column2 {
+            background-color: lightgreen;
         }
 
         a {
             text-decoration: none; /* Elimina el subrayado de los enlaces */
-            color: blue; /* Color del texto del enlace */
+            color: darkblue; /* Color del texto del enlace */
+            font-size: 18px;
         }
+
+        /* Este estilo asegura que las columnas no sean más estrechas de 200px */
+        @media (min-width: 400px) {
+            .column {
+                flex-basis: calc(50% - 10px); /* Cada columna ocupará el 50% del espacio */
+            }
+        
     </style>
 </head>
 <body  bgcolor="pink">
