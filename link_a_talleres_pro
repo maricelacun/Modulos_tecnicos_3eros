@@ -87,10 +87,10 @@
     <main>
         <h2>Links a Evaluaciones</h2>
         <ul>
-            <li><a href="https://view.genially.com/66fabd109ca99a0f4f9c60f3/learning-experience-didactic-unit-secuencia-didactica-secundaria" target="_blank" bnt=">DIAGRAMA ENTIDAD RELACIÓN</a></li>
-            <li><a href="link_a_evaluacion2.html" target="_blank">PENDIENTEs</a></li>
-            <li><a href="link_a_evaluacion3.html" target="_blank">PENDIENTE</a></li>
-            <li><a href="link_a_evaluacion4.html" target="_blank">PENDIENTE</a></li>
+            <li><a href="https://view.genially.com/66fabd109ca99a0f4f9c60f3/learning-experience-didactic-unit-secuencia-didactica-secundaria" target="_blank" class="btn">DIAGRAMA ENTIDAD RELACIÓN</a></li>
+            <li><a href="link_a_evaluacion2.html" target="_blank" class="btn">PENDIENTES </a></li>
+            <li><a href="link_a_evaluacion3.html" target="_blank" class="btn">PENDIENTE</a></li>
+            <li><a href="link_a_evaluacion4.html" target="_blank" class="btn">PENDIENTE</a></li>
             <!-- Agrega más enlaces de evaluaciones aquí -->
         </ul>
     </main>
