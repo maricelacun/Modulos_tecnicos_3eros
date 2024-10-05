@@ -1,6 +1,6 @@
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #aed6f1 ; /* Fondo claro para contraste */
+    background-color: #00FFFF ; /* Fondo claro para contraste */
     margin: 0;
     padding: 20px;
 }
@@ -15,7 +15,7 @@ h1 {
     border: 2px solid #008080; /* Borde turquesa */
     border-radius: 10px;
     padding: 10px;
-    height: 200px;
+    height: 300px;
     overflow-y: scroll;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
     margin-bottom: 10px;
