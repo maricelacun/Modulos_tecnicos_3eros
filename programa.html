@@ -3,66 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Módulos Técnicos - Aula Virtual</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Asegúrate de que el nombre del archivo CSS sea correcto -->
+    <title>Módulo de Programación</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0f7fa;
+            margin: 0;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #008080;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        main {
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .module-option {
+            background-color: #008080;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        .module-option:hover {
+            background-color: #006666; /* Color más oscuro al pasar el mouse */
+        }
+
+        a {
+            color: white;
+            text-decoration: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #008080;
+            color: white;
+            margin-top: 20px;
+        }
+    </style>
 </head>
-<body bgcolor="#40E0D0">
+<body>
     <header>
-        <h1>Módulos Técnicos</h1>
-        <nav>
-            <ul>
-                <li><a href="#temas">Temas del Semestre</a></li>
-                <li><a href="#clases">Clases</a></li>
-                <li><a href="#talleres">Talleres</a></li>
-                <li><a href="#evaluaciones">Evaluaciones</a></li>
-                <li><a href="#anuncios">Anuncios</a></li>
-                
-            </ul>
-        </nav>
+        <h1>Módulo de Programación</h1>
     </header>
     <main>
-        <section class="motivational">
-            <h2>¡Motívate a Estudiar!</h2>
-            <p>“La educación es el arma más poderosa que puedes usar para cambiar el mundo.” – Nelson Mandela</p>
-        </section>
-        
-        <section id="clases">
-            <h2>Clases</h2>
-            <p><a href="clases_pro.html" target="_blank" class="btn"> Acceder a los link de las clases</a></p>
-           </section>
-        
-        <section id="talleres">
-            <h2>Talleres</h2>
-            <ul>
-                <li><a href="https://view.genially.com/66fabd109ca99a0f4f9c60f3/learning-experience-didactic-unit-secuencia-didactica-secundaria" class="btn">Taller 1 DER: DIAGRAMA ENTIDAD RELACION</a></li>
-            </ul>
-        </section>
-        
-        <section id="evaluaciones">
-            <h2>Evaluaciones</h2>
-            <p><a href="https://maricelacun.github.io/Modulos_tecnicos_3ero/evaluaciones.html" target="_blank" class="btn"> Acceder a las Evaluaciones</a></p>
-        </section>
-        
-        <section id="anuncios">
-            <h2>Anuncios</h2>
-            <p><a href="link_a_anuncios.html" class="btn">Ver Anuncios</a></p>
-        </section>
-        
-        <section id="temas">
-            <h2><span style="center; font-family: Arial, sans-serif; color: blue;">PROGRAMACION Y BASES DE DATOS.</span></h2>
-            <h2>Temas del Semestre</h2>
-            <strong><u>ANÁLISIS ESTRUCTURADO DE SISTEMA</u></strong>
-            <ul>
-                <li><p> Objetivos, entradas, salidas y fases. </p></li>
-                <li><p>Modelización de funciones y procesos. Modelización de datos. </p></li>
-               <li><p> Modelo conceptual. Análisis entidad relación. </p></li>
-                <li><p>Diccionario  de  datos.  </li>
-               <li><p> Programación  con sistemas  gestores de  bases  de  datos relacionales.</p></li>
-                                          
-            </ul>
-        </section>
+        <h2>Opciones del Módulo</h2>
+        <div class="grid">
+            <div class="module-option">
+                <a href="link_a_clase.html" target="_blank">Clase</a>
+            </div>
+            <div class="module-option">
+                <a href="link_a_taller.html" target="_blank">Taller</a>
+            </div>
+            <div class="module-option">
+                <a href="link_a_evaluacion.html" target="_blank">Evaluación</a>
+            </div>
+            <div class="module-option">
+                <a href="link_a_anuncios.html" target="_blank">Anuncios</a>
+            </div>
+        </div>
     </main>
-    
     <footer>
         <p>&copy; 2024 Aula Virtual. Todos los derechos reservados.</p>
     </footer>
