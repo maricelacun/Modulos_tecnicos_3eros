@@ -1,3 +1,94 @@
+* {
+    box-sizing: border-box; /* Asegura que el padding y el borde no afecten el tamaño */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Altura completa de la ventana */
+    color: #333; /* Color de texto */
+}
+
+header {
+    background-color: #008080; /* Color de fondo */
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none; /* Quita los puntos de la lista */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Centra los enlaces del menú */
+}
+
+nav ul li {
+    margin: 0 15px; /* Espacio entre enlaces */
+}
+
+nav a {
+    color: white; /* Color del texto del menú */
+    text-decoration: none; /* Quita el subrayado */
+    font-weight: bold;
+}
+
+main {
+    flex: 1; /* Resto del espacio disponible */
+    padding: 20px;
+    background-color: #f9f9f9; /* Fondo claro */
+}
+
+.welcome {
+    text-align: center;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Cuadrícula responsiva */
+    gap: 20px; /* Espacio entre módulos */
+    margin-top: 20px;
+}
+
+.module {
+    background-color: white; /* Fondo blanco para módulos */
+    border: 1px solid #ccc; /* Borde sutil */
+    border-radius: 8px; /* Esquinas redondeadas */
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    text-align: center; /* Centramos el texto */
+}
+
+.module h3 {
+    color: #008080; /* Color turquesa para títulos de módulos */
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #008080; /* Color del botón */
+    color: white;
+    text-decoration: none; /* Quita el subrayado */
+    border-radius: 5px; /* Esquinas redondeadas */
+}
+
+.btn:hover {
+    background-color: #006666; /* Color más oscuro al pasar el mouse */
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #008080; /* Color de fondo */
+    color: white;
+    position: relative;
+}
+
+
 body {
     font-family: 'Arial', sans-serif;
     background-color: #00FFFF ; /* Fondo claro para contraste */
