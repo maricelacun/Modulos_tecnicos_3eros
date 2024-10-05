@@ -3,58 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aula Virtual</title>
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            height: 100vh; /* Altura completa de la ventana */
-            margin: 0;
-        }
-        header {
-            flex: 0 0 30%; /* 30% de la altura */
-            background-color: #008080; /* Color de fondo */
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-        }
-        .container {
-            display: flex;
-            flex: 1; /* Resto del espacio disponible */
-        }
-        nav {
-            flex: 0 0 25%; /* 25% del ancho */
-            background-color: #f0f0f0; /* Fondo claro */
-            padding: 10px;
-        }
-        main {
-            flex: 1; /* 75% del ancho */
-            background-color: #ffffff; /* Fondo blanco */
-            padding: 10px;
-        }
-    </style>
+    <title>Aula Virtual - Módulos Técnicos</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Vincula tu CSS aquí -->
 </head>
 <body>
     <header>
-        <h1>Header</h1>
-    </header>
-    <div class="container">
+        <h1>Aula Virtual</h1>
         <nav>
-            <h2>Menu</h2>
-            <!-- Contenido del menú aquí -->
+            <ul>
+                <li><a href="programacion.html">Programación y Bases de Datos</a></li>
+                <li><a href="soporte.html">Soporte Técnico</a></li>
+                <li><a href="redes.html">Sistemas Operativos y Redes</a></li>
+            </ul>
         </nav>
-        <main>
-            <h2>Contenido</h2>
-            <!-- Contenido principal aquí -->
-        </main>
-    </div>
+    </header>
+    <main>
+        <section class="welcome">
+            <h2>Bienvenido a tu Aula Virtual</h2>
+            <p>Selecciona un módulo para comenzar a aprender.</p>
+        </section>
+        <section class="features">
+            <h2>Módulos Disponibles</h2>
+            <div class="module">
+                <h3>Programación y Bases de Datos</h3>
+                <p>Aprende los fundamentos de la programación y la gestión de bases de datos.</p>
+                <a href="programacion.html" class="btn">Ver Módulo</a>
+            </div>
+            <div class="module">
+                <h3>Soporte Técnico</h3>
+                <p>Desarrolla habilidades para ofrecer soporte técnico eficaz.</p>
+                <a href="soporte.html" class="btn">Ver Módulo</a>
+            </div>
+            <div class="module">
+                <h3>Sistemas Operativos y Redes</h3>
+                <p>Conoce los sistemas operativos y cómo funcionan las redes.</p>
+                <a href="redes.html" class="btn">Ver Módulo</a>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Aula Virtual. Todos los derechos reservados.</p>
+    </footer>
 </body>
 </html>
-
-
-
-
-
-
