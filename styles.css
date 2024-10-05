@@ -147,3 +147,11 @@ h1 {
     max-width: 80%;
     word-wrap: break-word; /* Ajusta las palabras largas */
 }
+section ul {
+    display: grid; /* Usa grid para organizar los enlaces */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Dos columnas */
+    gap: 15px; /* Espacio entre columnas */
+    list-style: none; /* Quita los puntos de la lista */
+    padding: 0; /* Quita el padding */
+}
+
