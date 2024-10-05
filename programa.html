@@ -1,102 +1,70 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <style>
-        h1, h2 {
-            text-align: center;
-        }
-         table {
-            margin-left: auto;
-            margin-right: auto;
-            border:2px solid blue;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid blue
-            padding: 10px;
-            text-align: center;
-        
-         tr:nth-child(2) {
-            font-family: 'monospace', sans-serif; /* Tipo de letra diferente */
-            color: red; /* Color del texto */
-            background-color: yellow; /* Color de fondo */
-         }
-       
-         hr {
-            border: none; /* Sin bordes predeterminados */
-            height: 2px; /* Altura de la línea */
-            background-color: #007BFF; /* Color de la línea */
-            margin: 20px 0; /* Espacio vertical alrededor de la línea */
-            border-radius: 5px; /* Esquinas redondeadas */
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulos Técnicos - Aula Virtual</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Asegúrate de que el nombre del archivo CSS sea correcto -->
 </head>
-<body  bgcolor="#66CDAA">
-    <h1><span style="center; font-family: Arial, sans-serif; color: blue;">PROGRAMACION Y BASES DE DATOS.</span></h1>
-     <h4><span style="center; font-family:  courier new, sans-serif; color: purple;"> 
-<ul>
-    <strong><u>ANÁLISIS ESTRUCTURADO DE SISTEMA</u></strong>
-   <li><p> Objetivos, entradas, salidas y fases. </p></li>
-    <li><p>Modelización de funciones y procesos. Modelización de datos. </p></li>
-   <li><p> Modelo conceptual. Análisis entidad relación. </p></li>
-    <li><p>Diccionario  de  datos.  </li>
-   <li><p> Programación  con sistemas  gestores de  bases  de  datos relacionales.</p></li>
-</ul>
-</span>
-</h4>
-     
- <table>
-     <tr>
-        <th colspan="4">AQUI ESTAN LOS ENLACES DE LOS CONTENIDOS</th>
-    </tr>
-     <tr>
-        <td><h4><li><a href="https://modelado-de-datos-safrrt6.gamma.site/" target="_blank"">MODELO DE DATOS</a></li></h3></td>
-        <td><h4><li> <a href="https://introduccion-al-diagrama-x3ak59j.gamma.site/" target="_blank">MODELADO DE DATOS Y DER </a></li></h4></td>
-      </tr>
-    <tr>
-        <td><h4><li><a href="https://introduccion-al-diagrama-asnzukb.gamma.site/" target="_blank">DIAGRAMA ENTIDAD RELACION </a></li></h4></td>
-        <td><h4><li><a href="https://view.genially.com/66fd759435325264599aa1d2/presentation-bases-de-datos-relacional/" target="_blank">BASES DE DATOS RELACIONAL</li></h4></td>
-     </tr>
- </table>     
- <hr>    
-  <table>
-    <tr>
-        <th colspan="4">TALLERES DE PROGRAMACIÓN Y BASES DE DATOS</th>
-    </tr>
-    <tr>
-        <td><strong><u><h3>TALLER</h3></u></strong></td>
-        <td><strong><u><h3>FECHA DE ENTREGA</h3></u></strong></td>
-        <td><strong><u><h3>LECCIÓN ONLINE</h3></u></strong></td>
-        <td><strong><u><h3>OBSERVACIÓN</h3></u></strong></td>
-       </span>
-    </tr>
-    <tr>
-        <td><h4><li><a href="https://view.genially.com/66fabd109ca99a0f4f9c60f3/learning-experience-didactic-unit-secuencia-didactica-secundaria">DIAGRAMA ENTIDAD RELACIÓN</a></li></h3></td>
-        <td><h4><li>LUNES, 07 DE 0CTUBRE/24</li></h4></td>
-        <td><h4><li><a href="https://forms.gle/RUoa4eGmmEMd7H7Z7">LECCIÓN ONLINE </a></li></h4></td>
-        <td><h4><li>lA LECCIÓN ESTARA DISPONIBLE HASTA EL 04_10_2024</li></h4></td>
+<body>
+    <header>
+        <h1>Módulos Técnicos</h1>
+        <nav>
+            <ul>
+                <li><a href="#temas">Temas del Semestre</a></li>
+                <li><a href="#clases">Clases</a></li>
+                <li><a href="#talleres">Talleres</a></li>
+                <li><a href="#evaluaciones">Evaluaciones</a></li>
+                <li><a href="#anuncios">Anuncios</a></li>
+                
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="motivational">
+            <h2>¡Motívate a Estudiar!</h2>
+            <p>“La educación es el arma más poderosa que puedes usar para cambiar el mundo.” – Nelson Mandela</p>
+        </section>
         
-    </tr>
-    <tr>
-        <td>Fila 2, Celda 1</td>
-        <td>Fila 2, Celda 2</td>
-        <td>Fila 2, Celda 3</td>
-        <td>Fila 1, Celda 3</td>
+        <section id="clases">
+            <h2>Clases</h2>
+            <p><a href="https://modelado-de-datos-safrrt6.gamma.site/" class="btn">Modelado de datos</a></p>
+            <p><a href="https://introduccion-al-diagrama-x3ak59j.gamma.site/" class="btn">Modelado de datos y DER</a></p>
+            <p><a href="https://introduccion-al-diagrama-asnzukb.gamma.site/" class="btn">Diagrama Entidad Relación</a></p>
+            <p><a href="https://view.genially.com/66fd759435325264599aa1d2/presentation-bases-de-datos-relacional/" class="btn">Bases de Datos Relacional</a></p>
+        </section>
         
-    </tr>
-        <tr>
-        <td>Fila 3, Celda 1</td>
-        <td>Fila 3, Celda 2</td>
-        <td>Fila 3, Celda 3</td>
-        <td>Fila 1, Celda 3</td>
+        <section id="talleres">
+            <h2>Talleres</h2>
+            <ul>
+                <li><a href="https://view.genially.com/66fabd109ca99a0f4f9c60f3/learning-experience-didactic-unit-secuencia-didactica-secundaria" class="btn">Taller 1 DER: DIAGRAMA ENTIDAD RELACION</a></li>
+            </ul>
+        </section>
         
-    </tr>
+        <section id="evaluaciones">
+            <h2>Evaluaciones</h2>
+            <p><a href="https://forms.gle/RUoa4eGmmEMd7H7Z7" class="btn">Acceder a la Evaluación</a></p>
+        </section>
+        
+        <section id="anuncios">
+            <h2>Anuncios</h2>
+            <p><a href="link_a_anuncios.html" class="btn">Ver Anuncios</a></p>
+        </section>
+        
+        <section id="temas">
+            <h2>Temas del Semestre</h2>
+            <ul>
+                <li>Introducción a la Programación</li>
+                <li>Fundamentos de Bases de Datos</li>
+                <li>Soporte Técnico y Mantenimiento</li>
+                <li>Sistemas Operativos</li>
+                <li>Redes y Conectividad</li>
+            </ul>
+        </section>
+    </main>
     
-</table>
-
- 
-<center><img src="https://www.imagenesanimadas.net/Informatica/Informaticos/informatico14.gif" alt="Imagen fuera de la tabla" height="198" width="298"></center>
-    
-    
+    <footer>
+        <p>&copy; 2024 Aula Virtual. Todos los derechos reservados.</p>
+    </footer>
 </body>
 </html>
