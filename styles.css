@@ -1,6 +1,6 @@
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f0f0f0; /* Fondo claro para contraste */
+    background-color: #aed6f1 ; /* Fondo claro para contraste */
     margin: 0;
     padding: 20px;
 }
@@ -11,11 +11,11 @@ h1 {
 }
 
 #chat-box {
-    background-color: #ffffff; /* Fondo blanco para el chat */
+    background-color: #fcf3cf; /* Fondo blanco para el chat */
     border: 2px solid #008080; /* Borde turquesa */
     border-radius: 10px;
     padding: 10px;
-    height: 300px;
+    height: 200px;
     overflow-y: scroll;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
     margin-bottom: 10px;
