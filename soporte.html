@@ -63,20 +63,26 @@
             color: white;
             margin-top: 20px;
         }
-    .img-estilo {
-        width: 100%; /* Ajusta el ancho de la imagen al contenedor */
-        max-width: 600px; /* Ancho máximo para evitar que se expanda demasiado */
-        border-radius: 15px; /* Esquinas redondeadas */
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Sombra suave */
-        transition: transform 0.3s, box-shadow 0.3s; /* Transiciones para el efecto hover */
-}
+   .img-container {
+        display: flex;
+        justify-content: center; /* Centra horizontalmente */
+        margin: 20px 0; /* Espacio arriba y abajo */
+    }
+
+.img-estilo {
+    width: 100%; /* Ajusta el ancho de la imagen al contenedor */
+    max-width: 600px; /* Ancho máximo para evitar que se expanda demasiado */
+    border-radius: 15px; /* Esquinas redondeadas */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Sombra suave */
+    transition: transform 0.3s, box-shadow 0.3s; /* Transiciones para el efecto hover */
+    }
 
 .img-estilo:hover {
     transform: scale(1.05); /* Aumenta ligeramente el tamaño al pasar el mouse */
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3); /* Aumenta la sombra al pasar el mouse */
 }
 
-    </style>
+</style>
 </head>
 <body>
     <header>
