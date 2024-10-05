@@ -1,112 +1,116 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MÓDULO DE SOPORTE TÉCNICO</title>
+    <link rel="stylesheet" href="styles.css">
     <style>
-        h1, h2 {
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0f7fa;
+            margin: 0;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #008080;
+            color: white;
+            padding: 20px;
             text-align: center;
         }
-        table {
-            width: 50%;
-            border-collapse: collapse;
-            margin-bottom: 10px; /* Espacio de 20px debajo de cada tabla */
-             margin: 20px auto; /* Margen automático para centrar */
+
+        h1 {
+            margin: 0;
         }
-        th, td {
-            border: 3px solid blue;
+
+        main {
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .module-option {
+            background-color: #008080;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        .module-option:hover {
+            background-color: #006666; /* Color más oscuro al pasar el mouse */
+        }
+
+        a {
+            color: white;
+            text-decoration: none;
+        }
+
+        footer {
+            text-align: center;
             padding: 10px;
-            text-align: center;
+            background-color: #008080;
+            color: white;
+            margin-top: 20px;
         }
-    img {
-            display: block;        /* Hace que la imagen sea un bloque */
-            margin-left: auto;     /* Margen automático en el lado izquierdo */
-            margin-right: auto;    /* Margen automático en el lado derecho */
-            width: 300px;          /* Ajusta el ancho de la imagen */
-        }
-    hr {
-            border: none; /* Elimina el borde predeterminado */
-            height: 5px; /* Establece el grosor de la línea */
-            background-color: #007BFF; /* Cambia el color de la línea */
-            margin: 20px 0; /* Espacio arriba y abajo de la línea */
-        }
-    </style>
+  .img-container {
+    display: flex; /* Usar flexbox para centrar */
+    justify-content: center; /* Centra horizontalmente */
+    width: 100%; /* Asegura que el contenedor ocupe todo el ancho */
+    margin: 20px 0; /* Espacio arriba y abajo */
+}
+
+.img-estilo {
+    width: 100%; /* Ajusta el ancho de la imagen al contenedor */
+    max-width: 500px; /* Aumenta el ancho máximo para hacerla más grande */
+    border-radius: 15px; /* Esquinas redondeadas */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Sombra suave */
+    transition: transform 0.3s, box-shadow 0.3s; /* Transiciones para el efecto hover */
+}
+
+.img-estilo:hover {
+    transform: scale(1.05); /* Aumenta ligeramente el tamaño al pasar el mouse */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3); /* Aumenta la sombra al pasar el mouse */
+}
+
+
+</style>
 </head>
-<body bgcolor="#00CED1">
-    <h1><span style="center; font-family: Arial, sans-serif; color: blue;">SISTEMA OPERATIVO Y REDES</span>
-</h1>
-    
-<P><h2>TEMAS DEL SEGUNDO TRIMESTRE</p></h2>
-<h3><span style="font-family: Arial, sans-serif; color:maroon;" 
-<ul>              
-        <li>UT 7.  Transmisión de la información</li>
-        <li>Tipos y técnicas de transmisión</li>
-        <li>equipos de conectividad</li>
-        <li>UT 8  Arquitectura de comunicación</li>
-        <li>Sistemas abiertos  Modelo  (OSI). Modelo TCP/IP, Clases de IPS,</li>
-        <li> protocolos.</li>
-        <li>  seguridad en redes,</li>
-        <li>ingeniería social.</li>
-        <li> Subneting.</P></li>
-</ul>
- </h3>
- </span>
-
-<hr> <!-- Línea divisora -->
-    <h2><p><span style="center; font-family: Arial, sans-serif; color: limegreen;">AQUI ESTAN LOS ENLACES DE LOS CONTENIDOS</p></h2></span>
-<table  border: 1px solid black;    border-collapse: collapse>
-       
-    <tr>
-        <th colspan="6"><h2><strong>TEMAS DE CLASES</h2></strong></th>
-    
-        
-    </tr>
-    <tr>
-        <td> <a href="https://view.genially.com/669e5de83b2a4207a506ddef/presentation-topologias-de-red "> TOPOLOGIAS DE RED</a></td>
-        <td><a href="https://view.genially.com/66a014d39a5e12e0e9144555/presentation-dispositivos-de-red "> DISPOSTIVOS DECONECTIVIDAD</a></td>
-        <td><a href="https://introduccion-al-modelo-o-rohjlzc.gamma.site/">MODELO OSI</a></td>
-        <td><a href="https://protocolos-de-red-p9etmfw.gamma.site/">PROTOCOLO DE RED</a></td>
-        <td><a href="https://direcciones-ip-552iag3.gamma.site/ ">DIRECCIONES IP</a></td>
-        <td><a href="https://introduccion-a-la-seguri-cs2h8uk.gamma.site/">SEGURIDAD DE RED</a></td>
-    </tr>
-    
-</table>
-    <table bgcolor="#a9dfbf">
-    <tr>
-        <th colspan="4">TALLERES DEL MODULO SISTEMA OPERATIVO Y REDES</th>
-    </tr>
-    <tr>
-        <td><strong><u>TALLER</u></strong></td>
-        <td><strong><u>FECHA DE ENTREGA</u></strong></td>
-        <td><strong><u>LECCIÓN ONLINE</u></strong></td>
-        <td><strong><u>OBSERVACIÓN</u></strong></td>
-       </span>
-    </tr>
-    <tr>
-        <td><a href="https://tinyurl.com/2p9n8ds5">DISPOSITIVOS DE CONECTIVIDAD</a></td>
-        <td>Viernes, 04 de octibre del 2024</td>
-        <td><a href="https://forms.gle/es3ah8WPrDfkwz7s9">LECCION ONLINE</a></td>
-        <td>El taller debera ser entregado en físico, y la lección del tema "Dispositivos de conectividad" estará abierta hasta el viernes 04 de octubre del 2024, no se admitirá prórroga </td>
-        
-    </tr>
-    <tr>
-        <td>Fila 2, Celda 1</td>
-        <td>Fila 2, Celda 2</td>
-        <td>Fila 2, Celda 3</td>
-        <td>Fila 1, Celda 3</td>
-        
-    </tr>
-        <tr>
-        <td>Fila 3, Celda 1</td>
-        <td>Fila 3, Celda 2</td>
-        <td>Fila 3, Celda 3</td>
-        <td>Fila 1, Celda 3</td>
-        
-    </tr>
-    
-    
-        
-   
-</table>
-
-<img src="https://prezigram-assets.prezicdn.net/c21b5a9d7f04f16fe88f52378b93580853b066b5c7be7e5c1d0b2bb76db8d817bab209e93e1adecab2f42faffd2bd8122ca694d69a0a7e7eef53d6ebda3d85af" alt="TECNOLOGIA" width="500">
+<body>
+    <header>
+        <h1>MÓDULO DE SISTEMA OPERATIVO Y REDES</h1>
+    </header>
+    <main>
+        <h2>OPCIONES DEL MÓDULO</h2>
+        <div class="grid">
+            <div class="module-option">
+                <a href="clases_de_sistema.html" target="_blank" class="bnt">CLASES</a>
+            </div>
+            <div class="module-option">
+                <a href="link_de_talleres_de_sistema.html"  target="_blank" class="bnt">TALLERES</a>
+            </div>
+            <div class="module-option">
+                <a href="evaluaciones_sistema.html" target="_blank class="btn">EVALUACIONES</a>
+            </div>
+            <div class="module-option">
+                <a href="link_a_anuncios_soporte.html" target="_blank class="bnt">ANUNCIOS</a>
+            </div>
+        </div>
+        <hr>
+            <img src="https://prezigrama-ssets.prezicdn.net/c21b5a9d7f04f16fe88f52378b93580853b066b5c7be7e5c1d0b2bb76db8d817bab209e93e1adecab2f42faffd2bd8122ca694d69a0a7e7eef53d6ebda3d85af" alt="TECNOLOGIA" width="500"
+    </main>
+    <footer>
+        <p>&copy; 2024 Aula Virtual. Todos los derechos reservados.</p>
+    </footer>
 </body>
 </html>
