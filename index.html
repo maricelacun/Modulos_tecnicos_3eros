@@ -3,43 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aula Virtual - Módulos Técnicos</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Vincula tu CSS aquí -->
+    <title>Módulo de Programación</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0f7fa;
+            margin: 0;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #008080;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        main {
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .module-option {
+            background-color: #008080;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        .module-option:hover {
+            background-color: #006666; /* Color más oscuro al pasar el mouse */
+        }
+
+        a {
+            color: white;
+            text-decoration: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #008080;
+            color: white;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1>AULA VIRTUAL CAMILINA</h1>
-        <nav>
-            <ul>
-                <li><a href="programa.html">Programación y Bases de Datos</a></li>
-                <li><a href="soporte.html">Soporte Técnico</a></li>
-                <li><a href="sistema.html">Sistemas Operativos y Redes</a></li>
-            </ul>
-        </nav>
+        <h1>Módulo de Programación</h1>
     </header>
     <main>
-        <section class="welcome">
-            <h2>BIENVENIDOS A NUESTRA AULA VIRTUAL</h2>
-            <p>Selecciona un módulo para comenzar a aprender.</p>
-        </section>
-        <section class="features">
-            <h2>Módulos Disponibles</h2>
-            <div class="module">
-                <h3>Programación y Bases de Datos</h3>
-                <p>Aprende los fundamentos de la programación y la gestión de bases de datos.</p>
-                <a href="programa.html" class="btn">Ver Módulo</a>
+        <h2>Opciones del Módulo</h2>
+        <div class="grid">
+            <div class="module-option">
+                <a href="link_a_clase.html" target="_blank">Clase</a>
             </div>
-            <div class="module">
-                <h3>Soporte Técnico</h3>
-                <p>Desarrolla habilidades para ofrecer soporte técnico eficaz.</p>
-                <a href="soporte.html" class="btn">Ver Módulo</a>
+            <div class="module-option">
+                <a href="link_a_taller.html" target="_blank">Taller</a>
             </div>
-            <div class="module">
-                <h3>Sistemas Operativos y Redes</h3>
-                <p>Conoce los sistemas operativos y cómo funcionan las redes.</p>
-                <a href="sistema.html" class="btn">Ver Módulo</a>
+            <div class="module-option">
+                <a href="link_a_evaluacion.html" target="_blank">Evaluación</a>
             </div>
-        </section>
+            <div class="module-option">
+                <a href="link_a_anuncios.html" target="_blank">Anuncios</a>
+            </div>
+        </div>
     </main>
     <footer>
         <p>&copy; 2024 Aula Virtual. Todos los derechos reservados.</p>
