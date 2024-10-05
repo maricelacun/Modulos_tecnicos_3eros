@@ -3,17 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FIGURA PROFESIONAL INFORMATICA</title>
+    <title>Aula Virtual</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh; /* Altura completa de la ventana */
+            margin: 0;
+        }
+        header {
+            flex: 0 0 30%; /* 30% de la altura */
+            background-color: #008080; /* Color de fondo */
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        .container {
+            display: flex;
+            flex: 1; /* Resto del espacio disponible */
+        }
+        nav {
+            flex: 0 0 25%; /* 25% del ancho */
+            background-color: #f0f0f0; /* Fondo claro */
+            padding: 10px;
+        }
+        main {
+            flex: 1; /* 75% del ancho */
+            background-color: #ffffff; /* Fondo blanco */
+            padding: 10px;
+        }
+    </style>
 </head>
-<frameset rows="30%, 80%">
-    <frame name="header" src="header.html" noresize>
-    <frameset cols="25%, 75%">
-        <frame name="menu" src="menu.html" noresize>
-        <frame name="content" src="content.html" noresize>
-    </frameset>
-</frameset>
-
+<body>
+    <header>
+        <h1>Header</h1>
+    </header>
+    <div class="container">
+        <nav>
+            <h2>Menu</h2>
+            <!-- Contenido del menú aquí -->
+        </nav>
+        <main>
+            <h2>Contenido</h2>
+            <!-- Contenido principal aquí -->
+        </main>
+    </div>
+</body>
 </html>
+
+
+
 
 
 
