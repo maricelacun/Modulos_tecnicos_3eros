@@ -63,7 +63,25 @@
             color: white;
             margin-top: 20px;
         }
-  
+   .img-container {
+    display: flex; /* Usar flexbox para centrar */
+    justify-content: center; /* Centra horizontalmente */
+    width: 100%; /* Asegura que el contenedor ocupe todo el ancho */
+    margin: 20px 0; /* Espacio arriba y abajo */
+}
+
+.img-estilo {
+    width: 100%; /* Ajusta el ancho de la imagen al contenedor */
+    max-width: 500px; /* Aumenta el ancho máximo para hacerla más grande */
+    border-radius: 15px; /* Esquinas redondeadas */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Sombra suave */
+    transition: transform 0.3s, box-shadow 0.3s; /* Transiciones para el efecto hover */
+}
+
+.img-estilo:hover {
+    transform: scale(1.05); /* Aumenta ligeramente el tamaño al pasar el mouse */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3); /* Aumenta la sombra al pasar el mouse */
+}
 </style>
 </head>
 <body>
