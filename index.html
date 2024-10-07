@@ -5,42 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aula Virtual - Módulos Técnicos</title>
     <link rel="stylesheet" href="styles.css"> <!-- Vincula tu CSS aquí -->
-    <style>
-        body {
-            background-color: #55d6c2;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        main {
-            width: 100%;
-            max-width: 1200px; /* Ajusta el ancho máximo según lo que desees */
-            padding: 20px;
-        }
-        .iframe-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-            width: 100%;
-        }
-        iframe {
-            width: 100%; /* Ocupa todo el ancho disponible */
-            height: 600px; /* Ajusta la altura según lo necesites */
-            border: 1px solid #AABBCC;
-        }
-    </style>
 </head>
-<body>
+<body bgcolor="#55d6c2">
     <header>
         <h1>Aula Virtual</h1>
         <nav>
             <ul>
-                <li><a href="programa.html" target="_blank">Programación y Bases de Datos</a></li>
-                <li><a href="soporte.html" target="_blank">Soporte Técnico</a></li>
-                <li><a href="sistema.html" target="_blank">Sistemas Operativos y Redes</a></li>
+                <li><a href="programa.html">Programación y Bases de Datos</a></li>
+                <li><a href="soporte.html">Soporte Técnico</a></li>
+                <li><a href="sistema.html">Sistemas Operativos y Redes</a></li>
             </ul>
         </nav>
     </header>
@@ -67,18 +40,22 @@
                 <a href="sistema.html" target="_blank" class="btn">Ver Módulo</a>
             </div>
         </section>
-        <div class="iframe-container">
+        <section style="display: flex; justify-content: center; align-items: center; height: 100vh;">
             <iframe 
                 src="https://show.zohopublic.com/publish/40fjs02208c1b2a8f4316819cd39f13c8983b/params?toolbar=true&menu=false&viewtype=2" 
+                height="300" 
+                width="100%" 
                 name="Informacion" 
                 scrolling="no" 
-                allowfullscreen 
-                mozallowfullscreen 
-                webkitallowfullscreen>
+                frameBorder="0" 
+                style="border:1px solid #AABBCC; max-width: 100%; max-height: 100%;" 
+                allowfullscreen="true" 
+                mozallowfullscreen="true" 
+                webkitallowfullscreen="true">
             </iframe>
-        </div>
+        </section>
     </main>
-    <img src="https://webquestcreator2.com/majwq/files/files_user/19263/AULA%20VIRTUAL.gif" alt="aulavirtual">
+    <img src="https://webquestcreator2.com/majwq/files/files_user/19263/AULA%20VIRTUAL.gif" alt="Aula Virtual" style="display: block; margin: 0 auto;">
     <footer>
         <p>&copy; 2024 Aula Virtual. Todos los derechos reservados.</p>
     </footer>
