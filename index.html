@@ -41,6 +41,53 @@
         }
     </style>
 </head>
+<script type="module">
+    // Importar Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // Configuración de Firebase (usa los datos de tu proyecto)
+    const firebaseConfig = {
+        apiKey: "TU_API_KEY",
+        authDomain: "TU_AUTH_DOMAIN",
+        projectId: "TU_PROJECT_ID",
+        storageBucket: "TU_STORAGE_BUCKET",
+        messagingSenderId: "TU_MESSAGING_SENDER_ID",
+        appId: "TU_APP_ID"
+    };
+
+    // Inicializar Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function verificarCodigo() {
+        const codigoIngresado = document.getElementById("codigo").value.trim();
+        const docRef = doc(db, "estudiantes", codigoIngresado);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const nombre = docSnap.data().nombre;
+            document.getElementById("mensaje").innerHTML = 
+                `<p>Bienvenido, ${nombre}</p> 
+                 <button onclick="ingresarAula()">Ingresar al Aula Virtual</button>`;
+            localStorage.setItem("accesoPermitido", "true");
+            localStorage.setItem("nombreEstudiante", nombre);
+        } else {
+            alert("Código incorrecto. Inténtalo de nuevo.");
+        }
+    }
+
+    function ingresarAula() {
+        window.location.href = "aula.html";
+    }
+
+    window.onload = function () {
+        if (localStorage.getItem("accesoPermitido") === "true") {
+            window.location.href = "aula.html";
+        }
+    };
+</script>
+
 <body>
     <div class="login-container">
         <h2>Ingrese el código de acceso al aula virtual</h2>
