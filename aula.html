@@ -58,6 +58,16 @@
         }
     </style>
 </head>
+<script>
+    // Verificar si el usuario está autenticado
+    window.onload = function () {
+        if (localStorage.getItem("accesoPermitido") !== "true") {
+            // Si no está autenticado, redirigir a la página de inicio de sesión
+            window.location.href = "index.html";
+        }
+    };
+</script>
+
 <body>
     <header>
         <h1>Aula Virtual</h1>
