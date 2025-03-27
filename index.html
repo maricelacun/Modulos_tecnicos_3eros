@@ -1,122 +1,202 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceso al Aula Virtual</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .login-container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #28a745;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #218838;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula Virtual Mágica</title>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script> <!-- Asegúrate de cargar Firebase Database -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+  	background-image: url('https://i.pinimg.com/originals/40/06/c8/4006c8cff8b054ca07741fda848d89a8.gif'); /* URL del GIF que proporcionaste */
+  	background-size: cover; /* Ajusta la imagen para cubrir toda la pantalla */
+  	background-position: center; /* Centra la imagen */
+  	background-repeat: no-repeat; /* Evita que la imagen se repita */
+  	color: SteelBlue;
+  	text-align: center;
+  	padding: 50px;
+  	overflow: hidden;
+    }
+
+    .stars {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    .star {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkling 3s infinite;
+    }
+
+    @keyframes twinkling {
+      0% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.5); }
+      100% { opacity: 0.3; transform: scale(1); }
+    }
+
+    #login-container, #welcome-container {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      display: inline-block;
+      opacity: 0;
+      transform: scale(0.8);
+      animation: fadeInZoom 1s forwards;
+    }
+
+    @keyframes fadeInZoom {
+      0% { opacity: 0; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    input {
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: none;
+      width: 15%;
+      text-align: center;
+      font-size: 18px;
+      transition: 0.3s;
+    }
+
+    input:focus {
+      outline: none;
+      box-shadow: 0 0 10px #2575fc;
+    }
+
+    button {
+      padding: 12px 25px;
+      background: linear-gradient(90deg, #ff758c, #ff7eb3);
+      color: white;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(255, 120, 150, 0.5);
+    }
+
+    #welcome-container {
+      display: none;
+    }
+
+    #error-message {
+      color: red;
+      display: none;
+      animation: shake 0.3s ease-in-out;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+    }
+  </style>
 </head>
-<script type="module">
-    // Importar Firebase
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-    // Configuración de Firebase (usa los datos de tu proyecto)
-    const firebaseConfig = {
-        apiKey: "TU_API_KEY",
-        authDomain: "TU_AUTH_DOMAIN",
-        projectId: "TU_PROJECT_ID",
-        storageBucket: "TU_STORAGE_BUCKET",
-        messagingSenderId: "TU_MESSAGING_SENDER_ID",
-        appId: "TU_APP_ID"
-    };
-
-    // Inicializar Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    async function verificarCodigo() {
-        const codigoIngresado = document.getElementById("codigo").value.trim();
-        const docRef = doc(db, "estudiantes", codigoIngresado);
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-            const nombre = docSnap.data().nombre;
-            document.getElementById("mensaje").innerHTML = 
-                `<p>Bienvenido, ${nombre}</p> 
-                 <button onclick="ingresarAula()">Ingresar al Aula Virtual</button>`;
-            localStorage.setItem("accesoPermitido", "true");
-            localStorage.setItem("nombreEstudiante", nombre);
-        } else {
-            alert("Código incorrecto. Inténtalo de nuevo.");
-        }
-    }
-
-    function ingresarAula() {
-        window.location.href = "aula.html";
-    }
-
-    window.onload = function () {
-        if (localStorage.getItem("accesoPermitido") === "true") {
-            window.location.href = "aula.html";
-        }
-    };
-</script>
-
 <body>
-    <div class="login-container">
-        <h2>Ingrese el código de acceso al aula virtual</h2>
-        <input type="text" id="codigo" placeholder="Ingrese su código">
-        <button onclick="verificarCodigo()">Ingresar</button>
-    </div>
 
-    <script>
-        // Lista de códigos válidos
-        const codigosValidos = ["ABC123", "XYZ789", "ESTUDIANTE2025"];
+  <div class="stars"></div>
+	
+  <div id="login-container">
+    <img src="sello.jpg" alt="Sello " id="sello" style="width: 150px; height: auto; margin-top: 20px;">
+    <h1>🔮 UNIDAD EDUCATIVA "DR. CAMILO GALLEGOS DOMINGUEZ"  ✨</h1>
+    <h2>🔮 Bienvenido al Aula Virtual Mágica ✨</h2>
+    <input type="text" id="codigo" placeholder="Ingresa tu código secreto">
+    <button id="login-btn">Ingresar 🔑</button>
+    <p id="error-message">Código incorrecto. Intenta de nuevo.</p>
+  </div>
 
-        function verificarCodigo() {
-            const codigoIngresado = document.getElementById("codigo").value;
-            if (codigosValidos.includes(codigoIngresado)) {
-                // Guardar el estado de autenticación en localStorage
-                localStorage.setItem("accesoPermitido", "true");
-                // Redirigir al aula virtual
-                window.location.href = "aula.html";
-            } else {
-                alert("Código incorrecto. Inténtalo de nuevo.");
-            }
+  <div id="welcome-container">
+    <h2>🎉 Bienvenido, <span id="nombre"></span>! 🚀</h2>
+    <button id="continue-btn">Explorar Aula Virtual 🏫</button>
+  </div>
+
+  <script>
+    // Configuración de Firebase
+    const firebaseConfig = {
+      apiKey: "your-api-key",
+      authDomain: "your-auth-domain",
+      databaseURL: "https://aula-virtual-1c360-default-rtdb.firebaseio.com", // URL de Realtime Database
+      projectId: "your-project-id",
+      storageBucket: "your-storage-bucket",
+      messagingSenderId: "your-sender-id",
+      appId: "your-app-id"
+    };
+
+    // Inicialización de Firebase
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database(); // Usamos Realtime Database
+
+    let intentos = 0;
+
+    document.getElementById('login-btn').addEventListener('click', async () => {
+      const codigo = document.getElementById('codigo').value.trim();
+      const errorMessage = document.getElementById('error-message');
+
+      if (!codigo) {
+        errorMessage.innerText = "Por favor, ingresa un código";
+        errorMessage.style.display = "block";
+        return;
+      }
+
+      try {
+        // Accedemos a la base de datos usando el código
+        const snapshot = await database.ref(codigo).once('value');
+        const nombre = snapshot.val(); // Nombre asociado al código
+
+        if (nombre) {
+          // Si el código es correcto, mostramos la bienvenida
+          document.getElementById('nombre').innerText = nombre;
+          document.getElementById('login-container').style.display = "none"; // Ocultamos el login
+          document.getElementById('welcome-container').style.display = "block"; // Mostramos la bienvenida
+        } else {
+          intentos++;
+          errorMessage.innerText = `Código incorrecto. Intentos: ${intentos}`;
+          errorMessage.style.display = "block";
+
+          if (intentos >= 3) {
+            alert("❌ Has superado los intentos permitidos. Cerrando...");
+            window.close();
+          }
         }
+      } catch (error) {
+        console.error("Error obteniendo el dato de la base de datos:", error);
+      }
+    });
 
-        // Verificar si el usuario ya está autenticado
-        window.onload = function () {
-            if (localStorage.getItem("accesoPermitido") === "true") {
-                window.location.href = "aula.html";
-            }
-        };
-    </script>
+    document.getElementById('continue-btn').addEventListener('click', () => {
+      alert("✨ ¡Bienvenido al aula virtual! ¡A disfrutar aprendiendo! 📚");
+    });
+
+    function generateStars() {
+      const starsContainer = document.querySelector('.stars');
+      for (let i = 0; i < 50; i++) {
+        let star = document.createElement('div');
+        star.classList.add('star');
+        star.style.top = Math.random() * 100 + 'vh';
+        star.style.left = Math.random() * 100 + 'vw';
+        star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        starsContainer.appendChild(star);
+      }
+    }
+    generateStars();
+  </script>
+
 </body>
 </html>
