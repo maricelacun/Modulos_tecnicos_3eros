@@ -6,7 +6,7 @@
   <title>Aula Virtual Mágica</title>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script> <!-- Agregamos Firestore -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script> 
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -14,11 +14,9 @@
       color: #333;
       text-align: center;
     }
-    
     #login-container, #welcome-container {
       display: none;
     }
-    
     #login-container {
       padding: 20px;
       border-radius: 10px;
@@ -27,7 +25,6 @@
       width: 300px;
       margin: 50px auto;
     }
-    
     input {
       padding: 10px;
       margin: 10px 0;
@@ -35,7 +32,6 @@
       border-radius: 5px;
       border: 1px solid #ccc;
     }
-    
     button {
       padding: 10px 20px;
       background-color: #007BFF;
@@ -44,25 +40,17 @@
       border-radius: 5px;
       cursor: pointer;
     }
-    
     button:hover {
       background-color: #0056b3;
     }
-    
     #error-message {
       color: red;
-      display: none;
-    }
-    
-    #welcome-container {
       display: none;
     }
   </style>
 </head>
 <body>
 
-  <div class="stars"></div>
-  
   <div id="login-container">
     <img src="sello.jpg" alt="Sello" id="sello" style="width: 150px; height: auto; margin-top: 20px;">
     <h1>🔮 UNIDAD EDUCATIVA "DR. CAMILO GALLEGOS DOMINGUEZ" ✨</h1>
@@ -81,24 +69,30 @@
   <script>
     // Configuración de Firebase
     const firebaseConfig = {
-      apiKey: "your-api-key",
-      authDomain: "your-auth-domain",
-      projectId: "your-project-id",
-      storageBucket: "your-storage-bucket",
-      messagingSenderId: "your-sender-id",
-      appId: "your-app-id"
+      apiKey: "tu-api-key",
+      authDomain: "tu-auth-domain",
+      projectId: "tu-project-id",
+      storageBucket: "tu-storage-bucket",
+      messagingSenderId: "tu-sender-id",
+      appId: "tu-app-id"
     };
 
     // Inicialización de Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore(); // Usamos Firestore para acceder a la base de datos
+    try {
+      const app = firebase.initializeApp(firebaseConfig);
+      console.log("Firebase inicializado correctamente.");
+    } catch (error) {
+      console.error("Error al inicializar Firebase:", error);
+    }
+
+    const db = firebase.firestore();
 
     let intentos = 0;
 
-    // Mostrar el formulario de login
+    // Mostrar la interfaz de login
     document.getElementById('login-container').style.display = "block";
 
-    // Al hacer click en el botón de ingresar
+    // Función para login
     document.getElementById('login-btn').addEventListener('click', async () => {
       const usuario = document.getElementById('usuario').value.trim();
       const clave = document.getElementById('clave').value.trim();
@@ -111,23 +105,20 @@
       }
 
       try {
-        // Buscamos al estudiante en Firestore usando el usuario
         const snapshot = await db.collection("estudiantes").where("usuario", "==", usuario).get();
 
         if (!snapshot.empty) {
           let estudiante = snapshot.docs[0].data();
-          
-          // Validamos la clave
+
           if (estudiante.clave === clave) {
-            // Si el usuario y clave son correctos, mostramos el nombre y redirigimos
+            // Mostrar el nombre del estudiante
             document.getElementById('nombre').innerText = estudiante.nombres;
-            document.getElementById('login-container').style.display = "none"; // Ocultamos el login
-            document.getElementById('welcome-container').style.display = "block"; // Mostramos la bienvenida
+            document.getElementById('login-container').style.display = "none";
+            document.getElementById('welcome-container').style.display = "block";
           } else {
             intentos++;
             errorMessage.innerText = `Clave incorrecta. Intentos: ${intentos}`;
             errorMessage.style.display = "block";
-
             if (intentos >= 3) {
               alert("❌ Has superado los intentos permitidos. Cerrando...");
               window.close();
@@ -137,7 +128,6 @@
           intentos++;
           errorMessage.innerText = `Usuario no encontrado. Intentos: ${intentos}`;
           errorMessage.style.display = "block";
-
           if (intentos >= 3) {
             alert("❌ Has superado los intentos permitidos. Cerrando...");
             window.close();
@@ -148,26 +138,10 @@
       }
     });
 
-    // Al hacer click en el botón de continuar
     document.getElementById('continue-btn').addEventListener('click', () => {
-      alert("✨ ¡Bienvenido al aula virtual! ¡A disfrutar aprendiendo! 📚");
+      alert("¡Bienvenido a tu aula virtual!");
     });
-
-    // Función para crear estrellas animadas (opcional)
-    function generateStars() {
-      const starsContainer = document.querySelector('.stars');
-      for (let i = 0; i < 50; i++) {
-        let star = document.createElement('div');
-        star.classList.add('star');
-        star.style.top = Math.random() * 100 + 'vh';
-        star.style.left = Math.random() * 100 + 'vw';
-        star.style.animationDuration = (Math.random() * 3 + 2) + 's';
-        starsContainer.appendChild(star);
-      }
-    }
-    generateStars();
   </script>
 
 </body>
 </html>
-
