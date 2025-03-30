@@ -17,6 +17,7 @@
       color: SteelBlue;
       text-align: center;
       padding: 50px;
+      overflow: hidden;
     }
 
     #login-container, #welcome-container {
@@ -25,9 +26,6 @@
       border-radius: 15px;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
       display: inline-block;
-      opacity: 0;
-      transform: scale(0.8);
-      animation: fadeInZoom 1s forwards;
     }
 
     input {
@@ -38,7 +36,6 @@
       width: 80%;
       text-align: center;
       font-size: 18px;
-      transition: 0.3s;
     }
 
     button {
@@ -51,24 +48,25 @@
       cursor: pointer;
     }
 
-    #welcome-container {
+    #error-message {
+      color: red;
       display: none;
     }
   </style>
 </head>
 <body>
+
   <div id="login-container">
-    <h1>🔮 UNIDAD EDUCATIVA "DR. CAMILO GALLEGOS DOMÍNGUEZ" ✨</h1>
-    <h2>🔮 Bienvenido al Aula Virtual Mágica ✨</h2>
-    <input type="email" id="email" placeholder="Ingresa tu correo">
-    <input type="password" id="password" placeholder="Ingresa tu contraseña">
+    <h1>🔮 Aula Virtual Mágica ✨</h1>
+    <input type="text" id="email" placeholder="Ingresa tu usuario (correo)">
+    <input type="password" id="password" placeholder="Ingresa tu clave">
     <button id="login-btn">Ingresar 🔑</button>
-    <p id="error-message" style="color: red; display: none;"></p>
+    <p id="error-message">Usuario o clave incorrectos.</p>
   </div>
 
-  <div id="welcome-container">
+  <div id="welcome-container" style="display:none;">
     <h2>🎉 Bienvenido, <span id="nombre"></span>! 🚀</h2>
-    <button id="logout-btn">Cerrar Sesión</button>
+    <button id="continue-btn">Explorar Aula Virtual 🏫</button>
   </div>
 
   <script>
@@ -91,7 +89,7 @@
       const errorMessage = document.getElementById('error-message');
 
       if (!email || !password) {
-        errorMessage.innerText = "Por favor, ingresa tu correo y contraseña.";
+        errorMessage.innerText = "Por favor, ingresa usuario y clave";
         errorMessage.style.display = "block";
         return;
       }
@@ -99,28 +97,24 @@
       try {
         const userCredential = await auth.signInWithEmailAndPassword(email, password);
         const user = userCredential.user;
+        const userDoc = await db.collection('estudiante').doc(user.uid).get();
 
-        const userDoc = await db.collection("estudiantes").doc(user.uid).get();
-        
         if (userDoc.exists) {
           document.getElementById('nombre').innerText = userDoc.data().nombre;
           document.getElementById('login-container').style.display = "none";
           document.getElementById('welcome-container').style.display = "block";
         } else {
-          errorMessage.innerText = "No tienes permiso para acceder.";
+          errorMessage.innerText = "Usuario no registrado en la base de datos.";
           errorMessage.style.display = "block";
-          auth.signOut();
         }
       } catch (error) {
-        errorMessage.innerText = "Error: " + error.message;
+        errorMessage.innerText = "Usuario o clave incorrectos.";
         errorMessage.style.display = "block";
       }
     });
 
-    document.getElementById('logout-btn').addEventListener('click', () => {
-      auth.signOut().then(() => {
-        window.location.reload();
-      });
+    document.getElementById('continue-btn').addEventListener('click', () => {
+      alert("✨ ¡Bienvenido al aula virtual! ¡A disfrutar aprendiendo! 📚");
     });
   </script>
 </body>
