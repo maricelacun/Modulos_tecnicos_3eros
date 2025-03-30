@@ -5,69 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aula Virtual Mágica</title>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script> <!-- Agregamos Firestore -->
   <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-image: url('https://i.pinimg.com/originals/40/06/c8/4006c8cff8b054ca07741fda848d89a8.gif');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      color: SteelBlue;
-      text-align: center;
-      padding: 50px;
-    }
-
-    #login-container, #welcome-container {
-      background: rgba(255, 255, 255, 0.9);
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      display: inline-block;
-    }
-
-    input {
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      width: 80%;
-      text-align: center;
-      font-size: 18px;
-    }
-
-    button {
-      padding: 12px 25px;
-      background: linear-gradient(90deg, #ff758c, #ff7eb3);
-      color: white;
-      font-size: 18px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    #welcome-container {
-      display: none;
-    }
-
-    #error-message {
-      color: red;
-      display: none;
-    }
+    /* Aquí va el estilo que tienes */
   </style>
 </head>
 <body>
 
+  <div class="stars"></div>
+  
   <div id="login-container">
-    <img src="sello.jpg" alt="Sello Colegio" style="width: 150px; margin-top: 20px;">
-    <h1>🔮 UNIDAD EDUCATIVA "DR. CAMILO GALLEGOS DOMÍNGUEZ" ✨</h1>
-    <h2>Bienvenido al Aula Virtual Mágica</h2>
-    
-    <input type="text" id="usuario" placeholder="Usuario">
-    <input type="password" id="clave" placeholder="Contraseña">
+    <img src="sello.jpg" alt="Sello " id="sello" style="width: 150px; height: auto; margin-top: 20px;">
+    <h1>🔮 UNIDAD EDUCATIVA "DR. CAMILO GALLEGOS DOMINGUEZ"  ✨</h1>
+    <h2>🔮 Bienvenido al Aula Virtual Mágica ✨</h2>
+    <input type="text" id="usuario" placeholder="Ingresa tu usuario">
+    <input type="password" id="clave" placeholder="Ingresa tu clave">
     <button id="login-btn">Ingresar 🔑</button>
-    <p id="error-message">Usuario o clave incorrectos.</p>
+    <p id="error-message">Usuario o clave incorrectos. Intenta de nuevo.</p>
   </div>
 
   <div id="welcome-container">
@@ -86,9 +41,11 @@
       appId: "your-app-id"
     };
 
-    // Inicializar Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    // Inicialización de Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore(); // Usamos Firestore para acceder a la base de datos
+
+    let intentos = 0;
 
     document.getElementById('login-btn').addEventListener('click', async () => {
       const usuario = document.getElementById('usuario').value.trim();
@@ -96,33 +53,65 @@
       const errorMessage = document.getElementById('error-message');
 
       if (!usuario || !clave) {
-        errorMessage.innerText = "Por favor, ingresa usuario y clave";
+        errorMessage.innerText = "Por favor, ingresa un usuario y una clave";
         errorMessage.style.display = "block";
         return;
       }
 
       try {
-        // Buscar usuario en Firestore
-        const doc = await db.collection('usuarios').doc(usuario).get();
+        // Buscamos al estudiante en Firestore usando el usuario
+        const snapshot = await db.collection("estudiantes").where("usuario", "==", usuario).get();
 
-        if (doc.exists && doc.data().clave === clave) {
-          document.getElementById('nombre').innerText = usuario;
-          document.getElementById('login-container').style.display = "none";
-          document.getElementById('welcome-container').style.display = "block";
+        if (!snapshot.empty) {
+          let estudiante = snapshot.docs[0].data();
+          
+          // Validamos la clave
+          if (estudiante.clave === clave) {
+            // Si el usuario y clave son correctos, mostramos el nombre y redirigimos
+            document.getElementById('nombre').innerText = estudiante.nombres;
+            document.getElementById('login-container').style.display = "none"; // Ocultamos el login
+            document.getElementById('welcome-container').style.display = "block"; // Mostramos la bienvenida
+          } else {
+            intentos++;
+            errorMessage.innerText = `Clave incorrecta. Intentos: ${intentos}`;
+            errorMessage.style.display = "block";
+
+            if (intentos >= 3) {
+              alert("❌ Has superado los intentos permitidos. Cerrando...");
+              window.close();
+            }
+          }
         } else {
-          errorMessage.innerText = "Usuario o clave incorrectos";
+          intentos++;
+          errorMessage.innerText = `Usuario no encontrado. Intentos: ${intentos}`;
           errorMessage.style.display = "block";
+
+          if (intentos >= 3) {
+            alert("❌ Has superado los intentos permitidos. Cerrando...");
+            window.close();
+          }
         }
       } catch (error) {
-        console.error("Error en login:", error);
-        errorMessage.innerText = "Error al conectar con la base de datos";
-        errorMessage.style.display = "block";
+        console.error("Error obteniendo el dato de la base de datos:", error);
       }
     });
 
     document.getElementById('continue-btn').addEventListener('click', () => {
-      alert("✨ ¡Bienvenido al aula virtual! 📚");
+      alert("✨ ¡Bienvenido al aula virtual! ¡A disfrutar aprendiendo! 📚");
     });
+
+    function generateStars() {
+      const starsContainer = document.querySelector('.stars');
+      for (let i = 0; i < 50; i++) {
+        let star = document.createElement('div');
+        star.classList.add('star');
+        star.style.top = Math.random() * 100 + 'vh';
+        star.style.left = Math.random() * 100 + 'vw';
+        star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        starsContainer.appendChild(star);
+      }
+    }
+    generateStars();
   </script>
 
 </body>
