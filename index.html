@@ -6,7 +6,6 @@
   <title>Aula Virtual Mágica</title>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -48,8 +47,7 @@
       cursor: pointer;
     }
 
-    #error-message {
-      color: red;
+    #welcome-container {
       display: none;
     }
   </style>
@@ -57,14 +55,16 @@
 <body>
 
   <div id="login-container">
-    <h1>🔮 Aula Virtual Mágica ✨</h1>
-    <input type="text" id="email" placeholder="Ingresa tu usuario (correo)">
-    <input type="password" id="password" placeholder="Ingresa tu clave">
+    <img src="sello.jpg" alt="Sello " id="sello" style="width: 150px; height: auto; margin-top: 20px;">
+    <h1>🔮 UNIDAD EDUCATIVA "DR. CAMILO GALLEGOS DOMINGUEZ" ✨</h1>
+    <h2>🔮 Bienvenido al Aula Virtual Mágica ✨</h2>
+    <input type="email" id="email" placeholder="Correo Electrónico">
+    <input type="password" id="password" placeholder="Contraseña">
     <button id="login-btn">Ingresar 🔑</button>
-    <p id="error-message">Usuario o clave incorrectos.</p>
+    <p id="error-message" style="color: red; display: none;">Usuario o contraseña incorrectos.</p>
   </div>
 
-  <div id="welcome-container" style="display:none;">
+  <div id="welcome-container">
     <h2>🎉 Bienvenido, <span id="nombre"></span>! 🚀</h2>
     <button id="continue-btn">Explorar Aula Virtual 🏫</button>
   </div>
@@ -81,7 +81,6 @@
 
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
-    const db = firebase.firestore();
 
     document.getElementById('login-btn').addEventListener('click', async () => {
       const email = document.getElementById('email').value.trim();
@@ -89,7 +88,7 @@
       const errorMessage = document.getElementById('error-message');
 
       if (!email || !password) {
-        errorMessage.innerText = "Por favor, ingresa usuario y clave";
+        errorMessage.innerText = "Por favor, ingresa ambos campos";
         errorMessage.style.display = "block";
         return;
       }
@@ -97,18 +96,11 @@
       try {
         const userCredential = await auth.signInWithEmailAndPassword(email, password);
         const user = userCredential.user;
-        const userDoc = await db.collection('estudiante').doc(user.uid).get();
-
-        if (userDoc.exists) {
-          document.getElementById('nombre').innerText = userDoc.data().nombre;
-          document.getElementById('login-container').style.display = "none";
-          document.getElementById('welcome-container').style.display = "block";
-        } else {
-          errorMessage.innerText = "Usuario no registrado en la base de datos.";
-          errorMessage.style.display = "block";
-        }
+        document.getElementById('nombre').innerText = user.email;
+        document.getElementById('login-container').style.display = "none";
+        document.getElementById('welcome-container').style.display = "block";
       } catch (error) {
-        errorMessage.innerText = "Usuario o clave incorrectos.";
+        errorMessage.innerText = "Usuario o contraseña incorrectos";
         errorMessage.style.display = "block";
       }
     });
@@ -117,5 +109,7 @@
       alert("✨ ¡Bienvenido al aula virtual! ¡A disfrutar aprendiendo! 📚");
     });
   </script>
+
 </body>
 </html>
+
