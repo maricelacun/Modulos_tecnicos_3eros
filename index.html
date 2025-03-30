@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aula Virtual Mágica</title>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
   <style>
     body {
@@ -16,7 +17,6 @@
       color: SteelBlue;
       text-align: center;
       padding: 50px;
-      overflow: hidden;
     }
 
     #login-container, #welcome-container {
@@ -31,7 +31,7 @@
       padding: 10px;
       margin: 10px 0;
       border-radius: 10px;
-      border: none;
+      border: 1px solid #ccc;
       width: 80%;
       text-align: center;
       font-size: 18px;
@@ -50,18 +50,24 @@
     #welcome-container {
       display: none;
     }
+
+    #error-message {
+      color: red;
+      display: none;
+    }
   </style>
 </head>
 <body>
 
   <div id="login-container">
-    <img src="sello.jpg" alt="Sello " id="sello" style="width: 150px; height: auto; margin-top: 20px;">
-    <h1>🔮 UNIDAD EDUCATIVA "DR. CAMILO GALLEGOS DOMINGUEZ" ✨</h1>
-    <h2>🔮 Bienvenido al Aula Virtual Mágica ✨</h2>
-    <input type="email" id="email" placeholder="usuario">
-    <input type="password" id="password" placeholder="Contraseña">
+    <img src="sello.jpg" alt="Sello Colegio" style="width: 150px; margin-top: 20px;">
+    <h1>🔮 UNIDAD EDUCATIVA "DR. CAMILO GALLEGOS DOMÍNGUEZ" ✨</h1>
+    <h2>Bienvenido al Aula Virtual Mágica</h2>
+    
+    <input type="text" id="usuario" placeholder="Usuario">
+    <input type="password" id="clave" placeholder="Contraseña">
     <button id="login-btn">Ingresar 🔑</button>
-    <p id="error-message" style="color: red; display: none;">Usuario o contraseña incorrectos.</p>
+    <p id="error-message">Usuario o clave incorrectos.</p>
   </div>
 
   <div id="welcome-container">
@@ -70,6 +76,7 @@
   </div>
 
   <script>
+    // Configuración de Firebase
     const firebaseConfig = {
       apiKey: "your-api-key",
       authDomain: "your-auth-domain",
@@ -79,37 +86,44 @@
       appId: "your-app-id"
     };
 
+    // Inicializar Firebase
     firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
+    const db = firebase.firestore();
 
     document.getElementById('login-btn').addEventListener('click', async () => {
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value.trim();
+      const usuario = document.getElementById('usuario').value.trim();
+      const clave = document.getElementById('clave').value.trim();
       const errorMessage = document.getElementById('error-message');
 
-      if (!email || !password) {
-        errorMessage.innerText = "Por favor, ingresa ambos campos";
+      if (!usuario || !clave) {
+        errorMessage.innerText = "Por favor, ingresa usuario y clave";
         errorMessage.style.display = "block";
         return;
       }
 
       try {
-        const userCredential = await auth.signInWithEmailAndPassword(email, password);
-        const user = userCredential.user;
-        document.getElementById('nombre').innerText = user.email;
-        document.getElementById('login-container').style.display = "none";
-        document.getElementById('welcome-container').style.display = "block";
+        // Buscar usuario en Firestore
+        const doc = await db.collection('usuarios').doc(usuario).get();
+
+        if (doc.exists && doc.data().clave === clave) {
+          document.getElementById('nombre').innerText = usuario;
+          document.getElementById('login-container').style.display = "none";
+          document.getElementById('welcome-container').style.display = "block";
+        } else {
+          errorMessage.innerText = "Usuario o clave incorrectos";
+          errorMessage.style.display = "block";
+        }
       } catch (error) {
-        errorMessage.innerText = "Usuario o contraseña incorrectos";
+        console.error("Error en login:", error);
+        errorMessage.innerText = "Error al conectar con la base de datos";
         errorMessage.style.display = "block";
       }
     });
 
     document.getElementById('continue-btn').addEventListener('click', () => {
-      alert("✨ ¡Bienvenido al aula virtual! ¡A disfrutar aprendiendo! 📚");
+      alert("✨ ¡Bienvenido al aula virtual! 📚");
     });
   </script>
 
 </body>
 </html>
-
