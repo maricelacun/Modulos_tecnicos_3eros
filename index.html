@@ -5,42 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aula Virtual Mágica</title>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script> <!-- Asegúrate de cargar Firebase Database -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-  	background-image: url('https://i.pinimg.com/originals/40/06/c8/4006c8cff8b054ca07741fda848d89a8.gif'); /* URL del GIF que proporcionaste */
-  	background-size: cover; /* Ajusta la imagen para cubrir toda la pantalla */
-  	background-position: center; /* Centra la imagen */
-  	background-repeat: no-repeat; /* Evita que la imagen se repita */
-  	color: SteelBlue;
-  	text-align: center;
-  	padding: 50px;
-  	overflow: hidden;
-    }
-
-    .stars {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      z-index: -1;
-    }
-
-    .star {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: white;
-      border-radius: 50%;
-      animation: twinkling 3s infinite;
-    }
-
-    @keyframes twinkling {
-      0% { opacity: 0.3; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.5); }
-      100% { opacity: 0.3; transform: scale(1); }
+      background-image: url('https://i.pinimg.com/originals/40/06/c8/4006c8cff8b054ca07741fda848d89a8.gif');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: SteelBlue;
+      text-align: center;
+      padding: 50px;
     }
 
     #login-container, #welcome-container {
@@ -54,25 +30,15 @@
       animation: fadeInZoom 1s forwards;
     }
 
-    @keyframes fadeInZoom {
-      0% { opacity: 0; transform: scale(0.8); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-
     input {
       padding: 10px;
       margin: 10px 0;
       border-radius: 10px;
       border: none;
-      width: 15%;
+      width: 80%;
       text-align: center;
       font-size: 18px;
       transition: 0.3s;
-    }
-
-    input:focus {
-      outline: none;
-      box-shadow: 0 0 10px #2575fc;
     }
 
     button {
@@ -83,120 +49,79 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 20px rgba(255, 120, 150, 0.5);
     }
 
     #welcome-container {
       display: none;
     }
-
-    #error-message {
-      color: red;
-      display: none;
-      animation: shake 0.3s ease-in-out;
-    }
-
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      50% { transform: translateX(5px); }
-      75% { transform: translateX(-5px); }
-    }
   </style>
 </head>
 <body>
-
-  <div class="stars"></div>
-	
   <div id="login-container">
-    <img src="sello.jpg" alt="Sello " id="sello" style="width: 150px; height: auto; margin-top: 20px;">
-    <h1>🔮 UNIDAD EDUCATIVA "DR. CAMILO GALLEGOS DOMINGUEZ"  ✨</h1>
+    <h1>🔮 UNIDAD EDUCATIVA "DR. CAMILO GALLEGOS DOMÍNGUEZ" ✨</h1>
     <h2>🔮 Bienvenido al Aula Virtual Mágica ✨</h2>
-    <input type="text" id="codigo" placeholder="Ingresa tu código secreto">
+    <input type="email" id="email" placeholder="Ingresa tu correo">
+    <input type="password" id="password" placeholder="Ingresa tu contraseña">
     <button id="login-btn">Ingresar 🔑</button>
-    <p id="error-message">Código incorrecto. Intenta de nuevo.</p>
+    <p id="error-message" style="color: red; display: none;"></p>
   </div>
 
   <div id="welcome-container">
     <h2>🎉 Bienvenido, <span id="nombre"></span>! 🚀</h2>
-    <button id="continue-btn">Explorar Aula Virtual 🏫</button>
+    <button id="logout-btn">Cerrar Sesión</button>
   </div>
 
   <script>
-    // Configuración de Firebase
     const firebaseConfig = {
       apiKey: "your-api-key",
       authDomain: "your-auth-domain",
-      databaseURL: "https://aula-virtual-1c360-default-rtdb.firebaseio.com", // URL de Realtime Database
       projectId: "your-project-id",
       storageBucket: "your-storage-bucket",
       messagingSenderId: "your-sender-id",
       appId: "your-app-id"
     };
 
-    // Inicialización de Firebase
     firebase.initializeApp(firebaseConfig);
-    const database = firebase.database(); // Usamos Realtime Database
-
-    let intentos = 0;
+    const auth = firebase.auth();
+    const db = firebase.firestore();
 
     document.getElementById('login-btn').addEventListener('click', async () => {
-      const codigo = document.getElementById('codigo').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
       const errorMessage = document.getElementById('error-message');
 
-      if (!codigo) {
-        errorMessage.innerText = "Por favor, ingresa un código";
+      if (!email || !password) {
+        errorMessage.innerText = "Por favor, ingresa tu correo y contraseña.";
         errorMessage.style.display = "block";
         return;
       }
 
       try {
-        // Accedemos a la base de datos usando el código
-        const snapshot = await database.ref(codigo).once('value');
-        const nombre = snapshot.val(); // Nombre asociado al código
+        const userCredential = await auth.signInWithEmailAndPassword(email, password);
+        const user = userCredential.user;
 
-        if (nombre) {
-          // Si el código es correcto, mostramos la bienvenida
-          document.getElementById('nombre').innerText = nombre;
-          document.getElementById('login-container').style.display = "none"; // Ocultamos el login
-          document.getElementById('welcome-container').style.display = "block"; // Mostramos la bienvenida
+        const userDoc = await db.collection("estudiantes").doc(user.uid).get();
+        
+        if (userDoc.exists) {
+          document.getElementById('nombre').innerText = userDoc.data().nombre;
+          document.getElementById('login-container').style.display = "none";
+          document.getElementById('welcome-container').style.display = "block";
         } else {
-          intentos++;
-          errorMessage.innerText = `Código incorrecto. Intentos: ${intentos}`;
+          errorMessage.innerText = "No tienes permiso para acceder.";
           errorMessage.style.display = "block";
-
-          if (intentos >= 3) {
-            alert("❌ Has superado los intentos permitidos. Cerrando...");
-            window.close();
-          }
+          auth.signOut();
         }
       } catch (error) {
-        console.error("Error obteniendo el dato de la base de datos:", error);
+        errorMessage.innerText = "Error: " + error.message;
+        errorMessage.style.display = "block";
       }
     });
 
-    document.getElementById('continue-btn').addEventListener('click', () => {
-      alert("✨ ¡Bienvenido al aula virtual! ¡A disfrutar aprendiendo! 📚");
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      auth.signOut().then(() => {
+        window.location.reload();
+      });
     });
-
-    function generateStars() {
-      const starsContainer = document.querySelector('.stars');
-      for (let i = 0; i < 50; i++) {
-        let star = document.createElement('div');
-        star.classList.add('star');
-        star.style.top = Math.random() * 100 + 'vh';
-        star.style.left = Math.random() * 100 + 'vw';
-        star.style.animationDuration = (Math.random() * 3 + 2) + 's';
-        starsContainer.appendChild(star);
-      }
-    }
-    generateStars();
   </script>
-
 </body>
 </html>
