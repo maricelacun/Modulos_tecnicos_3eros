@@ -1,3 +1,4 @@
+este es el index de mi proyecto
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -5,64 +6,123 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aula Virtual Mágica</title>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script> <!-- Asegúrate de cargar Firebase Database -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script> 
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f1f1f1;
-      color: #333;
-      text-align: center;
+      font-family: 'Poppins', sans-serif;
+  	background-image: url('https://i.pinimg.com/originals/40/06/c8/4006c8cff8b054ca07741fda848d89a8.gif'); /* URL del GIF que proporcionaste */
+  	background-size: cover; /* Ajusta la imagen para cubrir toda la pantalla */
+  	background-position: center; /* Centra la imagen */
+  	background-repeat: no-repeat; /* Evita que la imagen se repita */
+  	color: SteelBlue;
+  	text-align: center;
+  	padding: 50px;
+  	overflow: hidden;
     }
+
+    .stars {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    .star {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkling 3s infinite;
+    }
+
+    @keyframes twinkling {
+      0% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.5); }
+      100% { opacity: 0.3; transform: scale(1); }
+    }
+
     #login-container, #welcome-container {
-      display: none;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      display: inline-block;
+      opacity: 0;
+      transform: scale(0.8);
+      animation: fadeInZoom 1s forwards;
     }
-    #login-container {
-      padding: 20px;
-      border-radius: 10px;
-      background-color: #fff;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      width: 300px;
-      margin: 50px auto;
+
+    @keyframes fadeInZoom {
+      0% { opacity: 0; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1); }
     }
+
     input {
       padding: 10px;
       margin: 10px 0;
-      width: 80%;
-      border-radius: 5px;
-      border: 1px solid #ccc;
+      border-radius: 10px;
+      border: none;
+      width: 15%;
+      text-align: center;
+      font-size: 18px;
+      transition: 0.3s;
     }
+
+    input:focus {
+      outline: none;
+      box-shadow: 0 0 10px #2575fc;
+    }
+
     button {
-      padding: 10px 20px;
-      background-color: #007BFF;
-      color: #fff;
+      padding: 12px 25px;
+      background: linear-gradient(90deg, #ff758c, #ff7eb3);
+      color: white;
+      font-size: 18px;
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
     }
+
     button:hover {
-      background-color: #0056b3;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(255, 120, 150, 0.5);
     }
+
+    #welcome-container {
+      display: none;
+    }
+
     #error-message {
       color: red;
       display: none;
+      animation: shake 0.3s ease-in-out;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
     }
   </style>
 </head>
 <body>
 
-  <!-- Contenedor de login -->
+  <div class="stars"></div>
+	
   <div id="login-container">
-    <img src="sello.jpg" alt="Sello" id="sello" style="width: 150px; height: auto; margin-top: 20px;">
-    <h1>🔮 UNIDAD EDUCATIVA "DR. CAMILO GALLEGOS DOMINGUEZ" ✨</h1>
+    <img src="sello.jpg" alt="Sello " id="sello" style="width: 150px; height: auto; margin-top: 20px;">
+    <h1>🔮 UNIDAD EDUCATIVA "DR. CAMILO GALLEGOS DOMINGUEZ"  ✨</h1>
     <h2>🔮 Bienvenido al Aula Virtual Mágica ✨</h2>
-    <input type="text" id="usuario" placeholder="Ingresa tu usuario">
-    <input type="password" id="clave" placeholder="Ingresa tu clave">
+    <input type="text" id="codigo" placeholder="Ingresa tu código secreto">
     <button id="login-btn">Ingresar 🔑</button>
-    <p id="error-message">Usuario o clave incorrectos. Intenta de nuevo.</p>
+    <p id="error-message">Código incorrecto. Intenta de nuevo.</p>
   </div>
 
-  <!-- Contenedor de bienvenida -->
   <div id="welcome-container">
     <h2>🎉 Bienvenido, <span id="nombre"></span>! 🚀</h2>
     <button id="continue-btn">Explorar Aula Virtual 🏫</button>
@@ -71,65 +131,46 @@
   <script>
     // Configuración de Firebase
     const firebaseConfig = {
-      apiKey: "tu-api-key",
-      authDomain: "tu-auth-domain",
-      projectId: "tu-project-id",
-      storageBucket: "tu-storage-bucket",
-      messagingSenderId: "tu-sender-id",
-      appId: "tu-app-id"
+      apiKey: "your-api-key",
+      authDomain: "your-auth-domain",
+      databaseURL: "https://aula-virtual-1c360-default-rtdb.firebaseio.com", // URL de Realtime Database
+      projectId: "your-project-id",
+      storageBucket: "your-storage-bucket",
+      messagingSenderId: "your-sender-id",
+      appId: "your-app-id"
     };
 
     // Inicialización de Firebase
-    try {
-      const app = firebase.initializeApp(firebaseConfig);
-      console.log("Firebase inicializado correctamente.");
-    } catch (error) {
-      console.error("Error al inicializar Firebase:", error);
-    }
-
-    const db = firebase.firestore();
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database(); // Usamos Realtime Database
 
     let intentos = 0;
 
-    // Mostrar la interfaz de login
-    document.getElementById('login-container').style.display = "block";
-
-    // Función para login
     document.getElementById('login-btn').addEventListener('click', async () => {
-      const usuario = document.getElementById('usuario').value.trim();
-      const clave = document.getElementById('clave').value.trim();
+      const codigo = document.getElementById('codigo').value.trim();
       const errorMessage = document.getElementById('error-message');
 
-      if (!usuario || !clave) {
-        errorMessage.innerText = "Por favor, ingresa un usuario y una clave";
+      if (!codigo) {
+        errorMessage.innerText = "Por favor, ingresa un código";
         errorMessage.style.display = "block";
         return;
       }
 
       try {
-        const snapshot = await db.collection("estudiantes").where("usuario", "==", usuario).get();
+        // Accedemos a la base de datos usando el código
+        const snapshot = await database.ref(codigo).once('value');
+        const nombre = snapshot.val(); // Nombre asociado al código
 
-        if (!snapshot.empty) {
-          let estudiante = snapshot.docs[0].data();
-
-          if (estudiante.clave === clave) {
-            // Mostrar el nombre del estudiante
-            document.getElementById('nombre').innerText = estudiante.nombres;
-            document.getElementById('login-container').style.display = "none";
-            document.getElementById('welcome-container').style.display = "block";
-          } else {
-            intentos++;
-            errorMessage.innerText = `Clave incorrecta. Intentos: ${intentos}`;
-            errorMessage.style.display = "block";
-            if (intentos >= 3) {
-              alert("❌ Has superado los intentos permitidos. Cerrando...");
-              window.close();
-            }
-          }
+        if (nombre) {
+          // Si el código es correcto, mostramos la bienvenida
+          document.getElementById('nombre').innerText = nombre;
+          document.getElementById('login-container').style.display = "none"; // Ocultamos el login
+          document.getElementById('welcome-container').style.display = "block"; // Mostramos la bienvenida
         } else {
           intentos++;
-          errorMessage.innerText = `Usuario no encontrado. Intentos: ${intentos}`;
+          errorMessage.innerText = `Código incorrecto. Intentos: ${intentos}`;
           errorMessage.style.display = "block";
+
           if (intentos >= 3) {
             alert("❌ Has superado los intentos permitidos. Cerrando...");
             window.close();
@@ -141,8 +182,21 @@
     });
 
     document.getElementById('continue-btn').addEventListener('click', () => {
-      alert("¡Bienvenido a tu aula virtual!");
+      alert("✨ ¡Bienvenido al aula virtual! ¡A disfrutar aprendiendo! 📚");
     });
+
+    function generateStars() {
+      const starsContainer = document.querySelector('.stars');
+      for (let i = 0; i < 50; i++) {
+        let star = document.createElement('div');
+        star.classList.add('star');
+        star.style.top = Math.random() * 100 + 'vh';
+        star.style.left = Math.random() * 100 + 'vw';
+        star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        starsContainer.appendChild(star);
+      }
+    }
+    generateStars();
   </script>
 
 </body>
