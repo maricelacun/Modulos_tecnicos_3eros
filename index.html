@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aula Virtual Mágica</title>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script> <!-- Asegúrate de cargar Firebase Database -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
   <style>
     body {
@@ -117,9 +117,10 @@
     <img src="sello.jpg" alt="Sello " id="sello" style="width: 150px; height: auto; margin-top: 20px;">
     <h1>🔮 UNIDAD EDUCATIVA "DR. CAMILO GALLEGOS DOMINGUEZ"  ✨</h1>
     <h2>🔮 Bienvenido al Aula Virtual Mágica ✨</h2>
-    <input type="text" id="codigo" placeholder="Ingresa tu código secreto">
+    <input type="text" id="usuario" placeholder="Ingresa tu usuario">
+    <input type="password" id="clave" placeholder="Ingresa tu clave">
     <button id="login-btn">Ingresar 🔑</button>
-    <p id="error-message">Código incorrecto. Intenta de nuevo.</p>
+    <p id="error-message">Usuario o clave incorrecta. Intenta de nuevo.</p>
   </div>
 
   <div id="welcome-container">
@@ -130,13 +131,13 @@
   <script>
     // Configuración de Firebase
     const firebaseConfig = {
-      apiKey: "AIzaSyDMZHxCilms5wdCxlgelZGJbyzi9NsWS9E", // Tu clave API
-      authDomain: "aula-virtual-1c360.firebaseapp.com", // Usualmente se forma con el ID del proyecto
-      databaseURL: "https://aula-virtual-1c360-default-rtdb.firebaseio.com", // URL de tu base de datos en Firebase
+      apiKey: "your-api-key",
+      authDomain: "your-auth-domain",
+      databaseURL: "https://aula-virtual-1c360-default-rtdb.firebaseio.com", // URL de Realtime Database
       projectId: "aula-virtual-1c360",
-      storageBucket: "aula-virtual-1c360.appspot.com", // Usualmente se forma con el ID del proyecto
-      messagingSenderId: "713777134536", // Número del proyecto
-      appId: "1:713777134536:web:4d8efb8e90d2341b00c20a" // Este es el ID de la aplicación
+      storageBucket: "your-storage-bucket",
+      messagingSenderId: "713777134536",
+      appId: "your-app-id"
     };
 
     // Inicialización de Firebase
@@ -146,28 +147,29 @@
     let intentos = 0;
 
     document.getElementById('login-btn').addEventListener('click', async () => {
-      const codigo = document.getElementById('codigo').value.trim();
+      const usuario = document.getElementById('usuario').value.trim();
+      const clave = document.getElementById('clave').value.trim();
       const errorMessage = document.getElementById('error-message');
 
-      if (!codigo) {
-        errorMessage.innerText = "Por favor, ingresa un código";
+      if (!usuario || !clave) {
+        errorMessage.innerText = "Por favor, ingresa un usuario y una clave";
         errorMessage.style.display = "block";
         return;
       }
 
       try {
-        // Accedemos a la base de datos usando el código
-        const snapshot = await database.ref(codigo).once('value');
-        const nombre = snapshot.val(); // Nombre asociado al código
+        // Accedemos a la base de datos usando el usuario
+        const snapshot = await database.ref('estudiantes').child(usuario).once('value');
+        const userData = snapshot.val(); // Datos del usuario (clave, nombre)
 
-        if (nombre) {
-          // Si el código es correcto, mostramos la bienvenida
-          document.getElementById('nombre').innerText = nombre;
+        if (userData && userData.clave === clave) {
+          // Si el usuario y clave son correctos, mostramos la bienvenida
+          document.getElementById('nombre').innerText = userData.nombres;
           document.getElementById('login-container').style.display = "none"; // Ocultamos el login
           document.getElementById('welcome-container').style.display = "block"; // Mostramos la bienvenida
         } else {
           intentos++;
-          errorMessage.innerText = `Código incorrecto. Intentos: ${intentos}`;
+          errorMessage.innerText = `Usuario o clave incorrecta. Intentos: ${intentos}`;
           errorMessage.style.display = "block";
 
           if (intentos >= 3) {
@@ -176,7 +178,7 @@
           }
         }
       } catch (error) {
-        console.error("Error obteniendo el dato de la base de datos:", error);
+        console.error("Error obteniendo los datos de la base de datos:", error);
       }
     });
 
