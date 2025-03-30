@@ -8,7 +8,55 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script> <!-- Agregamos Firestore -->
   <style>
-    /* Aquí va el estilo que tienes */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f1f1f1;
+      color: #333;
+      text-align: center;
+    }
+    
+    #login-container, #welcome-container {
+      display: none;
+    }
+    
+    #login-container {
+      padding: 20px;
+      border-radius: 10px;
+      background-color: #fff;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      margin: 50px auto;
+    }
+    
+    input {
+      padding: 10px;
+      margin: 10px 0;
+      width: 80%;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    
+    button {
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    
+    button:hover {
+      background-color: #0056b3;
+    }
+    
+    #error-message {
+      color: red;
+      display: none;
+    }
+    
+    #welcome-container {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -47,6 +95,10 @@
 
     let intentos = 0;
 
+    // Mostrar login
+    document.getElementById('login-container').style.display = "block";
+
+    // Al hacer click en el botón de ingresar
     document.getElementById('login-btn').addEventListener('click', async () => {
       const usuario = document.getElementById('usuario').value.trim();
       const clave = document.getElementById('clave').value.trim();
@@ -96,10 +148,12 @@
       }
     });
 
+    // Al hacer click en el botón de continuar
     document.getElementById('continue-btn').addEventListener('click', () => {
       alert("✨ ¡Bienvenido al aula virtual! ¡A disfrutar aprendiendo! 📚");
     });
 
+    // Función para crear estrellas animadas (opcional)
     function generateStars() {
       const starsContainer = document.querySelector('.stars');
       for (let i = 0; i < 50; i++) {
