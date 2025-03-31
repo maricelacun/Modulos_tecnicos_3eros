@@ -24,60 +24,63 @@
     // Inicialización de Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
-
     document.addEventListener("DOMContentLoaded", function() {
-      const loginBtn = document.getElementById('login-btn');
+  const loginBtn = document.getElementById('login-btn');
 
-      if (loginBtn) {
-        loginBtn.addEventListener('click', async function () {
-          const usuario = document.getElementById('usuario').value.trim();
-          const clave = document.getElementById('clave').value.trim();
-          const errorMessage = document.getElementById('error-message');
+  if (loginBtn) {
+    loginBtn.addEventListener('click', async function () {
+      const usuario = document.getElementById('usuario').value.trim();
+      const clave = document.getElementById('clave').value.trim();
+      const errorMessage = document.getElementById('error-message');
 
-          if (!usuario || !clave) {
-            errorMessage.innerText = "Por favor, ingresa un usuario y una clave";
-            errorMessage.style.display = "block";
-            return;
-          }
+      if (!usuario || !clave) {
+        errorMessage.innerText = "Por favor, ingresa un usuario y una clave";
+        errorMessage.style.display = "block";
+        return;
+      }
 
-          try {
-            const querySnapshot = await db.collection("estudiantes").where("usuario", "==", usuario).get();
-            
-            console.log("Documentos encontrados:", querySnapshot.size);
+      try {
+        const querySnapshot = await db.collection("estudiantes").where("usuario", "==", usuario).get();
 
-            if (querySnapshot.empty) {
-              errorMessage.innerText = "Usuario no encontrado";
-              errorMessage.style.display = "block";
-            } else {
-              let encontrado = false;
-              
-              querySnapshot.forEach(doc => {
-                // Verificar con el campo correcto (id_est en lugar de clave)
-              if (String(data.id_est).trim() === String(clave).trim()) {
-              document.getElementById('nombre').innerText = data.nombres_completos;
-              document.getElementById('login-container').style.display = "none"; 
-              document.getElementById('welcome-container').style.display = "block"; 
+        if (querySnapshot.empty) {
+          errorMessage.innerText = "Usuario no encontrado";
+          errorMessage.style.display = "block";
+        } else {
+          let encontrado = false;
+          
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            console.log("Datos obtenidos:", data);
+
+            // Verificamos con el campo correcto en Firestore
+            if (String(data.id_est).trim() === String(clave).trim()) {
+              // Guardamos el nombre en localStorage para usarlo en aula.html
+              localStorage.setItem("nombreEstudiante", data.nombres_completos);
+
+              // Redirigir a la página aula.html
+              window.location.href = "aula.html";
+
               encontrado = true;
             }
+          });
 
-                }
-              });
-
-              if (!encontrado) {
-                errorMessage.innerText = "Clave incorrecta";
-                errorMessage.style.display = "block";
-              }
-            }
-          } catch (error) {
-            console.error("Error en la autenticación:", error);
-            errorMessage.innerText = "Ocurrió un error en la autenticación";
+          if (!encontrado) {
+            errorMessage.innerText = "Clave incorrecta";
             errorMessage.style.display = "block";
           }
-        });
-      } else {
-        console.error("El botón de login no se encuentra en el DOM.");
+        }
+      } catch (error) {
+        console.error("Error en la autenticación:", error);
+        errorMessage.innerText = "Ocurrió un error en la autenticación";
+        errorMessage.style.display = "block";
       }
     });
+  } else {
+    console.error("El botón de login no se encuentra en el DOM.");
+  }
+});
+
+  
   </script>
 
   <style>
