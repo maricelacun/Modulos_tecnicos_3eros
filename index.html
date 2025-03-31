@@ -25,12 +25,8 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    console.log("Firebase cargado correctamente:", firebase);
-
-    // Asegurarse de que el DOM esté completamente cargado
     document.addEventListener("DOMContentLoaded", function() {
-      // Función de login
-      const loginBtn = document.getElementById('login-btn'); // Referencia al botón
+      const loginBtn = document.getElementById('login-btn');
 
       if (loginBtn) {
         loginBtn.addEventListener('click', async function () {
@@ -45,27 +41,31 @@
           }
 
           try {
-            // Crear la consulta
-            const q = db.collection("estudiantes").where("usuario", "==", usuario);
-
-            // Obtener los documentos que coincidan con la consulta
-            const querySnapshot = await q.get();
+            const querySnapshot = await db.collection("estudiantes").where("usuario", "==", usuario).get();
 
             if (querySnapshot.empty) {
               errorMessage.innerText = "Usuario no encontrado";
               errorMessage.style.display = "block";
             } else {
-              querySnapshot.forEach(doc => {
+              let encontrado = false;
+              
+              for (const doc of querySnapshot.docs) {
                 const data = doc.data();
-                if (data.clave === clave) {
+                console.log("Datos obtenidos:", data);
+
+                if (String(data.clave) === String(clave)) {
                   document.getElementById('nombre').innerText = data.nombres;
                   document.getElementById('login-container').style.display = "none"; 
                   document.getElementById('welcome-container').style.display = "block"; 
-                } else {
-                  errorMessage.innerText = "Clave incorrecta";
-                  errorMessage.style.display = "block";
+                  encontrado = true;
+                  break;
                 }
-              });
+              }
+
+              if (!encontrado) {
+                errorMessage.innerText = "Clave incorrecta";
+                errorMessage.style.display = "block";
+              }
             }
           } catch (error) {
             console.error("Error en la autenticación:", error);
