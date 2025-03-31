@@ -58,13 +58,17 @@
 
                 // Comparación corregida
                 if (String(data.id_est).trim() === String(clave).trim()) {
-                  // Guardar nombre en localStorage para aula.html
-                  localStorage.setItem("nombreEstudiante", data.nombres_completos);
+                    // Guardar nombre en localStorage para aula.html
+                     localStorage.setItem("nombreEstudiante", data.nombres_completos);
 
-                  // Redirigir a la página aula.html
-                  window.location.href = "aula.html";
-                  encontrado = true;
+                    // Establecer accesoPermitido como "true" para indicar que el usuario ha iniciado sesión
+                     localStorage.setItem("accesoPermitido", "true");
+
+                   // Redirigir a la página aula.html
+                     window.location.href = "aula.html";
+                      encontrado = true;
                 }
+
               });
 
               if (!encontrado) {
