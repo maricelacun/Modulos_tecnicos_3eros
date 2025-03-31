@@ -7,7 +7,9 @@
  <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
   import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+  import { 
+    getFirestore, collection, query, where, getDocs 
+  } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "your-api-key",
@@ -18,22 +20,18 @@
     appId: "your-app-id"
   };
 
-  // 1️⃣ Inicializa Firebase antes de usar Firestore
+  // 1️⃣ Inicializar Firebase
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
-
-  console.log("Firebase Config:", firebaseConfig);
-  console.log("Firebase App:", app);
-  console.log("Firebase Auth:", auth);
-  console.log("Firebase Firestore:", db);
 
   console.log("Firebase cargado correctamente:", app);
 
   // 2️⃣ Función para probar Firestore
   async function probarFirestore() {
     try {
-      const querySnapshot = await getDocs(collection(db, "estudiante"));
+      const q = query(collection(db, "estudiante")); // ✅ Se usa query correctamente
+      const querySnapshot = await getDocs(q);
       querySnapshot.forEach(doc => {
         console.log("Usuario encontrado:", doc.data());
       });
@@ -42,10 +40,51 @@
     }
   }
 
-  // 3️⃣ Ejecutar la prueba de Firestore
   probarFirestore();
-</script>
 
+  // 3️⃣ Función de login
+  document.getElementById('login-btn').addEventListener('click', async () => {
+    const usuario = document.getElementById('usuario').value.trim();
+    const clave = document.getElementById('clave').value.trim();
+    const errorMessage = document.getElementById('error-message');
+
+    if (!usuario || !clave) {
+      errorMessage.innerText = "Por favor, ingresa un usuario y una clave";
+      errorMessage.style.display = "block";
+      return;
+    }
+
+    try {
+      const q = query(collection(db, "estudiante"), where("usuario", "==", usuario)); // ✅ Se usa query correctamente
+      const querySnapshot = await getDocs(q);
+      let userData = null;
+
+      querySnapshot.forEach(doc => {
+        userData = doc.data();
+      });
+
+      if (userData && userData.clave === clave) {
+        document.getElementById('nombre').innerText = userData.nombres_completos;
+        document.getElementById('login-container').style.display = "none";
+        document.getElementById('welcome-container').style.display = "block";
+        setTimeout(() => {
+          window.location.href = "aula.html";
+        }, 2000);
+      } else {
+        mostrarError();
+      }
+    } catch (error) {
+      console.error("Error en la autenticación:", error);
+      errorMessage.innerText = "Error en la autenticación. Inténtalo más tarde.";
+      errorMessage.style.display = "block";
+    }
+  });
+
+  function mostrarError() {
+    const errorMessage = document.getElementById('error-message');
+    errorMessage.innerText = "Usuario o clave incorrecta.";
+    errorMessage.style.display = "block";
+  }
   </script>
   <style>
     body {
