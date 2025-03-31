@@ -162,7 +162,6 @@
         const snapshot = await database.ref('estudiantes').orderByChild('usuario').equalTo(usuario).once('value');
         const userData = snapshot.val();
 
-        const userData = snapshot.val(); // Datos del usuario (clave, nombre)
 
         if (userData && userData.clave === clave) {
           // Si el usuario y clave son correctos, mostramos la bienvenida
