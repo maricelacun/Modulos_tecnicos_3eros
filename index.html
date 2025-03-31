@@ -52,17 +52,33 @@
             const data = doc.data();
             console.log("Datos obtenidos:", data);
 
-            // Verificamos con el campo correcto en Firestore
+            // Comparación corregida
             if (String(data.id_est).trim() === String(clave).trim()) {
-              // Guardamos el nombre en localStorage para usarlo en aula.html
+              // Guardar nombre en localStorage para aula.html
               localStorage.setItem("nombreEstudiante", data.nombres_completos);
 
               // Redirigir a la página aula.html
               window.location.href = "aula.html";
-
               encontrado = true;
             }
           });
+
+          if (!encontrado) {
+            errorMessage.innerText = "Clave incorrecta";
+            errorMessage.style.display = "block";
+          }
+        }
+      } catch (error) {
+        console.error("Error en la autenticación:", error);
+        errorMessage.innerText = "Ocurrió un error en la autenticación";
+        errorMessage.style.display = "block";
+      }
+    });
+  } else {
+    console.error("El botón de login no se encuentra en el DOM.");
+  }
+});
+
 
           if (!encontrado) {
             errorMessage.innerText = "Clave incorrecta";
