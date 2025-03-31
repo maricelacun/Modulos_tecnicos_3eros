@@ -42,6 +42,8 @@
 
           try {
             const querySnapshot = await db.collection("estudiantes").where("usuario", "==", usuario).get();
+            
+            console.log("Documentos encontrados:", querySnapshot.size);
 
             if (querySnapshot.empty) {
               errorMessage.innerText = "Usuario no encontrado";
@@ -49,18 +51,18 @@
             } else {
               let encontrado = false;
               
-              for (const doc of querySnapshot.docs) {
+              querySnapshot.forEach(doc => {
                 const data = doc.data();
                 console.log("Datos obtenidos:", data);
 
-                if (String(data.clave) === String(clave)) {
+                // Comparar como strings asegurando que no haya espacios adicionales
+                if (String(data.clave).trim() === String(clave).trim()) {
                   document.getElementById('nombre').innerText = data.nombres;
                   document.getElementById('login-container').style.display = "none"; 
                   document.getElementById('welcome-container').style.display = "block"; 
                   encontrado = true;
-                  break;
                 }
-              }
+              });
 
               if (!encontrado) {
                 errorMessage.innerText = "Clave incorrecta";
