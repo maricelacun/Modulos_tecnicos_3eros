@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aula Virtual Mágica</title>
  <script type="module">
-  import { initializeApp } from "firebase/app";
+// Importación de las funciones de Firebase
+import { initializeApp } from "firebase/app";
 import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
 
 // Tu configuración de Firebase
@@ -19,9 +20,10 @@ const firebaseConfig = {
   appId: "your-app-id"
 };
 
-// Inicializar Firebase
+// Inicialización de Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
 
   console.log("Firebase cargado correctamente:", app);
 
@@ -41,7 +43,7 @@ const db = getFirestore(app);
   probarFirestore();
 
   // 3️⃣ Función de login
-  document.getElementById('login-btn').addEventListener('click', async function () {
+ document.getElementById('login-btn').addEventListener('click', async function () {
   const usuario = document.getElementById('usuario').value.trim();
   const clave = document.getElementById('clave').value.trim();
   const errorMessage = document.getElementById('error-message');
@@ -56,27 +58,32 @@ const db = getFirestore(app);
     // Crear la consulta
     const q = query(collection(db, "estudiantes"), where("usuario", "==", usuario));
 
-    // Obtener los documentos
+    // Obtener los documentos que coincidan con la consulta
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.empty) {
-      // Si no se encuentra el usuario
       errorMessage.innerText = "Usuario no encontrado";
       errorMessage.style.display = "block";
     } else {
       querySnapshot.forEach(doc => {
         const data = doc.data();
-
         if (data.clave === clave) {
-          // Si la contraseña es correcta
           document.getElementById('nombre').innerText = data.nombres;
-          document.getElementById('login-container').style.display = "none"; // Ocultamos el login
-          document.getElementById('welcome-container').style.display = "block"; // Mostramos la bienvenida
+          document.getElementById('login-container').style.display = "none"; 
+          document.getElementById('welcome-container').style.display = "block"; 
         } else {
           errorMessage.innerText = "Clave incorrecta";
           errorMessage.style.display = "block";
         }
       });
+    }
+  } catch (error) {
+    console.error("Error en la autenticación:", error);
+    errorMessage.innerText = "Ocurrió un error en la autenticación";
+    errorMessage.style.display = "block";
+  }
+});
+
     }
 
   } catch (error) {
