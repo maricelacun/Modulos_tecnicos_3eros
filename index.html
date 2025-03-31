@@ -14,7 +14,9 @@
     body {
       font-family: 'Poppins', sans-serif;
       text-align: center;
-      background-color: #f4f4f4;
+      background-image: url('fondo.jpg'); /* Reemplaza con tu imagen de fondo */
+      background-size: cover;
+      background-position: center;
     }
 
     #login-container, #welcome-container {
@@ -108,6 +110,7 @@
           const userData = doc.data();
 
           if (userData.clave === clave) {
+            console.log("Usuario autenticado:", userData);
             document.getElementById('nombre').innerText = userData.nombre;
             document.getElementById('login-container').style.display = "none";
             document.getElementById('welcome-container').style.display = "block";
@@ -136,3 +139,4 @@
 
 </body>
 </html>
+
