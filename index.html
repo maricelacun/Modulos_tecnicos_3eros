@@ -146,46 +146,48 @@
 
     let intentos = 0;
 
-    document.getElementById('login-btn').addEventListener('click', async () => {
-      const usuario = document.getElementById('usuario').value.trim();
-      const clave = document.getElementById('clave').value.trim();
-      const errorMessage = document.getElementById('error-message');
+   document.getElementById('login-button').addEventListener('click', async function () {
+    const usuario = document.getElementById('usuario').value.trim();
+    const clave = document.getElementById('clave').value.trim();
+    const errorMessage = document.getElementById('error-message');
+    let intentos = 0;
 
-      if (!usuario || !clave) {
-        errorMessage.innerText = "Por favor, ingresa un usuario y una clave";
+    if (usuario === "" || clave === "") {
+        errorMessage.innerText = "Por favor, ingrese usuario y clave.";
         errorMessage.style.display = "block";
         return;
-      }
+    }
 
-      try {
-        // Accedemos a la base de datos usando el usuario
+    try {
+        // Buscar en la base de datos el usuario ingresado
         const snapshot = await database.ref('estudiantes').orderByChild('usuario').equalTo(usuario).once('value');
-        const userData = snapshot.val();
 
+        if (snapshot.exists()) {
+            // Obtener el primer usuario encontrado
+            const userData = Object.values(snapshot.val())[0]; 
 
-        if (userData && userData.clave === clave) {
-          // Si el usuario y clave son correctos, mostramos la bienvenida
-          document.getElementById('nombre').innerText = userData.nombres;
-          document.getElementById('login-container').style.display = "none"; // Ocultamos el login
-          document.getElementById('welcome-container').style.display = "block"; // Mostramos la bienvenida
+            // Verificar si la clave es correcta
+            if (userData.clave === clave) {
+                document.getElementById('nombre').innerText = `Bienvenido, ${userData.nombres}`;
+                document.getElementById('login-container').style.display = "none";
+                document.getElementById('welcome-container').style.display = "block";
+            } else {
+                intentos++;
+                errorMessage.innerText = `Usuario o clave incorrecta. Intentos: ${intentos}`;
+                errorMessage.style.display = "block";
+            }
         } else {
-          intentos++;
-          errorMessage.innerText = `Usuario o clave incorrecta. Intentos: ${intentos}`;
-          errorMessage.style.display = "block";
-
-          if (intentos >= 3) {
-            alert("❌ Has superado los intentos permitidos. Cerrando...");
-            window.close();
-          }
+            intentos++;
+            errorMessage.innerText = "Usuario no encontrado.";
+            errorMessage.style.display = "block";
         }
-      } catch (error) {
-        console.error("Error obteniendo los datos de la base de datos:", error);
-      }
-    });
+    } catch (error) {
+        console.error("Error en la autenticación:", error);
+        errorMessage.innerText = "Error al conectar con la base de datos.";
+        errorMessage.style.display = "block";
+    }
+});
 
-    document.getElementById('continue-btn').addEventListener('click', () => {
-      alert("✨ ¡Bienvenido al aula virtual! ¡A disfrutar aprendiendo! 📚");
-    });
 
     function generateStars() {
       const starsContainer = document.querySelector('.stars');
