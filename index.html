@@ -14,9 +14,17 @@
     body {
       font-family: 'Poppins', sans-serif;
       text-align: center;
-      background-image: url('fondo.jpg'); /* Reemplaza con tu imagen de fondo */
+      background-image: url('fondo_original.jpg'); /* Asegúrate de usar el nombre correcto */
       background-size: cover;
       background-position: center;
+    }
+
+    #header {
+      text-align: center;
+      padding: 20px;
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
     }
 
     #login-container, #welcome-container {
@@ -25,7 +33,7 @@
       border-radius: 15px;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
       display: inline-block;
-      margin-top: 50px;
+      margin-top: 20px;
     }
 
     input {
@@ -56,6 +64,12 @@
   </style>
 </head>
 <body>
+
+  <div id="header">
+    <img src="sello.png" alt="Sello del Colegio" width="80">
+    <h1>Nombre del Colegio</h1>
+    <p>Bienvenido al aula virtual del colegio</p>
+  </div>
 
   <div id="login-container">
     <h2>Bienvenido al Aula Virtual</h2>
@@ -139,4 +153,3 @@
 
 </body>
 </html>
-
