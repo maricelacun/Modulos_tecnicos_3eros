@@ -29,7 +29,10 @@
       const loginBtn = document.getElementById('login-btn');
 
       if (loginBtn) {
-        loginBtn.addEventListener('click', async function () {
+        loginBtn.addEventListener('click', async function (event) {
+          // Prevenir el comportamiento predeterminado del botón
+          event.preventDefault();
+
           const usuario = document.getElementById('usuario').value.trim();
           const clave = document.getElementById('clave').value.trim();
           const errorMessage = document.getElementById('error-message');
@@ -119,3 +122,4 @@
   </div>
 </body>
 </html>
+
