@@ -4,25 +4,48 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aula Virtual Mágica</title>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-    import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-    import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+ <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+  import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "your-api-key",
-      authDomain: "your-auth-domain",
-      projectId: "aula-virtual-1c360",
-      storageBucket: "your-storage-bucket",
-      messagingSenderId: "713777134536",
-      appId: "your-app-id"
-    };
+  const firebaseConfig = {
+    apiKey: "your-api-key",
+    authDomain: "your-auth-domain",
+    projectId: "aula-virtual-1c360",
+    storageBucket: "your-storage-bucket",
+    messagingSenderId: "713777134536",
+    appId: "your-app-id"
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+  // 1️⃣ Inicializa Firebase antes de usar Firestore
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-    console.log("Firebase cargado correctamente:", app);
+  console.log("Firebase Config:", firebaseConfig);
+  console.log("Firebase App:", app);
+  console.log("Firebase Auth:", auth);
+  console.log("Firebase Firestore:", db);
+
+  console.log("Firebase cargado correctamente:", app);
+
+  // 2️⃣ Función para probar Firestore
+  async function probarFirestore() {
+    try {
+      const querySnapshot = await getDocs(collection(db, "estudiante"));
+      querySnapshot.forEach(doc => {
+        console.log("Usuario encontrado:", doc.data());
+      });
+    } catch (error) {
+      console.error("Error al conectar con Firestore:", error);
+    }
+  }
+
+  // 3️⃣ Ejecutar la prueba de Firestore
+  probarFirestore();
+</script>
+
   </script>
   <style>
     body {
