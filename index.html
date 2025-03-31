@@ -5,90 +5,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aula Virtual Mágica</title>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-      background-image: url('https://i.pinimg.com/originals/40/06/c8/4006c8cff8b054ca07741fda848d89a8.gif');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      color: SteelBlue;
+      background: #f5f5f5;
       text-align: center;
       padding: 50px;
-      overflow: hidden;
-    }
-
-    .stars {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      z-index: -1;
-    }
-
-    .star {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: white;
-      border-radius: 50%;
-      animation: twinkling 3s infinite;
-    }
-
-    @keyframes twinkling {
-      0% { opacity: 0.3; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.5); }
-      100% { opacity: 0.3; transform: scale(1); }
     }
 
     #login-container, #welcome-container {
-      background: rgba(255, 255, 255, 0.9);
+      background: white;
       padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
       display: inline-block;
-      opacity: 0;
-      transform: scale(0.8);
-      animation: fadeInZoom 1s forwards;
-    }
-
-    @keyframes fadeInZoom {
-      0% { opacity: 0; transform: scale(0.8); }
-      100% { opacity: 1; transform: scale(1); }
     }
 
     input {
       padding: 10px;
       margin: 10px 0;
-      border-radius: 10px;
-      border: none;
-      width: 15%;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      width: 200px;
       text-align: center;
-      font-size: 18px;
-      transition: 0.3s;
-    }
-
-    input:focus {
-      outline: none;
-      box-shadow: 0 0 10px #2575fc;
+      font-size: 16px;
     }
 
     button {
-      padding: 12px 25px;
-      background: linear-gradient(90deg, #ff758c, #ff7eb3);
+      padding: 10px 20px;
+      background: #007BFF;
       color: white;
       font-size: 18px;
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      transition: transform 0.3s, box-shadow 0.3s;
     }
 
     button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 20px rgba(255, 120, 150, 0.5);
+      background: #0056b3;
     }
 
     #welcome-container {
@@ -98,25 +54,13 @@
     #error-message {
       color: red;
       display: none;
-      animation: shake 0.3s ease-in-out;
-    }
-
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      50% { transform: translateX(5px); }
-      75% { transform: translateX(-5px); }
     }
   </style>
 </head>
 <body>
 
-  <div class="stars"></div>
-  
   <div id="login-container">
-    <img src="sello.jpg" alt="Sello " id="sello" style="width: 150px; height: auto; margin-top: 20px;">
-    <h1>🔮 UNIDAD EDUCATIVA "DR. CAMILO GALLEGOS DOMINGUEZ"  ✨</h1>
-    <h2>🔮 Bienvenido al Aula Virtual Mágica ✨</h2>
+    <h1>🔮 Aula Virtual Mágica ✨</h1>
     <input type="text" id="usuario" placeholder="Ingresa tu usuario">
     <input type="password" id="clave" placeholder="Ingresa tu clave">
     <button id="login-btn">Ingresar 🔑</button>
@@ -133,7 +77,6 @@
     const firebaseConfig = {
       apiKey: "your-api-key",
       authDomain: "your-auth-domain",
-      databaseURL: "https://aula-virtual-1c360-default-rtdb.firebaseio.com", // URL de Realtime Database
       projectId: "aula-virtual-1c360",
       storageBucket: "your-storage-bucket",
       messagingSenderId: "713777134536",
@@ -142,7 +85,7 @@
 
     // Inicialización de Firebase
     firebase.initializeApp(firebaseConfig);
-    const database = firebase.database(); // Usamos Realtime Database
+    const db = firebase.firestore(); // Firestore
 
     let intentos = 0;
 
@@ -158,47 +101,54 @@
       }
 
       try {
-        // Accedemos a la base de datos usando el usuario
-        const snapshot = await database.ref('estudiantes').orderByChild('usuario').equalTo(usuario).once('value');
-        const userData = snapshot.val();
+        // Buscar usuario en Firestore
+        const snapshot = await db.collection('estudiante')
+          .where('usuario', '==', usuario)
+          .get();
 
+        if (!snapshot.empty) {
+          let userData;
+          snapshot.forEach(doc => {
+            userData = doc.data();
+          });
 
-        if (userData && userData.clave === clave) {
-          // Si el usuario y clave son correctos, mostramos la bienvenida
-          document.getElementById('nombre').innerText = userData.nombres;
-          document.getElementById('login-container').style.display = "none"; // Ocultamos el login
-          document.getElementById('welcome-container').style.display = "block"; // Mostramos la bienvenida
-        } else {
-          intentos++;
-          errorMessage.innerText = `Usuario o clave incorrecta. Intentos: ${intentos}`;
-          errorMessage.style.display = "block";
+          if (userData.clave === clave) {
+            // Mostrar el nombre completo y redirigir a aula.html
+            document.getElementById('nombre').innerText = userData.nombres_completos;
+            document.getElementById('login-container').style.display = "none";
+            document.getElementById('welcome-container').style.display = "block";
 
-          if (intentos >= 3) {
-            alert("❌ Has superado los intentos permitidos. Cerrando...");
-            window.close();
+            setTimeout(() => {
+              window.location.href = "aula.html"; // Redirige a la página del aula
+            }, 2000);
+          } else {
+            mostrarError();
           }
+        } else {
+          mostrarError();
         }
       } catch (error) {
-        console.error("Error obteniendo los datos de la base de datos:", error);
+        console.error("Error obteniendo los datos de Firestore:", error);
+        errorMessage.innerText = "Error en la autenticación. Inténtalo más tarde.";
+        errorMessage.style.display = "block";
       }
     });
 
-    document.getElementById('continue-btn').addEventListener('click', () => {
-      alert("✨ ¡Bienvenido al aula virtual! ¡A disfrutar aprendiendo! 📚");
-    });
+    function mostrarError() {
+      intentos++;
+      const errorMessage = document.getElementById('error-message');
+      errorMessage.innerText = `Usuario o clave incorrecta. Intentos: ${intentos}`;
+      errorMessage.style.display = "block";
 
-    function generateStars() {
-      const starsContainer = document.querySelector('.stars');
-      for (let i = 0; i < 50; i++) {
-        let star = document.createElement('div');
-        star.classList.add('star');
-        star.style.top = Math.random() * 100 + 'vh';
-        star.style.left = Math.random() * 100 + 'vw';
-        star.style.animationDuration = (Math.random() * 3 + 2) + 's';
-        starsContainer.appendChild(star);
+      if (intentos >= 3) {
+        alert("❌ Has superado los intentos permitidos. Cerrando...");
+        window.close();
       }
     }
-    generateStars();
+
+    document.getElementById('continue-btn').addEventListener('click', () => {
+      window.location.href = "aula.html"; // Redirige al aula
+    });
   </script>
 
 </body>
