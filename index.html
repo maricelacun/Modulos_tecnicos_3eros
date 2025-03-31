@@ -5,25 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aula Virtual Mágica</title>
  <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-  import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-  import { 
-    getFirestore, collection, query, where, getDocs 
-  } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+  import { initializeApp } from "firebase/app";
+import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
 
-  const firebaseConfig = {
-    apiKey: "your-api-key",
-    authDomain: "your-auth-domain",
-    projectId: "aula-virtual-1c360",
-    storageBucket: "your-storage-bucket",
-    messagingSenderId: "713777134536",
-    appId: "your-app-id"
-  };
+// Tu configuración de Firebase
+const firebaseConfig = {
+  apiKey: "your-api-key",
+  authDomain: "your-auth-domain",
+  databaseURL: "https://aula-virtual-1c360-default-rtdb.firebaseio.com", 
+  projectId: "aula-virtual-1c360",
+  storageBucket: "your-storage-bucket",
+  messagingSenderId: "713777134536",
+  appId: "your-app-id"
+};
 
-  // 1️⃣ Inicializar Firebase
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+// Inicializar Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
   console.log("Firebase cargado correctamente:", app);
 
@@ -43,42 +41,50 @@
   probarFirestore();
 
   // 3️⃣ Función de login
-  document.getElementById('login-btn').addEventListener('click', async () => {
-    const usuario = document.getElementById('usuario').value.trim();
-    const clave = document.getElementById('clave').value.trim();
-    const errorMessage = document.getElementById('error-message');
+  document.getElementById('login-btn').addEventListener('click', async function () {
+  const usuario = document.getElementById('usuario').value.trim();
+  const clave = document.getElementById('clave').value.trim();
+  const errorMessage = document.getElementById('error-message');
 
-    if (!usuario || !clave) {
-      errorMessage.innerText = "Por favor, ingresa un usuario y una clave";
+  if (!usuario || !clave) {
+    errorMessage.innerText = "Por favor, ingresa un usuario y una clave";
+    errorMessage.style.display = "block";
+    return;
+  }
+
+  try {
+    // Crear la consulta
+    const q = query(collection(db, "estudiantes"), where("usuario", "==", usuario));
+
+    // Obtener los documentos
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      // Si no se encuentra el usuario
+      errorMessage.innerText = "Usuario no encontrado";
       errorMessage.style.display = "block";
-      return;
-    }
-
-    try {
-      const q = query(collection(db, "estudiante"), where("usuario", "==", usuario)); // ✅ Se usa query correctamente
-      const querySnapshot = await getDocs(q);
-      let userData = null;
-
+    } else {
       querySnapshot.forEach(doc => {
-        userData = doc.data();
-      });
+        const data = doc.data();
 
-      if (userData && userData.clave === clave) {
-        document.getElementById('nombre').innerText = userData.nombres_completos;
-        document.getElementById('login-container').style.display = "none";
-        document.getElementById('welcome-container').style.display = "block";
-        setTimeout(() => {
-          window.location.href = "aula.html";
-        }, 2000);
-      } else {
-        mostrarError();
-      }
-    } catch (error) {
-      console.error("Error en la autenticación:", error);
-      errorMessage.innerText = "Error en la autenticación. Inténtalo más tarde.";
-      errorMessage.style.display = "block";
+        if (data.clave === clave) {
+          // Si la contraseña es correcta
+          document.getElementById('nombre').innerText = data.nombres;
+          document.getElementById('login-container').style.display = "none"; // Ocultamos el login
+          document.getElementById('welcome-container').style.display = "block"; // Mostramos la bienvenida
+        } else {
+          errorMessage.innerText = "Clave incorrecta";
+          errorMessage.style.display = "block";
+        }
+      });
     }
-  });
+
+  } catch (error) {
+    console.error("Error en la autenticación:", error);
+    errorMessage.innerText = "Ocurrió un error en la autenticación";
+    errorMessage.style.display = "block";
+  }
+});
 
   function mostrarError() {
     const errorMessage = document.getElementById('error-message');
