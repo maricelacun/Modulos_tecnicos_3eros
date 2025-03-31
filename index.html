@@ -14,7 +14,7 @@
     const firebaseConfig = {
       apiKey: "your-api-key",
       authDomain: "your-auth-domain",
-      databaseURL: "https://aula-virtual-1c360-default-rtdb.firebaseio.com", 
+      databaseURL: "https://aula-virtual-1c360-default-rtdb.firebaseio.com",
       projectId: "aula-virtual-1c360",
       storageBucket: "your-storage-bucket",
       messagingSenderId: "713777134536",
@@ -24,79 +24,61 @@
     // Inicialización de Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
+
     document.addEventListener("DOMContentLoaded", function() {
-  const loginBtn = document.getElementById('login-btn');
+      const loginBtn = document.getElementById('login-btn');
 
-  if (loginBtn) {
-    loginBtn.addEventListener('click', async function () {
-      const usuario = document.getElementById('usuario').value.trim();
-      const clave = document.getElementById('clave').value.trim();
-      const errorMessage = document.getElementById('error-message');
+      if (loginBtn) {
+        loginBtn.addEventListener('click', async function () {
+          const usuario = document.getElementById('usuario').value.trim();
+          const clave = document.getElementById('clave').value.trim();
+          const errorMessage = document.getElementById('error-message');
 
-      if (!usuario || !clave) {
-        errorMessage.innerText = "Por favor, ingresa un usuario y una clave";
-        errorMessage.style.display = "block";
-        return;
-      }
+          if (!usuario || !clave) {
+            errorMessage.innerText = "Por favor, ingresa un usuario y una clave";
+            errorMessage.style.display = "block";
+            return;
+          }
 
-      try {
-        const querySnapshot = await db.collection("estudiantes").where("usuario", "==", usuario).get();
+          try {
+            const querySnapshot = await db.collection("estudiantes").where("usuario", "==", usuario).get();
 
-        if (querySnapshot.empty) {
-          errorMessage.innerText = "Usuario no encontrado";
-          errorMessage.style.display = "block";
-        } else {
-          let encontrado = false;
-          
-          querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            console.log("Datos obtenidos:", data);
+            if (querySnapshot.empty) {
+              errorMessage.innerText = "Usuario no encontrado";
+              errorMessage.style.display = "block";
+            } else {
+              let encontrado = false;
 
-            // Comparación corregida
-            if (String(data.id_est).trim() === String(clave).trim()) {
-              // Guardar nombre en localStorage para aula.html
-              localStorage.setItem("nombreEstudiante", data.nombres_completos);
+              querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                console.log("Datos obtenidos:", data);
 
-              // Redirigir a la página aula.html
-              window.location.href = "aula.html";
-              encontrado = true;
+                // Comparación corregida
+                if (String(data.id_est).trim() === String(clave).trim()) {
+                  // Guardar nombre en localStorage para aula.html
+                  localStorage.setItem("nombreEstudiante", data.nombres_completos);
+
+                  // Redirigir a la página aula.html
+                  window.location.href = "aula.html";
+                  encontrado = true;
+                }
+              });
+
+              if (!encontrado) {
+                errorMessage.innerText = "Clave incorrecta";
+                errorMessage.style.display = "block";
+              }
             }
-          });
-
-          if (!encontrado) {
-            errorMessage.innerText = "Clave incorrecta";
+          } catch (error) {
+            console.error("Error en la autenticación:", error);
+            errorMessage.innerText = "Ocurrió un error en la autenticación";
             errorMessage.style.display = "block";
           }
-        }
-      } catch (error) {
-        console.error("Error en la autenticación:", error);
-        errorMessage.innerText = "Ocurrió un error en la autenticación";
-        errorMessage.style.display = "block";
+        });
+      } else {
+        console.error("El botón de login no se encuentra en el DOM.");
       }
     });
-  } else {
-    console.error("El botón de login no se encuentra en el DOM.");
-  }
-});
-
-
-          if (!encontrado) {
-            errorMessage.innerText = "Clave incorrecta";
-            errorMessage.style.display = "block";
-          }
-        }
-      } catch (error) {
-        console.error("Error en la autenticación:", error);
-        errorMessage.innerText = "Ocurrió un error en la autenticación";
-        errorMessage.style.display = "block";
-      }
-    });
-  } else {
-    console.error("El botón de login no se encuentra en el DOM.");
-  }
-});
-
-  
   </script>
 
   <style>
@@ -122,7 +104,7 @@
 </head>
 <body>
   <div id="login-container">
-    <img src="sello.jpg" alt="Sello " id="sello" style="width: 150px; height: auto; margin-top: 20px;">
+    <img src="sello.jpg" alt="Sello" id="sello" style="width: 150px; height: auto; margin-top: 20px;">
     <h1>🔮 UNIDAD EDUCATIVA "DR. CAMILO GALLEGOS DOMÍNGUEZ" ✨</h1>
     <h2>🔮 Aula Virtual Mágica ✨</h2>
     <input type="text" id="usuario" placeholder="Ingresa tu usuario">
