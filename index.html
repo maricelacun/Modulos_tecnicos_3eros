@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aula Virtual Mágica</title>
-  <script type="module">
-    // Importación de las funciones de Firebase
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
 
+  <!-- Cargar Firebase desde CDN -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
 
+  <script>
     // Tu configuración de Firebase
     const firebaseConfig = {
       apiKey: "your-api-key",
@@ -22,8 +22,8 @@
     };
 
     // Inicialización de Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
     console.log("Firebase cargado correctamente:", app);
 
@@ -41,10 +41,10 @@
 
       try {
         // Crear la consulta
-        const q = query(collection(db, "estudiantes"), where("usuario", "==", usuario));
+        const q = firebase.firestore().collection("estudiantes").where("usuario", "==", usuario);
 
         // Obtener los documentos que coincidan con la consulta
-        const querySnapshot = await getDocs(q);
+        const querySnapshot = await q.get();
 
         if (querySnapshot.empty) {
           errorMessage.innerText = "Usuario no encontrado";
@@ -106,8 +106,8 @@
     <h2>🎉 Bienvenido, <span id="nombre"></span>! 🚀</h2>
     <button id="continue-btn">Explorar Aula Virtual 🏫</button>
   </div>
-
 </body>
 </html>
+
 
 
