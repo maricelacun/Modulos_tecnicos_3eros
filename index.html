@@ -4,151 +4,201 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aula Virtual Mágica</title>
-  
-  <!-- Importar Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-      text-align: center;
-      background-image: url('fondo_original.jpg'); /* Asegúrate de usar el nombre correcto */
+      background-image: url('https://i.pinimg.com/originals/40/06/c8/4006c8cff8b054ca07741fda848d89a8.gif');
       background-size: cover;
       background-position: center;
+      background-repeat: no-repeat;
+      color: SteelBlue;
+      text-align: center;
+      padding: 50px;
+      overflow: hidden;
     }
 
-    #header {
-      text-align: center;
-      padding: 20px;
-      color: white;
-      font-size: 24px;
-      font-weight: bold;
+    .stars {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    .star {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkling 3s infinite;
+    }
+
+    @keyframes twinkling {
+      0% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.5); }
+      100% { opacity: 0.3; transform: scale(1); }
     }
 
     #login-container, #welcome-container {
-      background: white;
+      background: rgba(255, 255, 255, 0.9);
       padding: 30px;
       border-radius: 15px;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
       display: inline-block;
-      margin-top: 20px;
+      opacity: 0;
+      transform: scale(0.8);
+      animation: fadeInZoom 1s forwards;
+    }
+
+    @keyframes fadeInZoom {
+      0% { opacity: 0; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1); }
     }
 
     input {
       padding: 10px;
-      margin: 10px;
+      margin: 10px 0;
       border-radius: 10px;
-      border: 1px solid gray;
+      border: none;
+      width: 15%;
       text-align: center;
+      font-size: 18px;
+      transition: 0.3s;
+    }
+
+    input:focus {
+      outline: none;
+      box-shadow: 0 0 10px #2575fc;
     }
 
     button {
-      padding: 10px;
-      background: blue;
+      padding: 12px 25px;
+      background: linear-gradient(90deg, #ff758c, #ff7eb3);
       color: white;
+      font-size: 18px;
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
     }
 
-    #error-message {
-      color: red;
-      display: none;
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(255, 120, 150, 0.5);
     }
 
     #welcome-container {
       display: none;
     }
+
+    #error-message {
+      color: red;
+      display: none;
+      animation: shake 0.3s ease-in-out;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+    }
   </style>
 </head>
 <body>
 
-  <div id="header">
-    <img src="sello.png" alt="Sello del Colegio" width="80">
-    <h1>Nombre del Colegio</h1>
-    <p>Bienvenido al aula virtual del colegio</p>
-  </div>
-
+  <div class="stars"></div>
+  
   <div id="login-container">
-    <h2>Bienvenido al Aula Virtual</h2>
-    <input type="text" id="usuario" placeholder="Usuario">
-    <input type="password" id="clave" placeholder="Clave">
-    <button id="login-btn">Ingresar</button>
-    <p id="error-message">Usuario o clave incorrectos</p>
+    <img src="sello.jpg" alt="Sello " id="sello" style="width: 150px; height: auto; margin-top: 20px;">
+    <h1>🔮 UNIDAD EDUCATIVA "DR. CAMILO GALLEGOS DOMINGUEZ"  ✨</h1>
+    <h2>🔮 Bienvenido al Aula Virtual Mágica ✨</h2>
+    <input type="text" id="usuario" placeholder="Ingresa tu usuario">
+    <input type="password" id="clave" placeholder="Ingresa tu clave">
+    <button id="login-btn">Ingresar 🔑</button>
+    <p id="error-message">Usuario o clave incorrecta. Intenta de nuevo.</p>
   </div>
 
   <div id="welcome-container">
-    <h2>Bienvenido, <span id="nombre"></span>!</h2>
-    <button id="continue-btn">Ir al Aula Virtual</button>
+    <h2>🎉 Bienvenido, <span id="nombre"></span>! 🚀</h2>
+    <button id="continue-btn">Explorar Aula Virtual 🏫</button>
   </div>
 
   <script>
-    // 🔥 Configuración de Firebase
+    // Configuración de Firebase
     const firebaseConfig = {
       apiKey: "your-api-key",
       authDomain: "your-auth-domain",
+      databaseURL: "https://aula-virtual-1c360-default-rtdb.firebaseio.com", // URL de Realtime Database
       projectId: "aula-virtual-1c360",
       storageBucket: "your-storage-bucket",
       messagingSenderId: "713777134536",
       appId: "your-app-id"
     };
 
-    // Inicializar Firebase
+    // Inicialización de Firebase
     firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    const database = firebase.database(); // Usamos Realtime Database
 
     let intentos = 0;
 
-    document.getElementById('login-btn').addEventListener('click', async function () {
+    document.getElementById('login-btn').addEventListener('click', async () => {
       const usuario = document.getElementById('usuario').value.trim();
       const clave = document.getElementById('clave').value.trim();
       const errorMessage = document.getElementById('error-message');
 
-      if (usuario === "" || clave === "") {
-        errorMessage.innerText = "Por favor, ingrese usuario y clave.";
+      if (!usuario || !clave) {
+        errorMessage.innerText = "Por favor, ingresa un usuario y una clave";
         errorMessage.style.display = "block";
         return;
       }
 
       try {
-        // 🔍 Buscar usuario en Firestore
-        const querySnapshot = await db.collection('estudiantes')
-          .where('usuario', '==', usuario)
-          .limit(1)
-          .get();
+        // Accedemos a la base de datos usando el usuario
+        const snapshot = await database.ref('estudiantes').orderByChild('usuario').equalTo(usuario).once('value');
+        const userData = snapshot.val();
 
-        if (!querySnapshot.empty) {
-          const doc = querySnapshot.docs[0];
-          const userData = doc.data();
 
-          if (userData.clave === clave) {
-            console.log("Usuario autenticado:", userData);
-            document.getElementById('nombre').innerText = userData.nombre;
-            document.getElementById('login-container').style.display = "none";
-            document.getElementById('welcome-container').style.display = "block";
-          } else {
-            intentos++;
-            errorMessage.innerText = `Clave incorrecta. Intentos: ${intentos}`;
-            errorMessage.style.display = "block";
-          }
+        if (userData && userData.clave === clave) {
+          // Si el usuario y clave son correctos, mostramos la bienvenida
+          document.getElementById('nombre').innerText = userData.nombres;
+          document.getElementById('login-container').style.display = "none"; // Ocultamos el login
+          document.getElementById('welcome-container').style.display = "block"; // Mostramos la bienvenida
         } else {
           intentos++;
-          errorMessage.innerText = "Usuario no encontrado.";
+          errorMessage.innerText = `Usuario o clave incorrecta. Intentos: ${intentos}`;
           errorMessage.style.display = "block";
+
+          if (intentos >= 3) {
+            alert("❌ Has superado los intentos permitidos. Cerrando...");
+            window.close();
+          }
         }
       } catch (error) {
-        console.error("Error en la autenticación:", error);
-        errorMessage.innerText = "Error al conectar con la base de datos.";
-        errorMessage.style.display = "block";
+        console.error("Error obteniendo los datos de la base de datos:", error);
       }
     });
 
-    // Redireccionar al aula
-    document.getElementById('continue-btn').addEventListener('click', function () {
-      window.location.href = 'aula.html';
+    document.getElementById('continue-btn').addEventListener('click', () => {
+      alert("✨ ¡Bienvenido al aula virtual! ¡A disfrutar aprendiendo! 📚");
     });
+
+    function generateStars() {
+      const starsContainer = document.querySelector('.stars');
+      for (let i = 0; i < 50; i++) {
+        let star = document.createElement('div');
+        star.classList.add('star');
+        star.style.top = Math.random() * 100 + 'vh';
+        star.style.left = Math.random() * 100 + 'vw';
+        star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        starsContainer.appendChild(star);
+      }
+    }
+    generateStars();
   </script>
 
 </body>
