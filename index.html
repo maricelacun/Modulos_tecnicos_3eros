@@ -27,46 +27,49 @@
 
     console.log("Firebase cargado correctamente:", firebase);
 
-    // Función de login
-    document.getElementById('login-btn').addEventListener('click', async function () {
-      const usuario = document.getElementById('usuario').value.trim();
-      const clave = document.getElementById('clave').value.trim();
-      const errorMessage = document.getElementById('error-message');
+    // Asegurarse de que el DOM esté completamente cargado
+    document.addEventListener("DOMContentLoaded", function() {
+      // Función de login
+      document.getElementById('login-btn').addEventListener('click', async function () {
+        const usuario = document.getElementById('usuario').value.trim();
+        const clave = document.getElementById('clave').value.trim();
+        const errorMessage = document.getElementById('error-message');
 
-      if (!usuario || !clave) {
-        errorMessage.innerText = "Por favor, ingresa un usuario y una clave";
-        errorMessage.style.display = "block";
-        return;
-      }
-
-      try {
-        // Crear la consulta
-        const q = db.collection("estudiantes").where("usuario", "==", usuario);
-
-        // Obtener los documentos que coincidan con la consulta
-        const querySnapshot = await q.get();
-
-        if (querySnapshot.empty) {
-          errorMessage.innerText = "Usuario no encontrado";
+        if (!usuario || !clave) {
+          errorMessage.innerText = "Por favor, ingresa un usuario y una clave";
           errorMessage.style.display = "block";
-        } else {
-          querySnapshot.forEach(doc => {
-            const data = doc.data();
-            if (data.clave === clave) {
-              document.getElementById('nombre').innerText = data.nombres;
-              document.getElementById('login-container').style.display = "none"; 
-              document.getElementById('welcome-container').style.display = "block"; 
-            } else {
-              errorMessage.innerText = "Clave incorrecta";
-              errorMessage.style.display = "block";
-            }
-          });
+          return;
         }
-      } catch (error) {
-        console.error("Error en la autenticación:", error);
-        errorMessage.innerText = "Ocurrió un error en la autenticación";
-        errorMessage.style.display = "block";
-      }
+
+        try {
+          // Crear la consulta
+          const q = db.collection("estudiantes").where("usuario", "==", usuario);
+
+          // Obtener los documentos que coincidan con la consulta
+          const querySnapshot = await q.get();
+
+          if (querySnapshot.empty) {
+            errorMessage.innerText = "Usuario no encontrado";
+            errorMessage.style.display = "block";
+          } else {
+            querySnapshot.forEach(doc => {
+              const data = doc.data();
+              if (data.clave === clave) {
+                document.getElementById('nombre').innerText = data.nombres;
+                document.getElementById('login-container').style.display = "none"; 
+                document.getElementById('welcome-container').style.display = "block"; 
+              } else {
+                errorMessage.innerText = "Clave incorrecta";
+                errorMessage.style.display = "block";
+              }
+            });
+          }
+        } catch (error) {
+          console.error("Error en la autenticación:", error);
+          errorMessage.innerText = "Ocurrió un error en la autenticación";
+          errorMessage.style.display = "block";
+        }
+      });
     });
   </script>
 
@@ -108,7 +111,3 @@
   </div>
 </body>
 </html>
-
-
-
-
