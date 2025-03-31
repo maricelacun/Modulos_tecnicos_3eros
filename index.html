@@ -9,7 +9,6 @@
   import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
   import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-  // Configuración de Firebase
   const firebaseConfig = {
     apiKey: "your-api-key",
     authDomain: "your-auth-domain",
@@ -19,12 +18,15 @@
     appId: "your-app-id"
   };
 
-  // Inicializar Firebase
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
 
   console.log("Firebase cargado correctamente:", app);
+  console.log("Auth:", auth);
+  console.log("Firestore:", db);
+</script>
+
 </script>
 
   <style>
