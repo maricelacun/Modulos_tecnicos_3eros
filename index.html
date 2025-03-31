@@ -159,7 +159,9 @@
 
       try {
         // Accedemos a la base de datos usando el usuario
-        const snapshot = await database.ref('estudiantes').child(usuario).once('value');
+        const snapshot = await database.ref('estudiantes').orderByChild('usuario').equalTo(usuario).once('value');
+        const userData = snapshot.val();
+
         const userData = snapshot.val(); // Datos del usuario (clave, nombre)
 
         if (userData && userData.clave === clave) {
