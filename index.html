@@ -81,7 +81,7 @@
 
     // Inicializar Firebase
     firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore(); // 📌 Usamos Firestore en lugar de Realtime Database
+    const db = firebase.firestore();
 
     let intentos = 0;
 
@@ -104,11 +104,11 @@
           .get();
 
         if (!querySnapshot.empty) {
-          const doc = querySnapshot.docs[0]; // Tomar el primer documento encontrado
+          const doc = querySnapshot.docs[0];
           const userData = doc.data();
 
           if (userData.clave === clave) {
-            document.getElementById('nombre').innerText = userData.nombres;
+            document.getElementById('nombre').innerText = userData.nombre;
             document.getElementById('login-container').style.display = "none";
             document.getElementById('welcome-container').style.display = "block";
           } else {
@@ -126,6 +126,11 @@
         errorMessage.innerText = "Error al conectar con la base de datos.";
         errorMessage.style.display = "block";
       }
+    });
+
+    // Redireccionar al aula
+    document.getElementById('continue-btn').addEventListener('click', function () {
+      window.location.href = 'aula.html';
     });
   </script>
 
