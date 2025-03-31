@@ -52,15 +52,14 @@
               let encontrado = false;
               
               querySnapshot.forEach(doc => {
-                const data = doc.data();
-                console.log("Datos obtenidos:", data);
+                // Verificar con el campo correcto (id_est en lugar de clave)
+              if (String(data.id_est).trim() === String(clave).trim()) {
+              document.getElementById('nombre').innerText = data.nombres_completos;
+              document.getElementById('login-container').style.display = "none"; 
+              document.getElementById('welcome-container').style.display = "block"; 
+              encontrado = true;
+            }
 
-                // Comparar como strings asegurando que no haya espacios adicionales
-                if (String(data.clave).trim() === String(clave).trim()) {
-                  document.getElementById('nombre').innerText = data.nombres;
-                  document.getElementById('login-container').style.display = "none"; 
-                  document.getElementById('welcome-container').style.display = "block"; 
-                  encontrado = true;
                 }
               });
 
