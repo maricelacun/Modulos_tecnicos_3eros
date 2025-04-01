@@ -56,14 +56,26 @@
             width: 50%;
             height: 500px; /* Altura fija para el iframe */
         }
+
+        .username {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
     </style>
 </head>
 <script>
     // Verificar si el usuario está autenticado
     window.onload = function () {
+        // Verificamos si la clave 'accesoPermitido' está en localStorage y es 'true'
         if (localStorage.getItem("accesoPermitido") !== "true") {
             // Si no está autenticado, redirigir a la página de inicio de sesión
             window.location.href = "index.html";
+        } else {
+            // Si está autenticado, mostrar el nombre del estudiante
+            const nombreEstudiante = localStorage.getItem("nombreEstudiante");
+            if (nombreEstudiante) {
+                document.getElementById("nombreEstudiante").textContent = nombreEstudiante;
+            }
         }
     };
 </script>
@@ -81,7 +93,7 @@
     </header>
     <main>
         <section class="welcome">
-            <h2>Bienvenido a tu Aula Virtual</h2>
+            <h2>Bienvenido, <span id="nombreEstudiante" class="username">Usuario</span>!</h2>
             <p>Selecciona un módulo para comenzar a aprender.</p>
         </section>
         <section class="features">
