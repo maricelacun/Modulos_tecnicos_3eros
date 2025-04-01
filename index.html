@@ -100,18 +100,34 @@
       padding: 50px;
     }
 
-    #login-container, #welcome-container {
-      background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjdU1AzUL4_5XFMYhaZ8m3E67fpv31kcJcePZ8FG_8JK3v2ddMz-mXGK6FWwpZaEQqrnek1NKYUbF3X11yLYFGdWusJyTG0BlRiRyYqv5I-mp79HYx1A50QUSVbBsbs4HACB15QmNDRmR0/s1600/13042102921872586.gif');
-      background-size: cover; /* Asegura que la imagen de fondo cubra todo el contenedor */
-      background-position: center; /* Centra la imagen de fondo */
-      background-repeat: no-repeat; /* Evita que la imagen de fondo se repita */
-      padding: 20px;
-      border-radius: 25px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      display: inline-block;
-      width: 100%; /* Asegura que ocupe el 100% del ancho disponible */
-      max-width: 600px; /* Limita el ancho máximo para que no sea demasiado grande */
-      box-sizing: border-box; /* Asegura que el padding no afecte el tamaño total */
+    <div id="login-container">
+  <video autoplay muted loop id="background-video">
+    <source src="aula.mp4" type="video/mp4">
+    Tu navegador no soporta el formato de video.
+  </video>
+  #login-container, #welcome-container {
+  position: relative; /* Necesario para poner el video detrás del contenido */
+  padding: 20px;
+  border-radius: 25px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  display: inline-block;
+  width: 100%; /* Asegura que ocupe el 100% del ancho disponible */
+  max-width: 600px; /* Limita el ancho máximo para que no sea demasiado grande */
+  box-sizing: border-box; /* Asegura que el padding no afecte el tamaño total */
+}
+
+#background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Hace que el video cubra todo el contenedor */
+  z-index: -1; /* Coloca el video detrás del contenido */
+}
+
+</div>
+
 }
 
     }
