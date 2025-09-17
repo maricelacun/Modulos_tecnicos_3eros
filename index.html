@@ -12,13 +12,23 @@
   <script>
     // Tu configuración de Firebase
     const firebaseConfig = {
+ import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
   apiKey: "AIzaSyDMZHxCilms5wdCxlgelZGJbyzi9NsWS9E",
   authDomain: "aula-virtual-1c360.firebaseapp.com",
   databaseURL: "https://aula-virtual-1c360-default-rtdb.firebaseio.com",
   projectId: "aula-virtual-1c360",
-  storageBucket: "aula-virtual-1c360.appspot.com",
+  storageBucket: "aula-virtual-1c360.firebasestorage.app",
   messagingSenderId: "713777134536",
-  appId: "1:713777134536:web:XXXXXXXXXXXXXX" // 👈 este te aparece también en Firebase
+  appId: "1:713777134536:web:4d536c21a3adaad2b09efd",
+  measurementId: "G-29BMZFSQH8"
+  // 👈 este te aparece también en Firebase
 };
     // Inicialización de Firebase
     firebase.initializeApp(firebaseConfig);
@@ -156,5 +166,6 @@ button:hover {
   </div>
 </body>
 </html>
+
 
 
