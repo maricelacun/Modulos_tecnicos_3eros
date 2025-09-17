@@ -1,189 +1,122 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Aula Virtual Mágica</title>
 
-  <!-- CDN Firebase v8 -->
+  <!-- Firebase v8 (CDN) -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
   <script>
-    // ============================
-    // CONFIGURACIÓN FIREBASE v8
-    // ============================
+    // --------- CONFIGURACIÓN FIREBASE (formato correcto) ----------
     const firebaseConfig = {
       apiKey: "AIzaSyDMZHxCilms5wdCxlgelZGJbyzi9NsWS9E",
       authDomain: "aula-virtual-1c360.firebaseapp.com",
       databaseURL: "https://aula-virtual-1c360-default-rtdb.firebaseio.com",
       projectId: "aula-virtual-1c360",
-      storageBucket: "aula-virtual-1c360.firebasestorage.app",
+      storageBucket: "aula-virtual-1c360.appspot.com",
       messagingSenderId: "713777134536",
       appId: "1:713777134536:web:4d536c21a3adaad2b09efd",
       measurementId: "G-29BMZFSQH8"
     };
 
     // Inicializar Firebase (v8)
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    try {
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      console.log("Firebase inicializado. db:", !!db);
 
-    // Lógica de DOM / login
-    document.addEventListener("DOMContentLoaded", function() {
-      const loginBtn = document.getElementById('login-btn');
-      const errorMessage = document.getElementById('error-message');
+      // Código de login
+      document.addEventListener("DOMContentLoaded", function() {
+        const loginBtn = document.getElementById('login-btn');
+        const errorMessage = document.getElementById('error-message');
 
-      if (!loginBtn) {
-        console.error("El botón de login no se encuentra en el DOM.");
-        return;
-      }
-
-      loginBtn.addEventListener('click', async function (event) {
-        event.preventDefault();
-
-        const usuario = document.getElementById('usuario').value.trim();
-        const clave = document.getElementById('clave').value.trim();
-
-        // Validaciones simples
-        if (!usuario || !clave) {
-          errorMessage.innerText = "Por favor, ingresa un usuario y una clave";
-          errorMessage.style.display = "block";
+        if (!loginBtn) {
+          console.error("Botón login no encontrado");
           return;
-        } else {
-          errorMessage.style.display = "none";
         }
 
-        try {
-          // Consulta a Firestore: colección "estudiantes" campo "usuario"
-          const querySnapshot = await db.collection("estudiantes").where("usuario", "==", usuario).get();
+        loginBtn.addEventListener('click', async function(e) {
+          e.preventDefault();
+          const usuario = document.getElementById('usuario').value.trim();
+          const clave = document.getElementById('clave').value.trim();
 
-          if (querySnapshot.empty) {
-            errorMessage.innerText = "Usuario no encontrado";
+          if (!usuario || !clave) {
+            errorMessage.innerText = "Por favor, ingresa un usuario y una clave";
             errorMessage.style.display = "block";
             return;
+          } else {
+            errorMessage.style.display = "none";
           }
 
-          let encontrado = false;
-          querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            console.log("Datos obtenidos:", data);
-
-            // Comparar credenciales (ajusta campo si tu clave está en otro campo)
-            if (String(data.id_est).trim() === String(clave).trim()) {
-              localStorage.setItem("nombreEstudiante", data.nombres_completos || data.nombres || "");
-              localStorage.setItem("accesoPermitido", "true");
-              encontrado = true;
+          try {
+            const querySnapshot = await db.collection("estudiantes").where("usuario", "==", usuario).get();
+            if (querySnapshot.empty) {
+              errorMessage.innerText = "Usuario no encontrado";
+              errorMessage.style.display = "block";
+              return;
             }
-          });
-
-          if (encontrado) {
-            // Redirigir fuera del try/catch para mayor claridad
-            window.location.href = "aula.html";
-          } else {
-            errorMessage.innerText = "Clave incorrecta";
+            let encontrado = false;
+            querySnapshot.forEach(doc => {
+              const data = doc.data();
+              console.log("Documento:", doc.id, data);
+              if (String(data.id_est).trim() === String(clave).trim()) {
+                localStorage.setItem("nombreEstudiante", data.nombres_completos || data.nombres || "");
+                localStorage.setItem("accesoPermitido", "true");
+                encontrado = true;
+              }
+            });
+            if (encontrado) {
+              window.location.href = "aula.html";
+            } else {
+              errorMessage.innerText = "Clave incorrecta";
+              errorMessage.style.display = "block";
+            }
+          } catch (err) {
+            console.error("Error Firestore:", err);
+            errorMessage.innerText = "Ocurrió un error en la autenticación (ver consola)";
             errorMessage.style.display = "block";
           }
-        } catch (error) {
-          console.error("Error en la autenticación:", error);
-          errorMessage.innerText = "Ocurrió un error en la autenticación (revisa consola)";
-          errorMessage.style.display = "block";
-        }
+        });
+
+        // Botón de prueba local si quieres probar sin Firebase
+        document.getElementById('prueba-btn').addEventListener('click', function(e){
+          e.preventDefault();
+          localStorage.setItem('nombreEstudiante','Estudiante Prueba');
+          window.location.href = 'aula.html';
+        });
       });
-    });
+    } catch (err) {
+      console.error("No se pudo inicializar Firebase:", err);
+    }
   </script>
 
   <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-image: url('https://i.pinimg.com/originals/40/06/c8/4006c8cff8b054ca07741fda848d89a8.gif');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      color: white;
-      text-align: center;
-      padding: 50px;
-      margin: 0;
-    }
-
-    #login-container, #welcome-container {
-      background-image: url('https://i.makeagif.com/media/4-19-2017/gLpcy_.gif');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      padding: 20px;
-      border-radius: 25px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      display: inline-block;
-      width: 100%;
-      max-width: 600px;
-      box-sizing: border-box;
-    }
-
-    input[type="text"], input[type="password"] {
-      width: 150px;
-      padding: 14px;
-      font-size: 15px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      margin-right: 10px;
-      box-sizing: border-box;
-    }
-
-    button {
-      width: auto;
-      padding: 10px 15px;
-      font-size: 15px;
-      border-radius: 8px;
-      background-color: #FFD700;
-      color: black;
-      border: none;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #FFC107;
-    }
-
-    #error-message {
-      color: #ffb3b3;
-      margin-top: 12px;
-      display: none;
-    }
-
-    /* Responsive */
-    @media (max-width: 480px) {
-      input[type="text"], input[type="password"] {
-        width: 100%;
-        margin: 8px 0;
-      }
-      #login-container { padding: 16px; }
-    }
+    body { font-family: Poppins, sans-serif; background: #222; color: #fff; text-align:center; padding:30px; margin:0; }
+    #login-container { background: rgba(255,255,255,0.06); padding:20px; border-radius:12px; display:inline-block; max-width:640px; width:100%; }
+    input { padding:10px; margin:6px; border-radius:8px; border:1px solid #ccc; }
+    button { padding:10px 16px; border-radius:8px; border:none; cursor:pointer; background:#ffd700; color:#000; }
+    #error-message { color:#ffb3b3; display:none; margin-top:10px; }
   </style>
 </head>
-
 <body>
-  <div id="login-container" role="main" aria-labelledby="titulo-sitio">
-    <img src="sello.jpg" alt="Sello institucional" id="sello" style="width:150px;height:auto;margin-top:20px;">
-    <h2 id="titulo-sitio">🔮 UNIDAD EDUCATIVA "DR. CAMILO GALLEGOS DOMÍNGUEZ" ✨</h2>
-    <h3>🔮 Bienvenido (a) a nuestra Aula Virtual ✨</h3>
+  <div id="login-container">
+    <h1>Aula Virtual Mágica</h1>
+    <p>Unidad Educativa "DR. CAMILO GALLEGOS DOMÍNGUEZ"</p>
 
-    <div style="margin-top:12px;">
-      <input type="text" id="usuario" placeholder="Ingresa tu usuario" aria-label="Usuario">
-      <input type="password" id="clave" placeholder="Ingresa tu clave" aria-label="Clave">
+    <div>
+      <input id="usuario" type="text" placeholder="Usuario" />
+      <input id="clave" type="password" placeholder="Clave" />
     </div>
 
-    <div style="margin-top:12px;">
+    <div style="margin-top:10px;">
       <button id="login-btn">Ingresar 🔑</button>
+      <button id="prueba-btn" style="margin-left:8px;">Prueba sin Firebase</button>
     </div>
 
     <p id="error-message">Usuario o clave incorrecta. Intenta de nuevo.</p>
-
-    <img src="piclumen-1743471294593.png" alt="Robot" id="robot" style="width:300px;height:auto;margin-top:20px;">
-  </div>
-
-  <div id="welcome-container" style="display:none;">
-    <h2>🎉 Bienvenido, <span id="nombre"></span>! 🚀</h2>
-    <button id="continue-btn">Explorar Aula Virtual 🏫</button>
   </div>
 </body>
 </html>
