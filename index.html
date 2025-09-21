@@ -17,10 +17,9 @@
       projectId: "aula-virtual-1c360",
       storageBucket: "aula-virtual-1c360.appspot.com",
       messagingSenderId: "713777134536",
-      appId: "1:713777134536:web:4d536c21a3adaad2b09efd" // 👈 tu AppID real
+      appId: "1:713777134536:web:4d536c21a3adaad2b09efd" 
     };
 
-    // Inicializar Firebase (v8)
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
@@ -47,7 +46,6 @@
         }
 
         try {
-          // Buscar el usuario en la colección "estudiantes"
           const querySnapshot = await db.collection("estudiantes")
             .where("usuario", "==", usuario)
             .get();
@@ -61,11 +59,7 @@
           let encontrado = false;
           querySnapshot.forEach(doc => {
             const data = doc.data();
-            console.log("Documento:", doc.id, data);
-
-            // Comparar la clave ingresada con el campo id_est de la BD
             if (String(data.id_est).trim() === String(clave).trim()) {
-              // Guardar datos en localStorage
               localStorage.setItem("nombreEstudiante", data.nombres_completos || data.nombres || "");
               localStorage.setItem("accesoPermitido", "true");
               encontrado = true;
@@ -85,7 +79,6 @@
         }
       });
 
-      // Botón de prueba local
       const btnPrueba = document.getElementById('prueba-btn');
       if (btnPrueba) {
         btnPrueba.addEventListener('click', function(e) {
@@ -99,15 +92,68 @@
   </script>
 
   <style>
-    body { font-family: Poppins, sans-serif; background: #222; color: #fff; text-align:center; padding:30px; margin:0; }
-    #login-container { background: rgba(255,255,255,0.06); padding:20px; border-radius:12px; display:inline-block; max-width:640px; width:100%; }
-    input { padding:10px; margin:6px; border-radius:8px; border:1px solid #ccc; }
-    button { padding:10px 16px; border-radius:8px; border:none; cursor:pointer; background:#ffd700; color:#000; }
-    button:hover { background:#ffca28; }
-    #error-message { color:#ffb3b3; display:none; margin-top:10px; }
+    /* El video cubre todo el fondo */
+    #bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1; /* para que quede detrás del contenido */
+    }
+
+    body { 
+      font-family: Poppins, sans-serif; 
+      color: #fff; 
+      text-align: center; 
+      padding: 30px; 
+      margin: 0; 
+    }
+
+    #login-container { 
+      background: rgba(0,0,0,0.6); 
+      padding: 20px; 
+      border-radius: 12px; 
+      display: inline-block; 
+      max-width: 640px; 
+      width: 100%; 
+    }
+
+    input { 
+      padding: 10px; 
+      margin: 6px; 
+      border-radius: 8px; 
+      border: 1px solid #ccc; 
+    }
+
+    button { 
+      padding: 10px 16px; 
+      border-radius: 8px; 
+      border: none; 
+      cursor: pointer; 
+      background: #ffd700; 
+      color: #000; 
+    }
+
+    button:hover { 
+      background: #ffca28; 
+    }
+
+    #error-message { 
+      color: #ffb3b3; 
+      display: none; 
+      margin-top: 10px; 
+    }
   </style>
 </head>
 <body>
+  <!-- Video de fondo -->
+  <video id="bg-video" autoplay muted loop>
+    <source src="0ad1bfd4-8baa-4cc6-b634-c6a32fc3b214.mp4" type="video/mp4">
+    Tu navegador no soporta videos HTML5.
+  </video>
+
   <div id="login-container">
     <h1>Aula Virtual Mágica</h1>
     <p>Unidad Educativa "DR. CAMILO GALLEGOS DOMÍNGUEZ"</p>
