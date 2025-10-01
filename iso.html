@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archivos ISO y Virtualización: Una Aventura Digital</title>
+    <!-- Carga de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Configuración de la fuente Inter y estilo de fondo */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Un fondo gris muy claro */
+            background-image: radial-gradient(circle at top right, #c3e2f8 0%, transparent 50%),
+                              radial-gradient(circle at bottom left, #d1c4e9 0%, transparent 50%);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        /* Estilos personalizados para la interactividad */
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .step-card {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid;
+        }
+        .step-card:hover {
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            transform: scale(1.02);
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#4f46e5',
+                        'secondary': '#10b981',
+                        'accent': '#f97316',
+                        'purple-light': '#a78bfa',
+                        'blue-light': '#60a5fa',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="text-gray-800">
+
+    <!-- Encabezado Principal -->
+    <header class="bg-primary shadow-lg sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+            <h1 class="text-3xl font-extrabold text-white text-center sm:text-4xl tracking-tight">
+                🚀 Archivos ISO y Virtualización: ¡Tu Aventura Digital!
+            </h1>
+        </div>
+    </header>
+
+    <!-- Contenedor Principal de Contenido -->
+    <main class="max-w-7xl mx-auto p-6 sm:p-8 space-y-16">
+
+        <!-- Sección 1: ¿Qué son los Archivos ISO? -->
+        <section class="bg-white p-8 rounded-xl shadow-2xl card-hover transition duration-300">
+            <h2 class="text-3xl font-bold text-primary mb-4 border-b-2 border-primary pb-2">📂 ¿Qué es un Archivo ISO?</h2>
+            <div class="md:flex md:space-x-8">
+                <div class="md:w-2/3">
+                    <p class="text-lg mb-4 leading-relaxed">
+                        Imagina que tienes una pila de libros y quieres llevar una copia exacta y perfecta de esa pila, con su orden y estructura, a otro lugar. Un archivo **ISO** es justo eso: una **imagen digital completa** de un disco óptico (como un CD, DVD o Blu-ray).
+                    </p>
+                    <p class="text-lg mb-4 leading-relaxed font-semibold">
+                        Su nombre viene de la Organización Internacional de Normalización (ISO), que define el formato de sistemas de archivos.
+                    </p>
+                    <h3 class="text-xl font-bold text-accent mt-6 mb-3">¿Para qué sirve un Archivo ISO?</h3>
+                    <ul class="list-disc list-inside space-y-2 ml-4 text-lg">
+                        <li class="p-1 rounded-md bg-blue-50">
+                            **Instalación de Sistemas Operativos:** Es la forma más común de distribuir Windows, Linux o macOS. Se "quema" en un USB o se usa en una máquina virtual.
+                        </li>
+                        <li class="p-1 rounded-md bg-blue-50">
+                            **Copias de Seguridad (Backups):** Permite crear una copia idéntica de un disco de software o un sistema de arranque.
+                        </li>
+                        <li class="p-1 rounded-md bg-blue-50">
+                            **Emulación:** Permite acceder al contenido de un disco sin tener el disco físico, "montándolo" como una unidad virtual.
+                        </li>
+                    </ul>
+                </div>
+                <div class="md:w-1/3 mt-6 md:mt-0 flex justify-center items-center">
+                    <!-- Imagen de un archivo ISO -->
+                    
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 2: El Poder de la Virtualización -->
+        <section class="bg-white p-8 rounded-xl shadow-2xl card-hover transition duration-300">
+            <h2 class="text-3xl font-bold text-secondary mb-4 border-b-2 border-secondary pb-2">☁️ ¿Qué es la Virtualización?</h2>
+            <p class="text-lg mb-4 leading-relaxed">
+                La virtualización es una tecnología mágica en la informática. Es el arte de crear una **versión virtual (o simulada)** de algo que es real, como un sistema operativo, un dispositivo de almacenamiento o un recurso de red.
+            </p>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-secondary/10 p-4 rounded-lg border-l-4 border-secondary">
+                    <h3 class="font-bold text-xl text-secondary">Máquina Virtual (VM)</h3>
+                    <p class="mt-2">Es el ejemplo más común. Una VM es una computadora completa (con su propio CPU, RAM, disco duro virtual y tarjeta de red) que existe únicamente como un conjunto de archivos dentro de otra computadora. Piensa en ella como una "computadora dentro de tu computadora".</p>
+                </div>
+                <div class="bg-secondary/10 p-4 rounded-lg border-l-4 border-secondary">
+                    <h3 class="font-bold text-xl text-secondary">¿Para qué Virtualizar?</h3>
+                    <ul class="list-disc list-inside ml-4 mt-2">
+                        <li>**Pruebas Seguras:** Probar software o visitar sitios web peligrosos sin dañar tu sistema principal.</li>
+                        <li>**Compatibilidad:** Ejecutar software antiguo (ej. Windows XP) en una máquina moderna (ej. Windows 11).</li>
+                        <li>**Desarrollo:** Tener múltiples entornos de trabajo aislados (Linux, Windows) en un solo hardware.</li>
+                    </ul>
+                </div>
+            </div>
+            
+
+[Image of Virtualization Diagram]
+
+        </section>
+
+        <!-- Sección 3: Conociendo Oracle VM VirtualBox -->
+        <section class="bg-white p-8 rounded-xl shadow-2xl card-hover transition duration-300">
+            <h2 class="text-3xl font-bold text-purple-light mb-4 border-b-2 border-purple-light pb-2">💻 Oracle VM VirtualBox</h2>
+            <div class="md:flex md:space-x-8 items-center">
+                <div class="md:w-1/3 flex justify-center mb-6 md:mb-0">
+                    <svg class="w-24 h-24 text-purple-light" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M22 10V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h7v-2H4V6h16v4h2zM15.5 15.5l-4-4V18h4v-2h-2.5l2.5-2.5 1-1-1-1-2.5 2.5v-2.5h-2V18l4-4 1-1 1 1-1 1zM20 18h-2v-2h2v2zm0-4h-2v-2h2v2z"/>
+                    </svg>
+                </div>
+                <div class="md:w-2/3">
+                    <p class="text-lg leading-relaxed">
+                        **VirtualBox** es un *hipervisor* tipo 2, lo que significa que es un programa que se instala en tu sistema operativo principal (el *anfitrión* o *host*) y te permite crear y ejecutar máquinas virtuales (el *invitado* o *guest*).
+                    </p>
+                    <p class="text-lg mt-3 font-medium text-purple-light">
+                        Es extremadamente popular porque es **gratuito, de código abierto** y está disponible para Windows, macOS, Linux y Solaris. Es la puerta de entrada perfecta al mundo de la virtualización.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 4: Guía Paso a Paso: Creando tu Primera Máquina Virtual -->
+        <section class="p-8 rounded-xl shadow-2xl bg-gradient-to-r from-white to-blue-50">
+            <h2 class="text-3xl font-extrabold text-accent mb-6 text-center">⚙️ Pasos para Crear una Máquina Virtual en VirtualBox</h2>
+
+            <div class="space-y-6">
+
+                <!-- Paso 1 -->
+                <div class="step-card bg-white p-6 rounded-lg border-accent hover:border-accent/70">
+                    <div class="flex items-center space-x-4">
+                        <span class="text-3xl font-bold text-accent bg-accent/20 rounded-full w-10 h-10 flex items-center justify-center">1</span>
+                        <h3 class="text-xl font-bold text-gray-900">Instalación y Clic en "Nueva"</h3>
+                    </div>
+                    <p class="mt-2 ml-14 text-lg">
+                        Abre VirtualBox y haz clic en el botón <span class="font-bold text-blue-light">"Nueva"</span>. Esto abrirá un asistente para la creación de la VM.
+                    </p>
+                </div>
+
+                <!-- Paso 2 -->
+                <div class="step-card bg-white p-6 rounded-lg border-blue-light hover:border-blue-light/70">
+                    <div class="flex items-center space-x-4">
+                        <span class="text-3xl font-bold text-blue-light bg-blue-light/20 rounded-full w-10 h-10 flex items-center justify-center">2</span>
+                        <h3 class="text-xl font-bold text-gray-900">Nombre y Sistema Operativo</h3>
+                    </div>
+                    <p class="mt-2 ml-14 text-lg">
+                        Asigna un nombre (ej. "MiPrimerLinux"). Selecciona el <span class="font-bold">Tipo</span> (ej. Linux, Windows) y la <span class="font-bold">Versión</span>. VirtualBox a menudo detecta esto automáticamente al escribir el nombre.
+                    </p>
+                </div>
+
+                <!-- Paso 3 -->
+                <div class="step-card bg-white p-6 rounded-lg border-purple-light hover:border-purple-light/70">
+                    <div class="flex items-center space-x-4">
+                        <span class="text-3xl font-bold text-purple-light bg-purple-light/20 rounded-full w-10 h-10 flex items-center justify-center">3</span>
+                        <h3 class="text-xl font-bold text-gray-900">Memoria RAM (Alineación)</h3>
+                    </div>
+                    <p class="mt-2 ml-14 text-lg">
+                        Define la cantidad de <span class="font-bold text-purple-light">RAM</span> que le asignarás a tu VM. ¡Cuidado! No uses más del 50% de la RAM total de tu computadora principal. La barra de color te guiará.
+                    </p>
+                </div>
+
+                <!-- Paso 4 -->
+                <div class="step-card bg-white p-6 rounded-lg border-secondary hover:border-secondary/70">
+                    <div class="flex items-center space-x-4">
+                        <span class="text-3xl font-bold text-secondary bg-secondary/20 rounded-full w-10 h-10 flex items-center justify-center">4</span>
+                        <h3 class="text-xl font-bold text-gray-900">Disco Duro Virtual</h3>
+                    </div>
+                    <p class="mt-2 ml-14 text-lg">
+                        Selecciona <span class="font-bold">"Crear un disco duro virtual ahora"</span>. Elige **VDI** (VirtualBox Disk Image) y <span class="font-bold">"Reservado dinámicamente"</span> (para que el archivo crezca solo cuando sea necesario). Asigna un tamaño de disco (ej. 20GB).
+                    </p>
+                </div>
+
+                <!-- Paso 5: Montar el ISO -->
+                <div class="step-card bg-white p-6 rounded-lg border-primary hover:border-primary/70">
+                    <div class="flex items-center space-x-4">
+                        <span class="text-3xl font-bold text-primary bg-primary/20 rounded-full w-10 h-10 flex items-center justify-center">5</span>
+                        <h3 class="text-xl font-bold text-gray-900">¡Montar el Archivo ISO!</h3>
+                    </div>
+                    <p class="mt-2 ml-14 text-lg">
+                        En la ventana principal de VirtualBox, selecciona tu nueva VM. Ve a <span class="font-bold">"Configuración" > "Almacenamiento"</span>. Bajo el controlador IDE, haz clic en el icono de **CD/DVD** vacío y luego en el icono de disco pequeño. Aquí seleccionas <span class="font-bold text-primary">"Seleccionar un archivo de disco óptico virtual"</span> y navegas hasta tu archivo <span class="font-bold text-primary">.ISO</span>.
+                    </p>
+                </div>
+
+                <!-- Paso 6: Iniciar -->
+                <div class="step-card bg-white p-6 rounded-lg border-accent hover:border-accent/70">
+                    <div class="flex items-center space-x-4">
+                        <span class="text-3xl font-bold text-accent bg-accent/20 rounded-full w-10 h-10 flex items-center justify-center">6</span>
+                        <h3 class="text-xl font-bold text-gray-900">¡Encendido!</h3>
+                    </div>
+                    <p class="mt-2 ml-14 text-lg">
+                        Haz clic en <span class="font-bold text-accent">"Iniciar"</span>. La VM arrancará usando el archivo ISO como si fuera un DVD insertado, y comenzará el proceso de instalación del sistema operativo invitado.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Pie de página -->
+    <footer class="mt-16 bg-gray-900 text-white p-8">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-sm">¡La virtualización te abre un universo de posibilidades para aprender y experimentar sin riesgos! 😊</p>
+        </div>
+    </footer>
+
+</body>
+</html>
