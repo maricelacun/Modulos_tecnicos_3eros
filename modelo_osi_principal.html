@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redes y Comunicaciones - Página Principal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6C63FF;
+            --secondary: #FF6584;
+            --accent1: #36D1DC;
+            --accent2: #FFC107;
+            --dark: #2A2D43;
+            --light: #F8F9FA;
+            --success: #4CAF50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        .logo-icon {
+            font-size: 3rem;
+            margin-right: 1rem;
+            color: var(--accent2);
+            filter: drop-shadow(0 0 10px rgba(255, 193, 7, 0.5));
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(to right, var(--accent1), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-1000px) rotate(720deg); }
+        }
+        
+        .main-content {
+            position: relative;
+            z-index: 5;
+            padding: 2rem 0;
+        }
+        
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--accent1), var(--accent2));
+        }
+        
+        .card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent2);
+        }
+        
+        .card-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--light);
+        }
+        
+        .card-description {
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: linear-gradient(to right, var(--primary), var(--accent1));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .features {
+            margin-top: 5rem;
+            text-align: center;
+        }
+        
+        .features h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--light);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .feature {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .feature:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent2);
+        }
+        
+        .feature-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+        
+        footer {
+            margin-top: 5rem;
+            padding: 3rem 0;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .social-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            margin-top: 1.5rem;
+            opacity: 0.7;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements" id="floatingElements"></div>
+    
+    <header>
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-network-wired logo-icon"></i>
+                <h1>Redes y Comunicaciones</h1>
+            </div>
+            <p class="subtitle">Explora los fundamentos de las redes de computadoras y los modelos de comunicación</p>
+        </div>
+    </header>
+    
+    <section class="main-content">
+        <div class="container">
+            <div class="cards-container">
+                <div class="card">
+                    <i class="fas fa-sitemap card-icon"></i>
+                    <h2 class="card-title">Modelo OSI</h2>
+                    <p class="card-description">Descubre el modelo de referencia de interconexión de sistemas abiertos, sus 7 capas y cómo facilitan la comunicación entre sistemas.</p>
+                    <a href="modelo_osi.html" class="btn">Explorar Modelo OSI</a>
+                </div>
+                
+                <div class="card">
+                    <i class="fas fa-globe card-icon"></i>
+                    <h2 class="card-title">Modelo TCP/IP</h2>
+                    <p class="card-description">Conoce el conjunto de protocolos que impulsa Internet, sus 4 capas y cómo permite la comunicación global.</p>
+                    <a href="modelo_tcp.html" class="btn">Explorar TCP/IP</a>
+                </div>
+                
+                <div class="card">
+                    <i class="fas fa-exchange-alt card-icon"></i>
+                    <h2 class="card-title">Protocolos de Red</h2>
+                    <p class="card-description">Aprende sobre los diferentes protocolos de comunicación, sus funciones y cómo operan en cada capa del modelo.</p>
+                    <a href="protocolos.html" class="btn">Explorar Protocolos</a>
+                </div>
+            </div>
+            
+            <div class="features">
+                <h2>Características Destacadas</h2>
+                <div class="features-grid">
+                    <div class="feature">
+                        <i class="fas fa-palette feature-icon"></i>
+                        <h3 class="feature-title">Diseño Innovador</h3>
+                        <p>Interfaces modernas y atractivas para una mejor experiencia de aprendizaje.</p>
+                    </div>
+                    
+                    <div class="feature">
+                        <i class="fas fa-mobile-alt feature-icon"></i>
+                        <h3 class="feature-title">Totalmente Responsivo</h3>
+                        <p>Diseñado para funcionar perfectamente en todos los dispositivos.</p>
+                    </div>
+                    
+                    <div class="feature">
+                        <i class="fas fa-gamepad feature-icon"></i>
+                        <h3 class="feature-title">Interactivo</h3>
+                        <p>Elementos interactivos que facilitan la comprensión de conceptos complejos.</p>
+                    </div>
+                    
+                    <div class="feature">
+                        <i class="fas fa-rocket feature-icon"></i>
+                        <h3 class="feature-title">Rendimiento Optimizado</h3>
+                        <p>Carga rápida y animaciones fluidas para una navegación sin interrupciones.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                </div>
+                <p class="copyright">&copy; 2023 Redes y Comunicaciones. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Crear elementos flotantes
+        document.addEventListener('DOMContentLoaded', function() {
+            const floatingContainer = document.getElementById('floatingElements');
+            const colors = ['rgba(108, 99, 255, 0.3)', 'rgba(255, 101, 132, 0.3)', 'rgba(54, 209, 220, 0.3)', 'rgba(255, 193, 7, 0.3)'];
+            
+            for (let i = 0; i < 15; i++) {
+                const element = document.createElement('div');
+                element.className = 'floating-element';
+                
+                // Tamaño aleatorio
+                const size = Math.random() * 100 + 20;
+                element.style.width = `${size}px`;
+                element.style.height = `${size}px`;
+                
+                // Posición inicial aleatoria
+                element.style.left = `${Math.random() * 100}%`;
+                element.style.top = `${Math.random() * 100 + 100}%`;
+                
+                // Color aleatorio
+                const colorIndex = Math.floor(Math.random() * colors.length);
+                element.style.background = colors[colorIndex];
+                
+                // Animación con duración y delay aleatorios
+                element.style.animationDuration = `${Math.random() * 20 + 15}s`;
+                element.style.animationDelay = `${Math.random() * 5}s`;
+                
+                floatingContainer.appendChild(element);
+            }
+            
+            // Efecto de escritura para el título
+            const title = document.querySelector('h1');
+            const originalText = title.textContent;
+            title.textContent = '';
+            
+            let i = 0;
+            const typeWriter = () => {
+                if (i < originalText.length) {
+                    title.textContent += originalText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 100);
+                }
+            };
+            
+            // Iniciar efecto de escritura después de un breve retraso
+            setTimeout(typeWriter, 1000);
+        });
+    </script>
+</body>
+</html>

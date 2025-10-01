@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelo TCP/IP: Presentación Interactiva</title>
+    <style>
+        :root {
+            --capa1: #FF6B6B;
+            --capa2: #FF9E6B;
+            --capa3: #FFD166;
+            --capa4: #06D6A0;
+            --capa5: #118AB2;
+            --background: #f5f7fa;
+            --text: #333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--capa1), var(--capa5));
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        .intro {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+        
+        .comparison {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-bottom: 3rem;
+            gap: 2rem;
+        }
+        
+        .model {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        .model h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--capa5);
+        }
+        
+        .tcpip-model {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+        
+        .capa {
+            width: 80%;
+            max-width: 600px;
+            margin: 0.5rem 0;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .capa:hover {
+            transform: translateX(10px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        .capa::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .capa-4 { background-color: var(--capa4); }
+        .capa-3 { background-color: var(--capa3); color: #333; }
+        .capa-2 { background-color: var(--capa2); }
+        .capa-1 { background-color: var(--capa1); }
+        
+        .capa-numero {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 0.3rem;
+        }
+        
+        .capa-nombre {
+            font-size: 1.2rem;
+        }
+        
+        .explicacion {
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin-bottom: 3rem;
+            display: none;
+        }
+        
+        .explicacion.activa {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .explicacion h3 {
+            color: var(--text);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .explicacion p {
+            margin-bottom: 1rem;
+        }
+        
+        .ejemplo {
+            background-color: #f0f8ff;
+            border-left: 4px solid var(--capa5);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .protocolos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .protocolo {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .protocolo:hover {
+            transform: translateY(-5px);
+        }
+        
+        .protocolo h4 {
+            color: var(--capa5);
+            margin-bottom: 0.5rem;
+        }
+        
+        .datos-viaje {
+            text-align: center;
+            margin: 3rem 0;
+        }
+        
+        .datos-viaje h2 {
+            margin-bottom: 2rem;
+            color: var(--capa5);
+        }
+        
+        .animacion-contenedor {
+            position: relative;
+            height: 400px;
+            margin: 0 auto;
+            max-width: 800px;
+            background: linear-gradient(to bottom, #e6f7ff, #f0f8ff);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+        
+        .capas-animacion {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .capa-animacion {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: calc(100% / 4);
+            display: flex;
+            align-items: center;
+            padding-left: 20px;
+            color: white;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .paquete {
+            position: absolute;
+            width: 50px;
+            height: 30px;
+            background-color: white;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.5s ease;
+            z-index: 10;
+        }
+        
+        .paquete.enviando {
+            animation: enviar 4s infinite;
+        }
+        
+        .paquete.recibiendo {
+            animation: recibir 4s infinite;
+        }
+        
+        @keyframes enviar {
+            0% { top: 10%; left: 10%; transform: scale(1); background-color: white; }
+            25% { top: 10%; left: 50%; transform: scale(0.9); background-color: var(--capa4); }
+            50% { top: 35%; left: 50%; transform: scale(0.8); background-color: var(--capa3); }
+            75% { top: 60%; left: 50%; transform: scale(0.7); background-color: var(--capa2); }
+            100% { top: 85%; left: 90%; transform: scale(0.6); background-color: var(--capa1); }
+        }
+        
+        @keyframes recibir {
+            0% { top: 85%; left: 90%; transform: scale(0.6); background-color: var(--capa1); }
+            25% { top: 60%; left: 50%; transform: scale(0.7); background-color: var(--capa2); }
+            50% { top: 35%; left: 50%; transform: scale(0.8); background-color: var(--capa3); }
+            75% { top: 10%; left: 50%; transform: scale(0.9); background-color: var(--capa4); }
+            100% { top: 10%; left: 10%; transform: scale(1); background-color: white; }
+        }
+        
+        .controles {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        button {
+            padding: 0.7rem 1.5rem;
+            background-color: var(--capa5);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: var(--capa4);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            background-color: #333;
+            color: white;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .capa {
+                width: 95%;
+            }
+            
+            .animacion-contenedor {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Modelo TCP/IP</h1>
+        <p class="subtitle">El protocolo que impulsa Internet</p>
+    </header>
+    
+    <div class="container">
+        <section class="intro">
+            <p>El modelo TCP/IP es el conjunto de protocolos de comunicación que permite la interconexión de redes y es la base de Internet. A diferencia del modelo OSI, TCP/IP tiene solo 4 capas y se centra en la funcionalidad práctica más que en la estandarización teórica.</p>
+        </section>
+        
+        <section class="comparison">
+            <div class="model">
+                <h2>Modelo OSI (7 capas)</h2>
+                <p>Modelo teórico de referencia que define 7 capas para la comunicación entre sistemas.</p>
+                <ul>
+                    <li>Aplicación</li>
+                    <li>Presentación</li>
+                    <li>Sesión</li>
+                    <li>Transporte</li>
+                    <li>Red</li>
+                    <li>Enlace de datos</li>
+                    <li>Física</li>
+                </ul>
+            </div>
+            
+            <div class="model">
+                <h2>Modelo TCP/IP (4 capas)</h2>
+                <p>Modelo práctico utilizado en Internet que combina algunas funciones del modelo OSI.</p>
+                <ul>
+                    <li>Aplicación</li>
+                    <li>Transporte</li>
+                    <li>Internet</li>
+                    <li>Acceso a la red</li>
+                </ul>
+            </div>
+        </section>
+        
+        <section class="tcpip-model">
+            <div class="capa capa-4" data-capa="4">
+                <div class="capa-numero">Capa 4</div>
+                <div class="capa-nombre">Aplicación</div>
+            </div>
+            <div class="capa capa-3" data-capa="3">
+                <div class="capa-numero">Capa 3</div>
+                <div class="capa-nombre">Transporte</div>
+            </div>
+            <div class="capa capa-2" data-capa="2">
+                <div class="capa-numero">Capa 2</div>
+                <div class="capa-nombre">Internet</div>
+            </div>
+            <div class="capa capa-1" data-capa="1">
+                <div class="capa-numero">Capa 1</div>
+                <div class="capa-nombre">Acceso a la Red</div>
+            </div>
+        </section>
+        
+        <section class="explicacion" id="explicacion-4">
+            <h3>Capa 4: Aplicación</h3>
+            <p>Esta capa combina las funciones de las capas de Aplicación, Presentación y Sesión del modelo OSI. Proporciona servicios de red a las aplicaciones de usuario y define los protocolos para la comunicación entre aplicaciones.</p>
+            <p>Es la interfaz entre el usuario y la red, donde se inician las solicitudes de comunicación.</p>
+            <div class="ejemplo">
+                <strong>Protocolos:</strong> HTTP, HTTPS, FTP, SMTP, DNS, SSH, Telnet.
+            </div>
+            
+            <h4>Protocolos principales de la capa de Aplicación:</h4>
+            <div class="protocolos">
+                <div class="protocolo">
+                    <h4>HTTP/HTTPS</h4>
+                    <p>Protocolo de transferencia de hipertexto (seguro). Utilizado para navegar por la web.</p>
+                </div>
+                <div class="protocolo">
+                    <h4>FTP</h4>
+                    <p>Protocolo de transferencia de archivos. Permite subir y descargar archivos.</p>
+                </div>
+                <div class="protocolo">
+                    <h4>SMTP</h4>
+                    <p>Protocolo de transferencia de correo simple. Utilizado para enviar correos electrónicos.</p>
+                </div>
+                <div class="protocolo">
+                    <h4>DNS</h4>
+                    <p>Sistema de nombres de dominio. Traduce nombres de dominio a direcciones IP.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="explicacion" id="explicacion-3">
+            <h3>Capa 3: Transporte</h3>
+            <p>Esta capa es responsable de la comunicación extremo a extremo entre dispositivos. Proporciona un transporte confiable de datos y control de flujo.</p>
+            <p>Divide los datos en segmentos (TCP) o datagramas (UDP) y asegura que lleguen correctamente a su destino.</p>
+            <div class="ejemplo">
+                <strong>Protocolos:</strong> TCP (Transmission Control Protocol), UDP (User Datagram Protocol).
+            </div>
+            
+            <h4>Protocolos principales de la capa de Transporte:</h4>
+            <div class="protocolos">
+                <div class="protocolo">
+                    <h4>TCP</h4>
+                    <p>Protocolo orientado a conexión que garantiza la entrega confiable de datos.</p>
+                </div>
+                <div class="protocolo">
+                    <h4>UDP</h4>
+                    <p>Protocolo no orientado a conexión, más rápido pero menos confiable que TCP.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="explicacion" id="explicacion-2">
+            <h3>Capa 2: Internet</h3>
+            <p>Esta capa es responsable del direccionamiento lógico, enrutamiento y entrega de paquetes a través de redes. Es el núcleo del modelo TCP/IP.</p>
+            <p>Toma los segmentos de la capa de transporte y los convierte en paquetes, añadiendo direcciones IP de origen y destino.</p>
+            <div class="ejemplo">
+                <strong>Protocolos:</strong> IP (Internet Protocol), ICMP, ARP, IGMP.
+            </div>
+            
+            <h4>Protocolos principales de la capa de Internet:</h4>
+            <div class="protocolos">
+                <div class="protocolo">
+                    <h4>IP</h4>
+                    <p>Protocolo de Internet que proporciona direccionamiento y enrutamiento de paquetes.</p>
+                </div>
+                <div class="protocolo">
+                    <h4>ICMP</h4>
+                    <p>Protocolo de mensajes de control de Internet. Utilizado para diagnóstico y errores.</p>
+                </div>
+                <div class="protocolo">
+                    <h4>ARP</h4>
+                    <p>Protocolo de resolución de direcciones. Asocia direcciones IP con direcciones MAC.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="explicacion" id="explicacion-1">
+            <h3>Capa 1: Acceso a la Red</h3>
+            <p>Esta capa combina las funciones de las capas Física y Enlace de Datos del modelo OSI. Se encarga de la transmisión física de datos a través del medio de red.</p>
+            <p>Define cómo los datos se envían físicamente a través de la red, incluyendo el direccionamiento físico (MAC).</p>
+            <div class="ejemplo">
+                <strong>Protocolos y tecnologías:</strong> Ethernet, Wi-Fi, PPP, Frame Relay, ATM.
+            </div>
+            
+            <h4>Tecnologías principales de la capa de Acceso a la Red:</h4>
+            <div class="protocolos">
+                <div class="protocolo">
+                    <h4>Ethernet</h4>
+                    <p>Tecnología de red de área local (LAN) más común, utiliza cables de cobre o fibra.</p>
+                </div>
+                <div class="protocolo">
+                    <h4>Wi-Fi</h4>
+                    <p>Tecnología de red inalámbrica que permite la conexión sin cables.</p>
+                </div>
+                <div class="protocolo">
+                    <h4>PPP</h4>
+                    <p>Protocolo punto a punto. Utilizado para conexiones directas entre dos nodos.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="datos-viaje">
+            <h2>¿Cómo viajan los datos a través del Modelo TCP/IP?</h2>
+            <div class="animacion-contenedor">
+                <div class="capas-animacion">
+                    <div class="capa-animacion capa-4" style="top: 0;">Capa 4: Aplicación</div>
+                    <div class="capa-animacion capa-3" style="top: 25%;">Capa 3: Transporte</div>
+                    <div class="capa-animacion capa-2" style="top: 50%;">Capa 2: Internet</div>
+                    <div class="capa-animacion capa-1" style="top: 75%;">Capa 1: Acceso a la Red</div>
+                </div>
+                <div class="paquete enviando">Datos</div>
+                <div class="paquete recibiendo" style="display: none;">Datos</div>
+            </div>
+            <div class="controles">
+                <button id="btn-enviar">Ver Envío</button>
+                <button id="btn-recepcion">Ver Recepción</button>
+                <button id="btn-pausar">Pausar</button>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <p>© 2023 Modelo TCP/IP Explicado - Una forma interactiva de aprender redes</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mostrar explicación al hacer clic en una capa
+            const capas = document.querySelectorAll('.capa');
+            const explicaciones = document.querySelectorAll('.explicacion');
+            
+            capas.forEach(capa => {
+                capa.addEventListener('click', function() {
+                    const numeroCapa = this.getAttribute('data-capa');
+                    
+                    // Ocultar todas las explicaciones
+                    explicaciones.forEach(exp => {
+                        exp.classList.remove('activa');
+                    });
+                    
+                    // Mostrar la explicación correspondiente
+                    const explicacion = document.getElementById(`explicacion-${numeroCapa}`);
+                    explicacion.classList.add('activa');
+                    
+                    // Desplazar la vista hacia la explicación
+                    explicacion.scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+            
+            // Animación del viaje de datos
+            const paqueteEnviando = document.querySelector('.paquete.enviando');
+            const paqueteRecibiendo = document.querySelector('.paquete.recibiendo');
+            const btnEnviar = document.getElementById('btn-enviar');
+            const btnRecepcion = document.getElementById('btn-recepcion');
+            const btnPausar = document.getElementById('btn-pausar');
+            
+            let animacionActiva = true;
+            
+            btnEnviar.addEventListener('click', function() {
+                paqueteEnviando.style.display = 'flex';
+                paqueteRecibiendo.style.display = 'none';
+                paqueteEnviando.classList.add('enviando');
+                paqueteEnviando.classList.remove('recibiendo');
+                animacionActiva = true;
+            });
+            
+            btnRecepcion.addEventListener('click', function() {
+                paqueteEnviando.style.display = 'none';
+                paqueteRecibiendo.style.display = 'flex';
+                paqueteRecibiendo.classList.add('recibiendo');
+                paqueteRecibiendo.classList.remove('enviando');
+                animacionActiva = true;
+            });
+            
+            btnPausar.addEventListener('click', function() {
+                if (animacionActiva) {
+                    paqueteEnviando.style.animationPlayState = 'paused';
+                    paqueteRecibiendo.style.animationPlayState = 'paused';
+                    btnPausar.textContent = 'Reanudar';
+                } else {
+                    paqueteEnviando.style.animationPlayState = 'running';
+                    paqueteRecibiendo.style.animationPlayState = 'running';
+                    btnPausar.textContent = 'Pausar';
+                }
+                animacionActiva = !animacionActiva;
+            });
+            
+            // Mostrar la primera explicación por defecto
+            document.getElementById('explicacion-4').classList.add('activa');
+        });
+    </script>
+</body>
+</html>

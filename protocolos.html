@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protocolos de Red - Modelo OSI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --capa1: #FF6B6B;
+            --capa2: #FF9E6B;
+            --capa3: #FFD166;
+            --capa4: #06D6A0;
+            --capa5: #118AB2;
+            --capa6: #073B4C;
+            --capa7: #7209B7;
+            --background: #f5f7fa;
+            --text: #333;
+            --card-bg: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--capa1), var(--capa7));
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .network-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.3;
+        }
+        
+        .node {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-20px) translateX(20px); }
+            50% { transform: translateY(0) translateX(40px); }
+            75% { transform: translateY(20px) translateX(20px); }
+            100% { transform: translateY(0) translateX(0); }
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        .intro {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .osi-visualization {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+        
+        .capa {
+            width: 85%;
+            max-width: 700px;
+            margin: 0.5rem 0;
+            padding: 1.2rem 1.8rem;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .capa:hover {
+            transform: translateX(15px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        .capa::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: rgba(255,255,255,0.4);
+        }
+        
+        .capa-7 { background-color: var(--capa7); }
+        .capa-6 { background-color: var(--capa6); }
+        .capa-5 { background-color: var(--capa5); }
+        .capa-4 { background-color: var(--capa4); }
+        .capa-3 { background-color: var(--capa3); color: #333; }
+        .capa-2 { background-color: var(--capa2); }
+        .capa-1 { background-color: var(--capa1); }
+        
+        .capa-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .capa-numero {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 0.3rem;
+        }
+        
+        .capa-nombre {
+            font-size: 1.4rem;
+        }
+        
+        .capa-icon {
+            font-size: 1.8rem;
+            opacity: 0.8;
+        }
+        
+        .protocolos-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .protocolo-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .protocolo-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+        }
+        
+        .protocolo-header {
+            padding: 1.5rem;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .protocolo-body {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .protocolo-nombre {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .protocolo-descripcion {
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+        
+        .protocolo-ejemplo {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            font-style: italic;
+            margin-top: auto;
+        }
+        
+        .protocolo-icon {
+            font-size: 2rem;
+            opacity: 0.9;
+        }
+        
+        .multimedia-section {
+            margin: 4rem 0;
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+        }
+        
+        .multimedia-section h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--capa5);
+            font-size: 1.8rem;
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            margin-bottom: 2rem;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
+        
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .gallery-item {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .data-flow {
+            text-align: center;
+            margin: 4rem 0;
+        }
+        
+        .data-flow h2 {
+            margin-bottom: 2rem;
+            color: var(--capa5);
+        }
+        
+        .flow-animation {
+            position: relative;
+            height: 500px;
+            margin: 0 auto;
+            max-width: 900px;
+            background: linear-gradient(to bottom, #e6f7ff, #f0f8ff);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        
+        .flow-capas {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .flow-capa {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: calc(100% / 7);
+            display: flex;
+            align-items: center;
+            padding-left: 30px;
+            color: white;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .data-packet {
+            position: absolute;
+            width: 60px;
+            height: 40px;
+            background-color: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: all 0.5s ease;
+            z-index: 10;
+        }
+        
+        .data-packet.sending {
+            animation: sendData 6s infinite;
+        }
+        
+        .data-packet.receiving {
+            animation: receiveData 6s infinite;
+        }
+        
+        @keyframes sendData {
+            0% { top: 8%; left: 8%; transform: scale(1); background-color: white; }
+            14% { top: 8%; left: 50%; transform: scale(0.9); background-color: var(--capa7); }
+            28% { top: 21%; left: 50%; transform: scale(0.8); background-color: var(--capa6); }
+            42% { top: 35%; left: 50%; transform: scale(0.7); background-color: var(--capa5); }
+            56% { top: 49%; left: 50%; transform: scale(0.6); background-color: var(--capa4); }
+            70% { top: 63%; left: 50%; transform: scale(0.5); background-color: var(--capa3); }
+            84% { top: 77%; left: 50%; transform: scale(0.4); background-color: var(--capa2); }
+            100% { top: 91%; left: 92%; transform: scale(0.3); background-color: var(--capa1); }
+        }
+        
+        @keyframes receiveData {
+            0% { top: 91%; left: 92%; transform: scale(0.3); background-color: var(--capa1); }
+            14% { top: 77%; left: 50%; transform: scale(0.4); background-color: var(--capa2); }
+            28% { top: 63%; left: 50%; transform: scale(0.5); background-color: var(--capa3); }
+            42% { top: 49%; left: 50%; transform: scale(0.6); background-color: var(--capa4); }
+            56% { top: 35%; left: 50%; transform: scale(0.7); background-color: var(--capa5); }
+            70% { top: 21%; left: 50%; transform: scale(0.8); background-color: var(--capa6); }
+            84% { top: 8%; left: 50%; transform: scale(0.9); background-color: var(--capa7); }
+            100% { top: 8%; left: 8%; transform: scale(1); background-color: white; }
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        button {
+            padding: 0.8rem 1.8rem;
+            background-color: var(--capa5);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        button:hover {
+            background-color: var(--capa4);
+            transform: translateY(-2px);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: linear-gradient(135deg, var(--capa6), var(--capa7));
+            color: white;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+        
+        .footer-links a:hover {
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .capa {
+                width: 95%;
+                padding: 1rem 1.2rem;
+            }
+            
+            .protocolos-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .flow-animation {
+                height: 400px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="network-animation" id="networkAnimation"></div>
+        <div class="header-content">
+            <h1>Protocolos de Red del Modelo OSI</h1>
+            <p class="subtitle">Descubre los protocolos que hacen posible la comunicación en redes a través de las 7 capas del modelo OSI</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <section class="intro">
+            <p>El modelo OSI (Open Systems Interconnection) es un marco de referencia que describe cómo se comunican los sistemas en una red. Está compuesto por 7 capas, cada una con protocolos específicos que realizan funciones esenciales para la transmisión de datos. En esta página exploraremos los protocolos más importantes de cada capa.</p>
+        </section>
+        
+        <section class="osi-visualization">
+            <div class="capa capa-7" data-capa="7">
+                <div class="capa-info">
+                    <div class="capa-numero">Capa 7</div>
+                    <div class="capa-nombre">Aplicación</div>
+                </div>
+                <div class="capa-icon"><i class="fas fa-window-restore"></i></div>
+            </div>
+            <div class="capa capa-6" data-capa="6">
+                <div class="capa-info">
+                    <div class="capa-numero">Capa 6</div>
+                    <div class="capa-nombre">Presentación</div>
+                </div>
+                <div class="capa-icon"><i class="fas fa-file-code"></i></div>
+            </div>
+            <div class="capa capa-5" data-capa="5">
+                <div class="capa-info">
+                    <div class="capa-numero">Capa 5</div>
+                    <div class="capa-nombre">Sesión</div>
+                </div>
+                <div class="capa-icon"><i class="fas fa-handshake"></i></div>
+            </div>
+            <div class="capa capa-4" data-capa="4">
+                <div class="capa-info">
+                    <div class="capa-numero">Capa 4</div>
+                    <div class="capa-nombre">Transporte</div>
+                </div>
+                <div class="capa-icon"><i class="fas fa-truck-loading"></i></div>
+            </div>
+            <div class="capa capa-3" data-capa="3">
+                <div class="capa-info">
+                    <div class="capa-numero">Capa 3</div>
+                    <div class="capa-nombre">Red</div>
+                </div>
+                <div class="capa-icon"><i class="fas fa-project-diagram"></i></div>
+            </div>
+            <div class="capa capa-2" data-capa="2">
+                <div class="capa-info">
+                    <div class="capa-numero">Capa 2</div>
+                    <div class="capa-nombre">Enlace de Datos</div>
+                </div>
+                <div class="capa-icon"><i class="fas fa-link"></i></div>
+            </div>
+            <div class="capa capa-1" data-capa="1">
+                <div class="capa-info">
+                    <div class="capa-numero">Capa 1</div>
+                    <div class="capa-nombre">Física</div>
+                </div>
+                <div class="capa-icon"><i class="fas fa-plug"></i></div>
+            </div>
+        </section>
+        
+        <section class="protocolos-container" id="protocolosContainer">
+            <!-- Los protocolos se cargarán dinámicamente aquí -->
+        </section>
+        
+        <section class="multimedia-section">
+            <h2>Recursos Multimedia sobre Protocolos de Red</h2>
+            
+        <div class="video-container">
+            <iframe 
+               src="https://www.youtube.com/embed/-QTNJws7PRg" 
+               title="Explicación del Modelo OSI" 
+               frameborder="0" 
+               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+               allowfullscreen>
+            </iframe>
+        </div>
+
+            
+            <div class="image-gallery">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Red de computadoras">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Conexiones de red">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1533750349088-cd871a92f312?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Infraestructura de red">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1563016040-95cc5cfa4ffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Protocolos de comunicación">
+                </div>
+            </div>
+        </section>
+        
+        <section class="data-flow">
+            <h2>Flujo de Datos a través del Modelo OSI</h2>
+            <div class="flow-animation">
+                <div class="flow-capas">
+                    <div class="flow-capa capa-7" style="top: 0;">Capa 7: Aplicación</div>
+                    <div class="flow-capa capa-6" style="top: 14.28%;">Capa 6: Presentación</div>
+                    <div class="flow-capa capa-5" style="top: 28.56%;">Capa 5: Sesión</div>
+                    <div class="flow-capa capa-4" style="top: 42.84%;">Capa 4: Transporte</div>
+                    <div class="flow-capa capa-3" style="top: 57.12%;">Capa 3: Red</div>
+                    <div class="flow-capa capa-2" style="top: 71.4%;">Capa 2: Enlace de Datos</div>
+                    <div class="flow-capa capa-1" style="top: 85.68%;">Capa 1: Física</div>
+                </div>
+                <div class="data-packet sending">HTTP</div>
+                <div class="data-packet receiving" style="display: none;">HTTP</div>
+            </div>
+            <div class="controls">
+                <button id="btn-send"><i class="fas fa-paper-plane"></i> Ver Envío</button>
+                <button id="btn-receive"><i class="fas fa-download"></i> Ver Recepción</button>
+                <button id="btn-pause"><i class="fas fa-pause"></i> Pausar</button>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <h3>Protocolos de Red - Modelo OSI</h3>
+            <p>Una guía interactiva para entender los protocolos de comunicación en redes</p>
+            <div class="footer-links">
+                <a href="#"><i class="fab fa-github"></i> Código Fuente</a>
+                <a href="#"><i class="fas fa-book"></i> Documentación</a>
+                <a href="#"><i class="fas fa-envelope"></i> Contacto</a>
+            </div>
+            <p>&copy; 2023 - Todos los derechos reservados</p>
+        </div>
+    </footer>
+
+    <script>
+        // Datos de los protocolos por capa
+        const protocolos = {
+            7: [
+                {
+                    nombre: "HTTP",
+                    descripcion: "Protocolo de transferencia de hipertexto. Utilizado para la comunicación web.",
+                    ejemplo: "Navegación en sitios web",
+                    icono: "fas fa-globe",
+                    color: "#7209B7"
+                },
+                {
+                    nombre: "FTP",
+                    descripcion: "Protocolo de transferencia de archivos. Permite la transferencia de archivos entre cliente y servidor.",
+                    ejemplo: "Subir archivos a un servidor web",
+                    icono: "fas fa-file-upload",
+                    color: "#7209B7"
+                },
+                {
+                    nombre: "SMTP",
+                    descripcion: "Protocolo de transferencia de correo simple. Utilizado para enviar correos electrónicos.",
+                    ejemplo: "Envío de emails desde un cliente de correo",
+                    icono: "fas fa-envelope",
+                    color: "#7209B7"
+                },
+                {
+                    nombre: "DNS",
+                    descripcion: "Sistema de nombres de dominio. Traduce nombres de dominio a direcciones IP.",
+                    ejemplo: "Resolución de nombres como google.com a su IP",
+                    icono: "fas fa-search",
+                    color: "#7209B7"
+                }
+            ],
+            6: [
+                {
+                    nombre: "SSL/TLS",
+                    descripcion: "Protocolos de seguridad que proporcionan comunicaciones seguras por una red.",
+                    ejemplo: "Conexiones HTTPS en navegadores web",
+                    icono: "fas fa-lock",
+                    color: "#073B4C"
+                },
+                {
+                    nombre: "JPEG, GIF, PNG",
+                    descripcion: "Formatos de compresión y representación de imágenes.",
+                    ejemplo: "Visualización de imágenes en páginas web",
+                    icono: "fas fa-image",
+                    color: "#073B4C"
+                },
+                {
+                    nombre: "MPEG, AVI",
+                    descripcion: "Formatos de compresión y representación de video.",
+                    ejemplo: "Reproducción de videos en línea",
+                    icono: "fas fa-film",
+                    color: "#073B4C"
+                }
+            ],
+            5: [
+                {
+                    nombre: "NetBIOS",
+                    descripcion: "Protocolo que permite a aplicaciones en diferentes computadoras comunicarse dentro de una LAN.",
+                    ejemplo: "Compartir archivos e impresoras en redes Windows",
+                    icono: "fas fa-network-wired",
+                    color: "#118AB2"
+                },
+                {
+                    nombre: "RPC",
+                    descripcion: "Llamada a procedimiento remoto. Permite ejecutar código en otra computadora.",
+                    ejemplo: "Servicios distribuidos en sistemas operativos",
+                    icono: "fas fa-code",
+                    color: "#118AB2"
+                },
+                {
+                    nombre: "Sockets",
+                    descripcion: "Interfaz de programación para comunicación entre procesos.",
+                    ejemplo: "Aplicaciones cliente-servidor",
+                    icono: "fas fa-plug",
+                    color: "#118AB2"
+                }
+            ],
+            4: [
+                {
+                    nombre: "TCP",
+                    descripcion: "Protocolo de control de transmisión. Orientado a conexión y confiable.",
+                    ejemplo: "Transferencia de archivos, navegación web",
+                    icono: "fas fa-exchange-alt",
+                    color: "#06D6A0"
+                },
+                {
+                    nombre: "UDP",
+                    descripcion: "Protocolo de datagramas de usuario. No orientado a conexión, más rápido pero menos confiable.",
+                    ejemplo: "Streaming de video, VoIP, DNS",
+                    icono: "fas fa-bolt",
+                    color: "#06D6A0"
+                }
+            ],
+            3: [
+                {
+                    nombre: "IP",
+                    descripcion: "Protocolo de Internet. Proporciona direccionamiento lógico y enrutamiento.",
+                    ejemplo: "Envío de paquetes entre redes diferentes",
+                    icono: "fas fa-route",
+                    color: "#FFD166"
+                },
+                {
+                    nombre: "ICMP",
+                    descripcion: "Protocolo de mensajes de control de Internet. Utilizado para diagnóstico y errores.",
+                    ejemplo: "Comando ping para verificar conectividad",
+                    icono: "fas fa-info-circle",
+                    color: "#FFD166"
+                },
+                {
+                    nombre: "ARP",
+                    descripcion: "Protocolo de resolución de direcciones. Asocia direcciones IP con direcciones MAC.",
+                    ejemplo: "Encontrar la dirección MAC de un dispositivo en la red local",
+                    icono: "fas fa-address-card",
+                    color: "#FFD166"
+                }
+            ],
+            2: [
+                {
+                    nombre: "Ethernet",
+                    descripcion: "Tecnología de red de área local más utilizada. Define formato de tramas y acceso al medio.",
+                    ejemplo: "Conexiones por cable en redes locales",
+                    icono: "fas fa-ethernet",
+                    color: "#FF9E6B"
+                },
+                {
+                    nombre: "PPP",
+                    descripcion: "Protocolo punto a punto. Utilizado para conexiones directas entre dos nodos.",
+                    ejemplo: "Conexiones dial-up, enlaces seriales",
+                    icono: "fas fa-link",
+                    color: "#FF9E6B"
+                },
+                {
+                    nombre: "Switch",
+                    descripcion: "Dispositivo de capa 2 que conecta dispositivos en una red y utiliza direcciones MAC.",
+                    ejemplo: "Conmutación en redes locales",
+                    icono: "fas fa-sitemap",
+                    color: "#FF9E6B"
+                }
+            ],
+            1: [
+                {
+                    nombre: "Cable UTP",
+                    descripcion: "Cable de par trenzado no blindado. Medio físico más común en redes Ethernet.",
+                    ejemplo: "Cableado de red en oficinas y hogares",
+                    icono: "fas fa-cable-car",
+                    color: "#FF6B6B"
+                },
+                {
+                    nombre: "Fibra Óptica",
+                    descripcion: "Medio de transmisión que utiliza luz para transmitir datos a largas distancias.",
+                    ejemplo: "Conexiones de backbone, internet de alta velocidad",
+                    icono: "fas fa-satellite-dish",
+                    color: "#FF6B6B"
+                },
+                {
+                    nombre: "Wi-Fi (IEEE 802.11)",
+                    descripcion: "Conjunto de estándares para redes inalámbricas de área local.",
+                    ejemplo: "Conexión inalámbrica a internet",
+                    icono: "fas fa-wifi",
+                    color: "#FF6B6B"
+                }
+            ]
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Crear nodos de red animados
+            const networkAnimation = document.getElementById('networkAnimation');
+            for (let i = 0; i < 20; i++) {
+                const node = document.createElement('div');
+                node.className = 'node';
+                node.style.left = `${Math.random() * 100}%`;
+                node.style.top = `${Math.random() * 100}%`;
+                node.style.animationDelay = `${Math.random() * 15}s`;
+                networkAnimation.appendChild(node);
+            }
+
+            // Mostrar protocolos al hacer clic en una capa
+            const capas = document.querySelectorAll('.capa');
+            const protocolosContainer = document.getElementById('protocolosContainer');
+            
+            capas.forEach(capa => {
+                capa.addEventListener('click', function() {
+                    const numeroCapa = this.getAttribute('data-capa');
+                    mostrarProtocolos(numeroCapa);
+                    
+                    // Desplazar la vista hacia los protocolos
+                    protocolosContainer.scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+            
+            // Función para mostrar los protocolos de una capa
+            function mostrarProtocolos(numeroCapa) {
+                protocolosContainer.innerHTML = '';
+                
+                const protocolosCapa = protocolos[numeroCapa];
+                
+                protocolosCapa.forEach(protocolo => {
+                    const card = document.createElement('div');
+                    card.className = 'protocolo-card';
+                    
+                    card.innerHTML = `
+                        <div class="protocolo-header" style="background-color: ${protocolo.color}">
+                            <h3 class="protocolo-nombre">${protocolo.nombre}</h3>
+                            <div class="protocolo-icon"><i class="${protocolo.icono}"></i></div>
+                        </div>
+                        <div class="protocolo-body">
+                            <p class="protocolo-descripcion">${protocolo.descripcion}</p>
+                            <div class="protocolo-ejemplo">
+                                <strong>Ejemplo:</strong> ${protocolo.ejemplo}
+                            </div>
+                        </div>
+                    `;
+                    
+                    protocolosContainer.appendChild(card);
+                });
+            }
+            
+            // Mostrar protocolos de la capa 7 por defecto
+            mostrarProtocolos(7);
+            
+            // Animación del flujo de datos
+            const packetSending = document.querySelector('.data-packet.sending');
+            const packetReceiving = document.querySelector('.data-packet.receiving');
+            const btnSend = document.getElementById('btn-send');
+            const btnReceive = document.getElementById('btn-receive');
+            const btnPause = document.getElementById('btn-pause');
+            
+            let animacionActiva = true;
+            
+            btnSend.addEventListener('click', function() {
+                packetSending.style.display = 'flex';
+                packetReceiving.style.display = 'none';
+                packetSending.classList.add('sending');
+                packetSending.classList.remove('receiving');
+                animacionActiva = true;
+                btnPause.innerHTML = '<i class="fas fa-pause"></i> Pausar';
+            });
+            
+            btnReceive.addEventListener('click', function() {
+                packetSending.style.display = 'none';
+                packetReceiving.style.display = 'flex';
+                packetReceiving.classList.add('receiving');
+                packetReceiving.classList.remove('sending');
+                animacionActiva = true;
+                btnPause.innerHTML = '<i class="fas fa-pause"></i> Pausar';
+            });
+            
+            btnPause.addEventListener('click', function() {
+                if (animacionActiva) {
+                    packetSending.style.animationPlayState = 'paused';
+                    packetReceiving.style.animationPlayState = 'paused';
+                    btnPause.innerHTML = '<i class="fas fa-play"></i> Reanudar';
+                } else {
+                    packetSending.style.animationPlayState = 'running';
+                    packetReceiving.style.animationPlayState = 'running';
+                    btnPause.innerHTML = '<i class="fas fa-pause"></i> Pausar';
+                }
+                animacionActiva = !animacionActiva;
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Modelo OSI: Viaje de los Datos</title>
+    <style>
+        :root {
+            --capa1: #FF6B6B;
+            --capa2: #FF9E6B;
+            --capa3: #FFD166;
+            --capa4: #06D6A0;
+            --capa5: #118AB2;
+            --capa6: #073B4C;
+            --capa7: #7209B7;
+            --background: #f5f7fa;
+            --text: #333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--capa1), var(--capa7));
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        .intro {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+        
+        .osi-model {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+        
+        .capa {
+            width: 80%;
+            max-width: 600px;
+            margin: 0.5rem 0;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .capa:hover {
+            transform: translateX(10px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        .capa::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .capa-7 { background-color: var(--capa7); }
+        .capa-6 { background-color: var(--capa6); }
+        .capa-5 { background-color: var(--capa5); }
+        .capa-4 { background-color: var(--capa4); }
+        .capa-3 { background-color: var(--capa3); color: #333; }
+        .capa-2 { background-color: var(--capa2); }
+        .capa-1 { background-color: var(--capa1); }
+        
+        .capa-numero {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 0.3rem;
+        }
+        
+        .capa-nombre {
+            font-size: 1.2rem;
+        }
+        
+        .explicacion {
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin-bottom: 3rem;
+            display: none;
+        }
+        
+        .explicacion.activa {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .explicacion h3 {
+            color: var(--text);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .explicacion p {
+            margin-bottom: 1rem;
+        }
+        
+        .ejemplo {
+            background-color: #f0f8ff;
+            border-left: 4px solid var(--capa5);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .datos-viaje {
+            text-align: center;
+            margin: 3rem 0;
+        }
+        
+        .datos-viaje h2 {
+            margin-bottom: 2rem;
+            color: var(--capa5);
+        }
+        
+        .animacion-contenedor {
+            position: relative;
+            height: 500px;
+            margin: 0 auto;
+            max-width: 800px;
+            background: linear-gradient(to bottom, #e6f7ff, #f0f8ff);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+        
+        .capas-animacion {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .capa-animacion {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: calc(100% / 7);
+            display: flex;
+            align-items: center;
+            padding-left: 20px;
+            color: white;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .paquete {
+            position: absolute;
+            width: 50px;
+            height: 30px;
+            background-color: white;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.5s ease;
+            z-index: 10;
+        }
+        
+        .paquete.enviando {
+            animation: enviar 4s infinite;
+        }
+        
+        .paquete.recibiendo {
+            animation: recibir 4s infinite;
+        }
+        
+        @keyframes enviar {
+            0% { top: 10%; left: 10%; transform: scale(1); background-color: white; }
+            12.5% { top: 10%; left: 50%; transform: scale(0.9); background-color: var(--capa7); }
+            25% { top: 22%; left: 50%; transform: scale(0.8); background-color: var(--capa6); }
+            37.5% { top: 35%; left: 50%; transform: scale(0.7); background-color: var(--capa5); }
+            50% { top: 47%; left: 50%; transform: scale(0.6); background-color: var(--capa4); }
+            62.5% { top: 60%; left: 50%; transform: scale(0.5); background-color: var(--capa3); }
+            75% { top: 72%; left: 50%; transform: scale(0.4); background-color: var(--capa2); }
+            87.5% { top: 85%; left: 50%; transform: scale(0.3); background-color: var(--capa1); }
+            100% { top: 85%; left: 90%; transform: scale(0.3); background-color: var(--capa1); }
+        }
+        
+        @keyframes recibir {
+            0% { top: 85%; left: 90%; transform: scale(0.3); background-color: var(--capa1); }
+            12.5% { top: 85%; left: 50%; transform: scale(0.4); background-color: var(--capa2); }
+            25% { top: 72%; left: 50%; transform: scale(0.5); background-color: var(--capa3); }
+            37.5% { top: 60%; left: 50%; transform: scale(0.6); background-color: var(--capa4); }
+            50% { top: 47%; left: 50%; transform: scale(0.7); background-color: var(--capa5); }
+            62.5% { top: 35%; left: 50%; transform: scale(0.8); background-color: var(--capa6); }
+            75% { top: 22%; left: 50%; transform: scale(0.9); background-color: var(--capa7); }
+            87.5% { top: 10%; left: 50%; transform: scale(1); background-color: white; }
+            100% { top: 10%; left: 10%; transform: scale(1); background-color: white; }
+        }
+        
+        .controles {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        button {
+            padding: 0.7rem 1.5rem;
+            background-color: var(--capa5);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: var(--capa6);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            background-color: #333;
+            color: white;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .capa {
+                width: 95%;
+            }
+            
+            .animacion-contenedor {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>El Modelo OSI</h1>
+        <p>Para que la informaciòn se pueda transferir a travès de una red de un dispositivo a otro, los datos deben atravesar las siete capas del modelo OSI</p>
+        <p>En orden descendente en el dispositivo emisor y luego en orden ascendente en el extremo del receptor</p>
+        
+        <p class="subtitle">Descubre cómo viajan los datos a través de las 7 capas</p>
+    </header>
+    
+    <div class="container">
+        <section class="intro">
+            <p>El Modelo OSI (Interconexión de Sistemas Abiertos) es un marco de referencia que describe cómo se comunican los dispositivos en una red. Imagina que es como un sistema de correo postal, donde cada capa tiene una función específica para asegurar que tu mensaje llegue a su destino.</p>
+        </section>
+        
+        <section class="osi-model">
+            <div class="capa capa-7" data-capa="7">
+                <div class="capa-numero">Capa 7</div>
+                <div class="capa-nombre">Aplicación</div>
+            </div>
+            <div class="capa capa-6" data-capa="6">
+                <div class="capa-numero">Capa 6</div>
+                <div class="capa-nombre">Presentación</div>
+            </div>
+            <div class="capa capa-5" data-capa="5">
+                <div class="capa-numero">Capa 5</div>
+                <div class="capa-nombre">Sesión</div>
+            </div>
+            <div class="capa capa-4" data-capa="4">
+                <div class="capa-numero">Capa 4</div>
+                <div class="capa-nombre">Transporte</div>
+            </div>
+            <div class="capa capa-3" data-capa="3">
+                <div class="capa-numero">Capa 3</div>
+                <div class="capa-nombre">Red</div>
+            </div>
+            <div class="capa capa-2" data-capa="2">
+                <div class="capa-numero">Capa 2</div>
+                <div class="capa-nombre">Enlace de Datos</div>
+            </div>
+            <div class="capa capa-1" data-capa="1">
+                <div class="capa-numero">Capa 1</div>
+                <div class="capa-nombre">Física</div>
+            </div>
+        </section>
+        
+        <section class="explicacion" id="explicacion-7">
+            <h3>Capa 7: Aplicación</h3>
+            <p>Esta es la capa con la que interactúas directamente. Proporciona servicios de red a las aplicaciones del usuario, como navegadores web, clientes de correo electrónico, etc.</p>
+            <p>Cuando envías un mensaje, esta capa se encarga de que la aplicación pueda comunicarse con la red.</p>
+            <div class="ejemplo">
+                <strong>Ejemplo:</strong> HTTP para navegadores web, SMTP para correo electrónico, FTP para transferencia de archivos.
+            </div>
+        </section>
+        
+        <section class="explicacion" id="explicacion-6">
+            <h3>Capa 6: Presentación</h3>
+            <p>Esta capa actúa como el traductor de la red. Se encarga de la representación de los datos, asegurando que la información del sistema emisor pueda ser entendida por el sistema receptor.</p>
+            <p>Realiza funciones como cifrado, compresión y conversión de formatos.</p>
+            <div class="ejemplo">
+                <strong>Ejemplo:</strong> Conversión de ASCII a EBCDIC, cifrado SSL/TLS, compresión de datos.
+            </div>
+        </section>
+        
+        <section class="explicacion" id="explicacion-5">
+            <h3>Capa 5: Sesión</h3>
+            <p>Esta capa establece, gestiona y finaliza las conexiones entre aplicaciones. Piensa en ella como el coordinador que controla el diálogo entre computadoras.</p>
+            <p>Se encarga de la sincronización y del control de diálogo (quién habla y cuándo).</p>
+            <div class="ejemplo">
+                <strong>Ejemplo:</strong> Establecimiento de sesiones en aplicaciones como NetBIOS, RPC.
+            </div>
+        </section>
+        
+        <section class="explicacion" id="explicacion-4">
+            <h3>Capa 4: Transporte</h3>
+            <p>Esta capa se encarga de la transferencia confiable de datos entre sistemas. Divide los datos en segmentos y asegura que lleguen correctamente a su destino.</p>
+            <p>Controla el flujo de datos, la corrección de errores y la retransmisión si es necesario.</p>
+            <div class="ejemplo">
+                <strong>Ejemplo:</strong> TCP (Transmission Control Protocol) para conexiones confiables, UDP (User Datagram Protocol) para conexiones no confiables.
+            </div>
+        </section>
+        
+        <section class="explicacion" id="explicacion-3">
+            <h3>Capa 3: Red</h3>
+            <p>Esta capa determina la mejor ruta para enviar los datos a través de la red. Se encarga del direccionamiento lógico y del enrutamiento de paquetes.</p>
+            <p>Divide los segmentos en paquetes y los dirige a través de diferentes redes si es necesario.</p>
+            <div class="ejemplo">
+                <strong>Ejemplo:</strong> Protocolo IP (Internet Protocol), routers.
+            </div>
+        </section>
+        
+        <section class="explicacion" id="explicacion-2">
+            <h3>Capa 2: Enlace de Datos</h3>
+            <p>Esta capa se encarga de la transferencia confiable de datos a través del medio físico. Toma los paquetes de la capa de red y los convierte en tramas.</p>
+            <p>Proporciona detección y corrección de errores, y control de acceso al medio.</p>
+            <div class="ejemplo">
+                <strong>Ejemplo:</strong> Ethernet, PPP (Point-to-Point Protocol), switches.
+            </div>
+        </section>
+        
+        <section class="explicacion" id="explicacion-1">
+            <h3>Capa 1: Física</h3>
+            <p>Esta es la capa más básica, que se encarga de la transmisión física de bits a través del medio de comunicación.</p>
+            <p>Define las características eléctricas, mecánicas, funcionales y procedimentales para activar, mantener y desactivar el enlace físico.</p>
+            <div class="ejemplo">
+                <strong>Ejemplo:</strong> Cables de red, conectores, hubs, señales eléctricas u ópticas.
+            </div>
+        </section>
+        
+        <section class="datos-viaje">
+            <h2>¿Cómo viajan los datos a través del Modelo OSI?</h2>
+            <div class="animacion-contenedor">
+                <div class="capas-animacion">
+                    <div class="capa-animacion capa-7" style="top: 0;">Capa 7: Aplicación</div>
+                    <div class="capa-animacion capa-6" style="top: 14.28%;">Capa 6: Presentación</div>
+                    <div class="capa-animacion capa-5" style="top: 28.56%;">Capa 5: Sesión</div>
+                    <div class="capa-animacion capa-4" style="top: 42.84%;">Capa 4: Transporte</div>
+                    <div class="capa-animacion capa-3" style="top: 57.12%;">Capa 3: Red</div>
+                    <div class="capa-animacion capa-2" style="top: 71.4%;">Capa 2: Enlace de Datos</div>
+                    <div class="capa-animacion capa-1" style="top: 85.68%;">Capa 1: Física</div>
+                </div>
+                <div class="paquete enviando">¡Hola!</div>
+                <div class="paquete recibiendo" style="display: none;">¡Hola!</div>
+            </div>
+            <div class="controles">
+                <button id="btn-enviar">Ver Envío</button>
+                <button id="btn-recepcion">Ver Recepción</button>
+                <button id="btn-pausar">Pausar</button>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <p>© 2023 Modelo OSI Explicado - Una forma divertida de aprender redes</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mostrar explicación al hacer clic en una capa
+            const capas = document.querySelectorAll('.capa');
+            const explicaciones = document.querySelectorAll('.explicacion');
+            
+            capas.forEach(capa => {
+                capa.addEventListener('click', function() {
+                    const numeroCapa = this.getAttribute('data-capa');
+                    
+                    // Ocultar todas las explicaciones
+                    explicaciones.forEach(exp => {
+                        exp.classList.remove('activa');
+                    });
+                    
+                    // Mostrar la explicación correspondiente
+                    const explicacion = document.getElementById(`explicacion-${numeroCapa}`);
+                    explicacion.classList.add('activa');
+                    
+                    // Desplazar la vista hacia la explicación
+                    explicacion.scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+            
+            // Animación del viaje de datos
+            const paqueteEnviando = document.querySelector('.paquete.enviando');
+            const paqueteRecibiendo = document.querySelector('.paquete.recibiendo');
+            const btnEnviar = document.getElementById('btn-enviar');
+            const btnRecepcion = document.getElementById('btn-recepcion');
+            const btnPausar = document.getElementById('btn-pausar');
+            
+            let animacionActiva = true;
+            
+            btnEnviar.addEventListener('click', function() {
+                paqueteEnviando.style.display = 'flex';
+                paqueteRecibiendo.style.display = 'none';
+                paqueteEnviando.classList.add('enviando');
+                paqueteEnviando.classList.remove('recibiendo');
+                animacionActiva = true;
+            });
+            
+            btnRecepcion.addEventListener('click', function() {
+                paqueteEnviando.style.display = 'none';
+                paqueteRecibiendo.style.display = 'flex';
+                paqueteRecibiendo.classList.add('recibiendo');
+                paqueteRecibiendo.classList.remove('enviando');
+                animacionActiva = true;
+            });
+            
+            btnPausar.addEventListener('click', function() {
+                if (animacionActiva) {
+                    paqueteEnviando.style.animationPlayState = 'paused';
+                    paqueteRecibiendo.style.animationPlayState = 'paused';
+                    btnPausar.textContent = 'Reanudar';
+                } else {
+                    paqueteEnviando.style.animationPlayState = 'running';
+                    paqueteRecibiendo.style.animationPlayState = 'running';
+                    btnPausar.textContent = 'Pausar';
+                }
+                animacionActiva = !animacionActiva;
+            });
+            
+            // Mostrar la primera explicación por defecto
+            document.getElementById('explicacion-7').classList.add('activa');
+        });
+    </script>
+</body>
+</html>
