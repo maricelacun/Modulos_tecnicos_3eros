@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bases de Datos - Guía Completa en Español</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #ffbe0b;
+            --ecuador-yellow: #FFD100;
+            --ecuador-blue: #00539B;
+            --ecuador-red: #EF3340;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(to right, var(--ecuador-blue), var(--primary));
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,213.3C672,192,768,128,864,128C960,128,1056,192,1152,192C1248,192,1344,128,1392,96L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+        
+        .avatar-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem 0;
+        }
+        
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--ecuador-red), var(--ecuador-yellow));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 4rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            border: 4px solid white;
+        }
+        
+        .ecuador-flag {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+        
+        .flag-stripe {
+            height: 20px;
+            width: 100px;
+        }
+        
+        .yellow { background-color: var(--ecuador-yellow); }
+        .blue { background-color: var(--ecuador-blue); }
+        .red { background-color: var(--ecuador-red); }
+        
+        nav {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+        }
+        
+        .logo {
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 0.5rem;
+            color: var(--ecuador-blue);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light);
+            display: flex;
+            align-items: center;
+        }
+        
+        h2 i {
+            margin-right: 10px;
+            color: var(--accent);
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 4px solid var(--ecuador-blue);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .card-img {
+            height: 180px;
+            background-color: var(--primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-img::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30%;
+            background: linear-gradient(to top, rgba(0,0,0,0.1), transparent);
+        }
+        
+        .card-content {
+            padding: 1.5rem;
+        }
+        
+        .card h3 {
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .info-box {
+            background: linear-gradient(to right, #e3f2fd, #f3e5f5);
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .info-box h3 {
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .comparison-table th {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+        
+        .comparison-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .comparison-table tr:hover {
+            background-color: #e9ecef;
+        }
+        
+        .quiz-container {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+        
+        .quiz-question {
+            margin-bottom: 1.5rem;
+        }
+        
+        .quiz-options {
+            list-style: none;
+        }
+        
+        .quiz-options li {
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            background-color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .quiz-options li:hover {
+            background-color: #e9ecef;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+        }
+        
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        .btn-accent {
+            background: var(--accent);
+        }
+        
+        .btn-accent:hover {
+            background: #d9047c;
+        }
+        
+        .btn-ecuador {
+            background: var(--ecuador-blue);
+        }
+        
+        .btn-ecuador:hover {
+            background: #003a75;
+        }
+        
+        footer {
+            background: linear-gradient(to right, var(--secondary), var(--dark));
+            color: white;
+            padding: 3rem 1rem;
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+        
+        .footer-links li {
+            margin: 0 1rem;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--success);
+        }
+        
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+        
+        .social-icons a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            margin: 0 0.5rem;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        
+        .social-icons a:hover {
+            background-color: var(--accent);
+            transform: translateY(-3px);
+        }
+        
+        .ecuador-reference {
+            background: linear-gradient(to right, var(--ecuador-yellow), var(--ecuador-blue), var(--ecuador-red));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+            }
+            
+            .nav-links {
+                margin-top: 1rem;
+            }
+            
+            .nav-links li {
+                margin: 0 0.5rem;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Bases de Datos</h1>
+            <p class="tagline">Todo lo que necesitas saber sobre el mundo de las bases de datos - En Español</p>
+            
+            <div class="ecuador-flag">
+                <div class="flag-stripe yellow"></div>
+                <div class="flag-stripe blue"></div>
+                <div class="flag-stripe red"></div>
+            </div>
+            
+            <div class="avatar-container">
+                <div class="avatar">
+                    <i class="fas fa-database"></i>
+                </div>
+            </div>
+            
+            <p>Material educativo diseñado para estudiantes de <span class="ecuador-reference">Ecuador</span></p>
+        </div>
+    </header>
+    
+    <nav>
+        <div class="nav-container">
+            <div class="logo"><i class="fas fa-database"></i> BD Educativa Ecuador</div>
+            <ul class="nav-links">
+                <li><a href="#introduccion">Introducción</a></li>
+                <li><a href="#tipos">Tipos de BD</a></li>
+                <li><a href="#sql">SQL</a></li>
+                <li><a href="#nosql">NoSQL</a></li>
+                <li><a href="#recursos">Recursos</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <section id="introduccion" class="section">
+            <h2><i class="fas fa-info-circle"></i> ¿Qué es una Base de Datos?</h2>
+            <p>Una <strong>base de datos</strong> es un conjunto de datos organizados y estructurados que se almacenan de manera sistemática para su posterior uso, consulta y gestión. Las bases de datos permiten almacenar y recuperar grandes cantidades de información de forma eficiente.</p>
+            
+            <div class="video-container">
+                <!-- VIDEO EN ESPAÑOL SOBRE BASES DE DATOS -->
+                <iframe src="https://www.youtube.com/embed/yoeV4Ex8C8U" title="Introducción a las Bases de Datos en Español" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            
+            <div class="info-box">
+                <h3>¿Por qué son importantes las bases de datos?</h3>
+                <p>Las bases de datos son fundamentales en el mundo actual porque:</p>
+                <ul>
+                    <li>Permiten almacenar grandes volúmenes de información de forma organizada</li>
+                    <li>Facilitan el acceso rápido y eficiente a los datos</li>
+                    <li>Garantizan la integridad y consistencia de la información</li>
+                    <li>Permiten el trabajo concurrente de múltiples usuarios</li>
+                    <li>Proporcionan mecanismos de seguridad y control de acceso</li>
+                    <li>Son la base de prácticamente todos los sistemas informáticos modernos</li>
+                </ul>
+            </div>
+            
+            <h3>Ejemplos de uso de bases de datos en Ecuador</h3>
+            <p>En nuestro país, las bases de datos son utilizadas en diversos sectores:</p>
+            <ul>
+                <li><strong>Gobierno:</strong> Registro Civil, Servicio de Rentas Internas (SRI)</li>
+                <li><strong>Bancos:</strong> Información de clientes, transacciones, cuentas</li>
+                <li><strong>Educación:</strong> Registro de estudiantes, calificaciones, matrículas</li>
+                <li><strong>Salud:</strong> Historias clínicas, inventario de medicamentos</li>
+                <li><strong>Comercio:</strong> Inventarios, ventas, clientes</li>
+            </ul>
+        </section>
+        
+        <section id="tipos" class="section">
+            <h2><i class="fas fa-sitemap"></i> Tipos de Bases de Datos</h2>
+            <p>Existen diferentes tipos de bases de datos, cada una diseñada para satisfacer necesidades específicas. A continuación, presentamos las principales categorías:</p>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-img" style="background-color: #4361ee;">
+                        <i class="fas fa-table"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Bases de Datos Relacionales</h3>
+                        <p>Organizan los datos en tablas relacionadas entre sí mediante claves. Utilizan el lenguaje SQL para consultas y operaciones.</p>
+                        <p><strong>Ejemplos:</strong> MySQL, PostgreSQL, Oracle, SQL Server</p>
+                        <p><strong>Ventajas:</strong> Estructura clara, integridad de datos, estandarización</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-img" style="background-color: #3a0ca3;">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Bases de Datos NoSQL</h3>
+                        <p>Diseñadas para manejar grandes volúmenes de datos no estructurados o semiestructurados. No utilizan el modelo tabular tradicional.</p>
+                        <p><strong>Ejemplos:</strong> MongoDB, Cassandra, Redis, Neo4j</p>
+                        <p><strong>Ventajas:</strong> Escalabilidad, flexibilidad, alto rendimiento</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-img" style="background-color: #f72585;">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Bases de Datos en la Nube</h3>
+                        <p>Servicios de base de datos gestionados y alojados en plataformas en la nube, que ofrecen escalabilidad y alta disponibilidad.</p>
+                        <p><strong>Ejemplos:</strong> Amazon RDS, Google Cloud SQL, Azure SQL Database</p>
+                        <p><strong>Ventajas:</strong> Sin administración de infraestructura, escalabilidad automática</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="sql" class="section">
+            <h2><i class="fas fa-code"></i> Lenguaje SQL</h2>
+            <p>SQL (Structured Query Language) es el lenguaje estándar para gestionar bases de datos relacionales. Permite crear, modificar, consultar y eliminar datos.</p>
+            
+            <div class="info-box">
+                <h3>Operaciones básicas con SQL</h3>
+                <p>Las operaciones fundamentales en SQL se conocen como CRUD:</p>
+                <ul>
+                    <li><strong>CREATE</strong> - Crear bases de datos y tablas</li>
+                    <li><strong>INSERT</strong> - Insertar nuevos registros</li>
+                    <li><strong>SELECT</strong> - Consultar datos</li>
+                    <li><strong>UPDATE</strong> - Modificar datos existentes</li>
+                    <li><strong>DELETE</strong> - Eliminar registros</li>
+                </ul>
+            </div>
+            
+            <h3>Ejemplos de consultas SQL</h3>
+            <div class="info-box">
+                <p><strong>Crear una tabla:</strong><br>
+                CREATE TABLE estudiantes (<br>
+                &nbsp;&nbsp;id INT PRIMARY KEY,<br>
+                &nbsp;&nbsp;nombre VARCHAR(100),<br>
+                &nbsp;&nbsp;edad INT,<br>
+                &nbsp;&nbsp;carrera VARCHAR(100)<br>
+                );</p>
+                
+                <p><strong>Insertar datos:</strong><br>
+                INSERT INTO estudiantes (id, nombre, edad, carrera)<br>
+                VALUES (1, 'María González', 20, 'Ingeniería en Sistemas');</p>
+                
+                <p><strong>Consultar datos:</strong><br>
+                SELECT nombre, carrera FROM estudiantes WHERE edad > 18;</p>
+            </div>
+            
+            <h3>Comparación entre sistemas de gestión de bases de datos relacionales</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Sistema</th>
+                        <th>Ventajas</th>
+                        <th>Desventajas</th>
+                        <th>Uso recomendado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>MySQL</td>
+                        <td>Gratuito, amplia comunidad, buen rendimiento</td>
+                        <td>Limitaciones en características avanzadas</td>
+                        <td>Aplicaciones web, proyectos pequeños y medianos</td>
+                    </tr>
+                    <tr>
+                        <td>PostgreSQL</td>
+                        <td>Características avanzadas, estándares SQL, extensible</td>
+                        <td>Mayor consumo de recursos, curva de aprendizaje</td>
+                        <td>Aplicaciones complejas, datos geográficos</td>
+                    </tr>
+                    <tr>
+                        <td>Oracle</td>
+                        <td>Alto rendimiento, características empresariales</td>
+                        <td>Costoso, complejo de administrar</td>
+                        <td>Grandes empresas, aplicaciones críticas</td>
+                    </tr>
+                    <tr>
+                        <td>SQL Server</td>
+                        <td>Integración con productos Microsoft, herramientas visuales</td>
+                        <td>Solo funciona en Windows, licencias costosas</td>
+                        <td>Entornos Microsoft, business intelligence</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <section id="nosql" class="section">
+            <h2><i class="fas fa-leaf"></i> Bases de Datos NoSQL</h2>
+            <p>Las bases de datos NoSQL surgieron como respuesta a las limitaciones de las bases de datos relacionales para manejar grandes volúmenes de datos no estructurados y para escalar horizontalmente.</p>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-img" style="background-color: #4cc9f0;">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Documentales</h3>
+                        <p>Almacenan datos en documentos (generalmente JSON). Ideales para contenido semiestructurado.</p>
+                        <p><strong>Ejemplo:</strong> MongoDB</p>
+                        <p><strong>Uso en Ecuador:</strong> Aplicaciones web modernas, sistemas de contenido</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-img" style="background-color: #ffbe0b;">
+                        <i class="fas fa-key"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Clave-Valor</h3>
+                        <p>Almacenan datos como pares clave-valor. Muy eficientes para operaciones simples de lectura/escritura.</p>
+                        <p><strong>Ejemplo:</strong> Redis</p>
+                        <p><strong>Uso en Ecuador:</strong> Caché de aplicaciones, sesiones de usuario</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-img" style="background-color: #fb5607;">
+                        <i class="fas fa-columns"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Columnas</h3>
+                        <p>Almacenan datos en columnas en lugar de filas. Optimizadas para consultas sobre grandes conjuntos de datos.</p>
+                        <p><strong>Ejemplo:</strong> Cassandra</p>
+                        <p><strong>Uso en Ecuador:</strong> Análisis de datos, sistemas de recomendación</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-img" style="background-color: #8338ec;">
+                        <i class="fas fa-share-alt"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Grafos</h3>
+                        <p>Almacenan datos como nodos y relaciones. Ideales para datos interconectados.</p>
+                        <p><strong>Ejemplo:</strong> Neo4j</p>
+                        <p><strong>Uso en Ecuador:</strong> Redes sociales, sistemas de recomendación, fraud detection</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="quiz-container">
+                <h3>Test de conocimientos - Bases de Datos NoSQL</h3>
+                <div class="quiz-question">
+                    <p>¿Cuál de estas bases de datos NoSQL está orientada a documentos?</p>
+                    <ul class="quiz-options">
+                        <li>Redis</li>
+                        <li>MongoDB</li>
+                        <li>Cassandra</li>
+                        <li>Neo4j</li>
+                    </ul>
+                </div>
+                <button class="btn btn-accent">Ver respuesta</button>
+            </div>
+        </section>
+        
+        <section id="recursos" class="section">
+            <h2><i class="fas fa-book-open"></i> Recursos de Aprendizaje</h2>
+            <p>Para profundizar en el conocimiento sobre bases de datos, te recomendamos los siguientes recursos en español:</p>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-img" style="background-color: #06d6a0;">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Práctica con SQL</h3>
+                        <p>Plataformas para practicar consultas SQL en línea:</p>
+                        <ul>
+                            <li>SQLZoo (disponible en español)</li>
+                            <li>HackerRank (ejercicios en español)</li>
+                            <li>SQLBolt (tutoriales interactivos)</li>
+                            <li>W3Schools SQL (en español)</li>
+                        </ul>
+                        <a href="#" class="btn btn-ecuador" style="margin-top: 1rem;">Explorar Recursos</a>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-img" style="background-color: #118ab2;">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Cursos Online en Español</h3>
+                        <p>Cursos recomendados para aprender bases de datos:</p>
+                        <ul>
+                            <li>Introducción a las Bases de Datos - Coursera</li>
+                            <li>SQL desde Cero - Udemy</li>
+                            <li>Bases de Datos NoSQL - Platzi</li>
+                            <li>MySQL para Principiantes - YouTube</li>
+                        </ul>
+                        <a href="#" class="btn btn-ecuador" style="margin-top: 1rem;">Ver cursos</a>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-img" style="background-color: #ef476f;">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Libros en Español</h3>
+                        <p>Libros esenciales sobre bases de datos:</p>
+                        <ul>
+                            <li>"Fundamentos de Bases de Datos" - Silberschatz (traducido)</li>
+                            <li>"SQL para Principiantes" - varios autores</li>
+                            <li>"MongoDB: Guía Definitiva" - Kristina Chodorow</li>
+                            <li>"El modelo relacional y SQL" - C. J. Date</li>
+                        </ul>
+                        <a href="#" class="btn btn-ecuador" style="margin-top: 1rem;">Ver libros</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <h3>Oportunidades laborales en Ecuador</h3>
+                <p>El conocimiento de bases de datos abre muchas oportunidades profesionales en nuestro país:</p>
+                <ul>
+                    <li><strong>Administrador de Bases de Datos (DBA):</strong> Gestiona y mantiene sistemas de bases de datos</li>
+                    <li><strong>Desarrollador Backend:</strong> Crea aplicaciones que interactúan con bases de datos</li>
+                    <li><strong>Analista de Datos:</strong> Extrae información valiosa de las bases de datos</li>
+                    <li><strong>Arquitecto de Datos:</strong> Diseña la estructura de almacenamiento de información</li>
+                </ul>
+                <p>Estas profesiones tienen alta demanda en el mercado laboral ecuatoriano y ofrecen buenas remuneraciones.</p>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <h3>Bases de Datos - Recursos Educativos para Ecuador</h3>
+            <p>Material didáctico diseñado específicamente para estudiantes ecuatorianos</p>
+            
+            <ul class="footer-links">
+                <li><a href="#introduccion">Introducción</a></li>
+                <li><a href="#tipos">Tipos de BD</a></li>
+                <li><a href="#sql">SQL</a></li>
+                <li><a href="#nosql">NoSQL</a></li>
+                <li><a href="#recursos">Recursos</a></li>
+            </ul>
+            
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            
+            <p>&copy; 2023 Bases de Datos Educativas Ecuador. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Simple quiz functionality
+        document.querySelectorAll('.quiz-options li').forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove any existing highlights
+                this.parentElement.querySelectorAll('li').forEach(li => {
+                    li.style.backgroundColor = '';
+                });
+                
+                // Highlight selected option
+                this.style.backgroundColor = '#c3e6cb';
+            });
+        });
+        
+        // Quiz answer button
+        document.querySelector('.btn-accent').addEventListener('click', function() {
+            alert('La respuesta correcta es: MongoDB. ¡Bien hecho si la seleccionaste!');
+        });
+    </script>
+</body>
+</html>

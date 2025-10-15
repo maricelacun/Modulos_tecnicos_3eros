@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSafe Ecuador - Seguridad Informática e Ingeniería Social</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #e74c3c;
+            --accent: #2ecc71;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --gradient: linear-gradient(135deg, #3498db, #2ecc71);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        header {
+            background: var(--gradient);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,213.3C672,192,768,128,864,128C960,128,1056,192,1152,192C1248,192,1344,128,1392,96L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        .logo i {
+            font-size: 2.5rem;
+            margin-right: 10px;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        nav {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--gradient);
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .hero {
+            padding: 4rem 0;
+            text-align: center;
+            background-color: white;
+        }
+        
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            color: #555;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--gradient);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+        
+        .section {
+            padding: 5rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.2rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+        
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-img {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .card-content {
+            padding: 1.5rem;
+        }
+        
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        .card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+        
+        .avatar-section {
+            background: var(--gradient);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        .avatar-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            border: 4px solid white;
+        }
+        
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .avatar-content {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            margin-top: 1rem;
+        }
+        
+        .video-section {
+            background-color: white;
+        }
+        
+        .video-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .video-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+        }
+        
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .video-content {
+            padding: 1.5rem;
+        }
+        
+        .video-content h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        /* Organizador Gráfico - Mapa Mental */
+        .mind-map-container {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+        
+        .mind-map {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        
+        .central-node {
+            background: var(--primary);
+            color: white;
+            padding: 1.5rem 2.5rem;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1.3rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+            z-index: 2;
+        }
+        
+        .threats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            width: 100%;
+        }
+        
+        .threat-category {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+        
+        .threat-category:hover {
+            transform: translateY(-5px);
+        }
+        
+        .threat-category h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary);
+        }
+        
+        .threat-list {
+            list-style-type: none;
+        }
+        
+        .threat-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+        
+        .threat-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .threat-list li i {
+            margin-right: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .interactive-section {
+            background-color: #f8f9fa;
+        }
+        
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .quiz-question {
+            margin-bottom: 2rem;
+        }
+        
+        .quiz-question h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        .quiz-options {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .quiz-option {
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .quiz-option:hover {
+            background: #e9ecef;
+        }
+        
+        .quiz-option.selected {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .quiz-result {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+        }
+        
+        .quiz-result.success {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: #27ae60;
+            display: block;
+        }
+        
+        .quiz-result.error {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: #c0392b;
+            display: block;
+        }
+        
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #bbb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: background 0.3s, transform 0.3s;
+        }
+        
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bbb;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+            }
+            
+            .nav-links {
+                margin-top: 1rem;
+            }
+            
+            .nav-links li {
+                margin: 0 1rem;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .threats-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <h1>CyberSafe Ecuador</h1>
+            </div>
+            <p class="subtitle">Aprende sobre seguridad informática e ingeniería social - Adaptado para estudiantes ecuatorianos</p>
+        </div>
+    </header>
+    
+    <nav>
+        <div class="container nav-container">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <h2>CyberSafe EC</h2>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#conceptos">Conceptos</a></li>
+                <li><a href="#amenazas">Amenazas</a></li>
+                <li><a href="#avatar">Instructora</a></li>
+                <li><a href="#videos">Videos</a></li>
+                <li><a href="#quiz">Evaluación</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <section class="hero" id="inicio">
+        <div class="container">
+            <h2>Protege tu mundo digital en Ecuador</h2>
+            <p>En la era digital, los ecuatorianos enfrentamos nuevos desafíos de seguridad. Aprende a proteger tus datos, identificar amenazas locales y comprender las técnicas de ingeniería social adaptadas a nuestro contexto.</p>
+            <a href="#conceptos" class="btn">Comenzar a aprender</a>
+        </div>
+    </section>
+    
+    <section class="section" id="conceptos">
+        <div class="container">
+            <div class="section-title">
+                <h2>Conceptos Fundamentales</h2>
+                <p>Domina los principios básicos de la seguridad informática</p>
+            </div>
+            
+            <div class="cards">
+                <div class="card">
+                    <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80');"></div>
+                    <div class="card-content">
+                        <h3>¿Qué es la seguridad informática?</h3>
+                        <p>La seguridad informática es el conjunto de medidas y prácticas destinadas a proteger la información y los sistemas informáticos contra accesos no autorizados, modificaciones o destrucciones.</p>
+                        <a href="#" class="btn">Leer más</a>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80');"></div>
+                    <div class="card-content">
+                        <h3>Ingeniería Social en Ecuador</h3>
+                        <p>Técnicas psicológicas utilizadas por atacantes para manipular a las personas. En Ecuador, es común el phishing a través de WhatsApp y correos falsos de instituciones bancarias.</p>
+                        <a href="#" class="btn">Leer más</a>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1174&q=80');"></div>
+                    <div class="card-content">
+                        <h3>Protección de datos personales</h3>
+                        <p>Aprende a proteger tu información personal según la Ley Orgánica de Protección de Datos Personales de Ecuador y evita el robo de identidad.</p>
+                        <a href="#" class="btn">Leer más</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section" id="amenazas">
+        <div class="container">
+            <div class="section-title">
+                <h2>Tipos de Amenazas Informáticas</h2>
+                <p>Conoce los principales riesgos digitales y cómo protegerte</p>
+            </div>
+            
+            <div class="mind-map-container">
+                <div class="mind-map">
+                    <div class="central-node">Amenazas Informáticas</div>
+                    
+                    <div class="threats-container">
+                        <div class="threat-category">
+                            <h3><i class="fas fa-virus"></i> Malware</h3>
+                            <ul class="threat-list">
+                                <li><i class="fas fa-bug"></i> Virus</li>
+                                <li><i class="fas fa-biohazard"></i> Troyanos</li>
+                                <li><i class="fas fa-lock"></i> Ransomware</li>
+                                <li><i class="fas fa-eye"></i> Spyware</li>
+                                <li><i class="fas fa-door-open"></i> Puertas traseras</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="threat-category">
+                            <h3><i class="fas fa-fish"></i> Ingeniería Social</h3>
+                            <ul class="threat-list">
+                                <li><i class="fas fa-envelope"></i> Phishing</li>
+                                <li><i class="fas fa-phone"></i> Vishing (llamadas)</li>
+                                <li><i class="fas fa-sms"></i> Smishing (SMS)</li>
+                                <li><i class="fab fa-whatsapp"></i> Estafas por WhatsApp</li>
+                                <li><i class="fas fa-user-secret"></i> Pretexting</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="threat-category">
+                            <h3><i class="fas fa-network-wired"></i> Ataques de Red</h3>
+                            <ul class="threat-list">
+                                <li><i class="fas fa-ban"></i> Denegación de servicio (DDoS)</li>
+                                <li><i class="fas fa-user-minus"></i> Suplantación de identidad</li>
+                                <li><i class="fas fa-wifi"></i> Redes Wi-Fi inseguras</li>
+                                <li><i class="fas fa-server"></i> Ataques a servidores</li>
+                                <li><i class="fas fa-broadcast-tower"></i> Interceptación de datos</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="threat-category">
+                            <h3><i class="fas fa-mobile-alt"></i> Dispositivos Móviles</h3>
+                            <ul class="threat-list">
+                                <li><i class="fas fa-download"></i> Apps maliciosas</li>
+                                <li><i class="fas fa-bluetooth"></i> Conexiones inseguras</li>
+                                <li><i class="fas fa-map-marker-alt"></i> Geolocalización</li>
+                                <li><i class="fas fa-sd-card"></i> Pérdida o robo</li>
+                                <li><i class="fas fa-qrcode"></i> Códigos QR maliciosos</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="avatar-section" id="avatar">
+        <div class="container">
+            <div class="avatar-container">
+                <div class="avatar">
+                    <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=761&q=80" alt="Clara Martínez">
+                </div>
+                <h2>Clara Martínez</h2>
+                <p>Especialista en Ciberseguridad - Experiencia en Ecuador</p>
+                <div class="avatar-content">
+                    <p>"Hola, soy Clara, especialista en seguridad informática con más de 8 años de experiencia trabajando con instituciones financieras en Quito y Guayaquil. Mi misión es enseñarte a proteger tu información en el mundo digital, considerando los riesgos específicos que enfrentamos en Ecuador. La seguridad no es solo tecnología, también es entender la psicología detrás de los ataques y las particularidades de nuestro contexto nacional."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section video-section" id="videos">
+        <div class="container">
+            <div class="section-title">
+                <h2>Contenido Multimedia en Español</h2>
+                <p>Aprende con videos explicativos adaptados a Latinoamérica</p>
+            </div>
+            
+            <div class="video-container">
+                <div class="video-card">
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/fdwihua_8Vg" title="¿Qué es la Ingeniería Social? - Explicación Sencilla" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-content">
+                        <h3>¿Qué es la Ingeniería Social? - Explicación Sencilla</h3>
+                        <p>Descubre cómo los atacantes utilizan técnicas psicológicas para manipular a las personas y obtener información confidencial.</p>
+                    </div>
+                </div>
+                
+                <div class="video-card">
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/3G8yJaudGC0" title="Tipos de Ingeniería Social y Cómo Protegerse" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-content">
+                        <h3>Tipos de Ingeniería Social y Cómo Protegerse</h3>
+                        <p>Conoce los diferentes tipos de ataques de ingeniería social y aprende estrategias efectivas para protegerte.</p>
+                    </div>
+                </div>
+                
+                <div class="video-card">
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/2hT_N_ptVck" title="Ciberseguridad en Ecuador - Casos Reales" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-content">
+                        <h3>Ciberseguridad en Ecuador - Casos Reales</h3>
+                        <p>Análisis de casos reales de ciberataques en Ecuador y recomendaciones específicas para protegerse.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section interactive-section" id="quiz">
+        <div class="container">
+            <div class="section-title">
+                <h2>Evalúa tus conocimientos</h2>
+                <p>Pon a prueba lo que has aprendido sobre seguridad informática</p>
+            </div>
+            
+            <div class="quiz-container">
+                <div class="quiz-question">
+                    <h3>1. ¿Qué es la ingeniería social?</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-correct="false">a) Una técnica para construir software seguro</div>
+                        <div class="quiz-option" data-correct="true">b) La manipulación psicológica para obtener información confidencial</div>
+                        <div class="quiz-option" data-correct="false">c) Un método para diseñar redes sociales</div>
+                        <div class="quiz-option" data-correct="false">d) Una rama de la sociología aplicada a la tecnología</div>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <h3>2. ¿Cuál de estas es una medida efectiva de seguridad?</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-correct="false">a) Usar la misma contraseña para todas las cuentas</div>
+                        <div class="quiz-option" data-correct="false">b) Compartir información personal en redes sociales</div>
+                        <div class="quiz-option" data-correct="true">c) Habilitar la autenticación de dos factores</div>
+                        <div class="quiz-option" data-correct="false">d) Hacer clic en enlaces de correos desconocidos</div>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <h3>3. El phishing es:</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-correct="false">a) Un método de pesca digital</div>
+                        <div class="quiz-option" data-correct="false">b) Un tipo de software antivirus</div>
+                        <div class="quiz-option" data-correct="true">c) Un ataque que simula ser una entidad confiable para robar información</div>
+                        <div class="quiz-option" data-correct="false">d) Una técnica de recuperación de datos</div>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <h3>4. En Ecuador, ¿cuál es una estafa común por WhatsApp?</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-correct="false">a) Ofertas de trabajo legítimas</div>
+                        <div class="quiz-option" data-correct="true">b) Mensajes de supuestos bancos pidiendo datos</div>
+                        <div class="quiz-option" data-correct="false">c) Encuestas oficiales del gobierno</div>
+                        <div class="quiz-option" data-correct="false">d) Promociones verificadas de tiendas</div>
+                    </div>
+                </div>
+                
+                <button id="check-answers" class="btn" style="display: block; text-align: center; margin: 2rem auto 0; width: 100%;">Verificar respuestas</button>
+                
+                <div id="quiz-result" class="quiz-result">
+                    <!-- Resultado del quiz aparecerá aquí -->
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>CyberSafe Ecuador</h3>
+                    <p>Plataforma educativa dedicada a enseñar seguridad informática e ingeniería social de forma accesible y didáctica para estudiantes ecuatorianos.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Enlaces rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="#inicio">Inicio</a></li>
+                        <li><a href="#conceptos">Conceptos</a></li>
+                        <li><a href="#amenazas">Amenazas</a></li>
+                        <li><a href="#avatar">Instructora</a></li>
+                        <li><a href="#videos">Videos</a></li>
+                        <li><a href="#quiz">Evaluación</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contacto Ecuador</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-envelope"></i> info@cybersafe.ec</li>
+                        <li><i class="fas fa-phone"></i> +593 99 123 4567</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Quito, Ecuador</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 CyberSafe Ecuador. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Interactividad para el quiz
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function() {
+                // Remover selección anterior en la misma pregunta
+                const parent = this.parentElement;
+                parent.querySelectorAll('.quiz-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Seleccionar la opción actual
+                this.classList.add('selected');
+            });
+        });
+        
+        // Verificar respuestas del quiz
+        document.getElementById('check-answers').addEventListener('click', function() {
+            const questions = document.querySelectorAll('.quiz-question');
+            let correctAnswers = 0;
+            let totalQuestions = questions.length;
+            
+            questions.forEach(question => {
+                const selectedOption = question.querySelector('.quiz-option.selected');
+                if (selectedOption && selectedOption.getAttribute('data-correct') === 'true') {
+                    correctAnswers++;
+                }
+            });
+            
+            const resultElement = document.getElementById('quiz-result');
+            const percentage = (correctAnswers / totalQuestions) * 100;
+            
+            if (percentage >= 70) {
+                resultElement.className = 'quiz-result success';
+                resultElement.innerHTML = `
+                    <h3>¡Excelente trabajo!</h3>
+                    <p>Has respondido correctamente ${correctAnswers} de ${totalQuestions} preguntas (${percentage.toFixed(0)}%).</p>
+                    <p>¡Demuestras un buen entendimiento de los conceptos de seguridad informática!</p>
+                `;
+            } else {
+                resultElement.className = 'quiz-result error';
+                resultElement.innerHTML = `
+                    <h3>¡Sigue practicando!</h3>
+                    <p>Has respondido correctamente ${correctAnswers} de ${totalQuestions} preguntas (${percentage.toFixed(0)}%).</p>
+                    <p>Te recomendamos repasar los conceptos y volver a intentarlo.</p>
+                `;
+            }
+            
+            // Desplazar hacia el resultado
+            resultElement.scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        // Smooth scroll para los enlaces de navegación
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
